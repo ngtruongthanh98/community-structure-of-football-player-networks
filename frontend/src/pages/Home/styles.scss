@@ -1,7 +1,14 @@
 .homepage {
+  .search-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
   .chart-box {
     display: flex;
     justify-content: center;
+    margin-top: 48px;
 
     .customized-radar-chart {
       height: 500px !important;

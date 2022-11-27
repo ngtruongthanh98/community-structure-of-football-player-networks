@@ -6,10 +6,10 @@ const Navbar = () => {
   return (
     <nav className="nav">
       <Link to="/" className="site-title">
-        Site Name
+        Football player stats
       </Link>
       <ul>
-        <CustomLink to="/sales">Sales</CustomLink>
+        <CustomLink to="/">Home</CustomLink>
         <CustomLink to="/about">About</CustomLink>
       </ul>
     </nav>
