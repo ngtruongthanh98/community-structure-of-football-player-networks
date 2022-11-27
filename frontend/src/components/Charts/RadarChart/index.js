@@ -9,21 +9,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
-
-const data = {
-  labels: ['Defence', 'Physical', 'Speed', 'Vision', 'Attack', 'Technique', 'Aerial', 'Mental'],
-  datasets: [
-    {
-      label: 'Mohamed Salah',
-      data: [6, 10, 18, 14, 15, 17, 6, 11],
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255, 99, 132, 1)',
-      borderWidth: 1,
-    },
-  ],
-};
 
 const RadarOptions = {
   scale: {
@@ -45,8 +33,48 @@ const RadarOptions = {
   },
 };
 
-const RadarChart = () => {
+const RadarChart = (props) => {
+  const data = {
+    labels: props.statsLabelArray,
+    datasets: [
+      {
+        label: props.playerName,
+        data: props.statsDataArray,
+        backgroundColor: props.backgroundColor,
+        borderColor: props.borderColor,
+        borderWidth: props.borderWidth,
+      },
+    ],
+  };
+
   return <Radar data={data} options={RadarOptions} className="customized-radar-chart" />;
+};
+
+RadarChart.propTypes = {
+  playerName: PropTypes.string,
+  statsLabelArray: PropTypes.array,
+  statsDataArray: PropTypes.array,
+  backgroundColor: PropTypes.string,
+  borderColor: PropTypes.string,
+  borderWidth: PropTypes.number,
+};
+
+RadarChart.defaultProps = {
+  playerName: '',
+  statsLabelArray: [
+    'Defence',
+    'Physical',
+    'Speed',
+    'Vision',
+    'Attack',
+    'Technique',
+    'Aerial',
+    'Mental',
+  ],
+  statsDataArray: [],
+  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+  borderColor: 'rgba(255, 99, 132, 1)',
+  borderWidth: 1,
 };
 
 export default RadarChart;

@@ -27,16 +27,22 @@ const DebounceSelect = ({ fetchOptions, debounceTimeout = 800, ...props }) => {
     return debounce(loadOptions, debounceTimeout);
   }, [fetchOptions, debounceTimeout]);
 
-  console.log(options);
+  // console.log(options);
   if (options.length === 0) {
     // Example condition, its not fully handling
-    options.push({
-      label: 'Mohamed Salah',
-      value: 'Mohamed Salah',
-    });
+    options.push(
+      {
+        label: 'Mohamed Salah',
+        value: 'Mohamed Salah',
+      },
+      {
+        label: 'Sadio Mane',
+        value: 'Sadio Mane',
+      }
+    );
   }
 
-  console.log(options);
+  // console.log(options);
 
   return (
     <Select
