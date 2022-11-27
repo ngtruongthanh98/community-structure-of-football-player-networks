@@ -3,12 +3,13 @@ import HomePage from './pages/Home';
 import AboutPage from './pages/About';
 import SalesPage from './pages/Sales';
 import Navbar from './components/Navbar';
+import NavbarNext from './components/NavBarNext';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
+      <NavbarNext />
 
       <div className="container">
         <Routes>
