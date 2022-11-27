@@ -1,0 +1,11 @@
+.homepage {
+  .chart-box {
+    display: flex;
+    justify-content: center;
+
+    .customized-radar-chart {
+      height: 500px !important;
+      width: 500px !important;
+    }
+  }
+}
