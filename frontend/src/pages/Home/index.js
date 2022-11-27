@@ -20,6 +20,7 @@ const Home = () => {
   return (
     <div className="homepage">
       <div className="search-box">
+        <div className="title">Search by player name</div>
         <DebounceSelect
           mode="multiple"
           value={value}
