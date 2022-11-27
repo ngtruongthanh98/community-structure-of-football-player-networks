@@ -3,12 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss';
 
-import { Table, Row, Col, Tooltip, User, Text } from '@nextui-org/react';
+import { Table, Row, Col, User, Text } from '@nextui-org/react';
+// import {Tooltip } from '@nextui-org/react';
+
 import { StyledBadge } from './StyledBadge';
-import { IconButton } from './IconButton';
-import { EyeIcon } from './EyeIcon';
-import { EditIcon } from './EditIcon';
-import { DeleteIcon } from './DeleteIcon';
+// import { IconButton } from './IconButton';
+// import { EyeIcon } from './EyeIcon';
+// import { EditIcon } from './EditIcon';
+// import { DeleteIcon } from './DeleteIcon';
 
 const TableNext = (props) => {
   const columns = [
@@ -21,53 +23,53 @@ const TableNext = (props) => {
   const users = [
     {
       id: 1,
-      name: 'Tony Reichert',
-      role: 'CEO',
-      team: 'Management',
+      name: 'Đoàn Trần Cao Trí',
+      role: 'Leader, BA',
+      team: '-',
       status: 'active',
       age: '29',
-      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
-      email: 'tony.reichert@example.com',
+      avatar: 'https://zpsocial-f42-org.zadn.vn/f6d223aa42d6ae88f7c7.jpg',
+      idNumber: '2010733',
     },
     {
       id: 2,
-      name: 'Zoey Lang',
-      role: 'Technical Lead',
-      team: 'Development',
-      status: 'paused',
+      name: 'Phan Gia Anh',
+      role: 'Graph, BE',
+      team: '-',
+      status: 'active',
       age: '25',
-      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-      email: 'zoey.lang@example.com',
+      avatar: 'https://zpsocial-f49-org.zadn.vn/58c6fdd9c90726597f16.jpg',
+      idNumber: '2270167',
     },
     {
       id: 3,
-      name: 'Jane Fisher',
-      role: 'Senior Developer',
-      team: 'Development',
+      name: 'Nguyễn Trường Thành',
+      role: 'Graph, FE',
+      team: '-',
       status: 'active',
       age: '22',
-      avatar: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
-      email: 'jane.fisher@example.com',
+      avatar: 'https://zpsocial-f53-org.zadn.vn/e5b851287be795b9ccf6.jpg',
+      idNumber: '2270084',
     },
     {
       id: 4,
-      name: 'William Howard',
-      role: 'Community Manager',
-      team: 'Marketing',
-      status: 'vacation',
+      name: 'Nguyễn Đức Phú',
+      role: 'Data',
+      team: '-',
+      status: 'active',
       age: '28',
-      avatar: 'https://i.pravatar.cc/150?u=a048581f4e29026701d',
-      email: 'william.howard@example.com',
+      avatar: 'https://f24-org-zp.zdn.vn/710fc5e5fc8617d84e97.jpg',
+      idNumber: '2171014',
     },
     {
       id: 5,
-      name: 'Kristen Copper',
-      role: 'Sales Manager',
-      team: 'Sales',
+      name: 'Vũ Phương Thảo',
+      role: 'Data',
+      team: '-',
       status: 'active',
       age: '24',
-      avatar: 'https://i.pravatar.cc/150?u=a092581d4ef9026700d',
-      email: 'kristen.cooper@example.com',
+      avatar: 'https://zpsocial-f49-org.zadn.vn/4f6684c9262ac974903b.jpg',
+      idNumber: '2070430',
     },
   ];
 
@@ -77,7 +79,7 @@ const TableNext = (props) => {
       case 'name':
         return (
           <User squared src={user.avatar} name={cellValue} css={{ p: 0 }}>
-            {user.email}
+            {user.idNumber}
           </User>
         );
       case 'role':
@@ -98,36 +100,36 @@ const TableNext = (props) => {
       case 'status':
         return <StyledBadge type={user.status}>{cellValue}</StyledBadge>;
 
-      case 'actions':
-        return (
-          <Row justify="center" align="center">
-            <Col css={{ d: 'flex' }}>
-              <Tooltip content="Details">
-                <IconButton onClick={() => console.log('View user', user.id)}>
-                  <EyeIcon size={20} fill="#979797" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-            <Col css={{ d: 'flex' }}>
-              <Tooltip content="Edit user">
-                <IconButton onClick={() => console.log('Edit user', user.id)}>
-                  <EditIcon size={20} fill="#979797" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-            <Col css={{ d: 'flex' }}>
-              <Tooltip
-                content="Delete user"
-                color="error"
-                onClick={() => console.log('Delete user', user.id)}
-              >
-                <IconButton>
-                  <DeleteIcon size={20} fill="#FF0080" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-          </Row>
-        );
+      // case 'actions':
+      //   return (
+      //     <Row justify="center" align="center">
+      //       <Col css={{ d: 'flex' }}>
+      //         <Tooltip content="Details">
+      //           <IconButton onClick={() => console.log('View user', user.id)}>
+      //             <EyeIcon size={20} fill="#979797" />
+      //           </IconButton>
+      //         </Tooltip>
+      //       </Col>
+      //       <Col css={{ d: 'flex' }}>
+      //         <Tooltip content="Edit user">
+      //           <IconButton onClick={() => console.log('Edit user', user.id)}>
+      //             <EditIcon size={20} fill="#979797" />
+      //           </IconButton>
+      //         </Tooltip>
+      //       </Col>
+      //       <Col css={{ d: 'flex' }}>
+      //         <Tooltip
+      //           content="Delete user"
+      //           color="error"
+      //           onClick={() => console.log('Delete user', user.id)}
+      //         >
+      //           <IconButton>
+      //             <DeleteIcon size={20} fill="#FF0080" />
+      //           </IconButton>
+      //         </Tooltip>
+      //       </Col>
+      //     </Row>
+      //   );
       default:
         return cellValue;
     }
