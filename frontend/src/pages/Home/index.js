@@ -3,6 +3,7 @@ import './styles.scss';
 
 import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
+import { Button } from '@nextui-org/react';
 
 const Home = () => {
   const [value, setValue] = useState([]);
@@ -16,6 +17,11 @@ const Home = () => {
   useEffect(() => {
     console.log('playerName: ', playerName);
   }, [playerName]);
+
+  const handleRemovePlayer = () => {
+    setValue([]);
+    setPlayerName('');
+  };
 
   return (
     <div className="homepage">
@@ -46,8 +52,18 @@ const Home = () => {
         {playerName && (
           <div className="chart-box__body">
             <div className="title">
-              Current player: <span className="title-content">{playerName}</span>
+              Current player: <span className="title-content"> {playerName}</span>
+              <Button
+                auto
+                color="error"
+                rounded
+                className="remove-btn"
+                onClick={handleRemovePlayer}
+              >
+                Remove
+              </Button>
             </div>
+
             <RadarChart playerName={playerName} statsDataArray={statsDataArray} />
           </div>
         )}

@@ -24,12 +24,21 @@
       align-items: center;
 
       .title {
-        font-size: 16px;
+        font-size: 24px;
         font-weight: 400;
         margin-bottom: 24px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
 
         &-content {
           margin-bottom: 24px;
+          margin-left: 5px;
+        }
+
+        .remove-btn {
+          margin-left: 10px;
         }
       }
     }
