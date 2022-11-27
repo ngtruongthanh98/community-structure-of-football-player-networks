@@ -10,3 +10,7 @@ class FootballPlayerGraph():
 class FootballPlayerNode():
     def __init__(self) -> None:
         pass
+
+
+    def import_from_file(file_name):
+        pass
