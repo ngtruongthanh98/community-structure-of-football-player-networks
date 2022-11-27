@@ -1,0 +1,87 @@
+.custom-text-input {
+  margin: 4px 20px 24px 20px;
+
+  .title-box {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    .title-left {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 10px;
+      line-height: 16px;
+      text-transform: uppercase;
+
+      color: #57627b;
+    }
+
+    .title-right {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 10px;
+      line-height: 16px;
+
+      text-transform: uppercase;
+      color: #151a30;
+    }
+  }
+
+  .input-box {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+
+    .custom-input {
+      height: 40px;
+      width: 100%;
+
+      background: #ffffff;
+      border: 1px solid #c5cee0;
+      box-sizing: border-box;
+      border-radius: 8px;
+      padding: 0 16px;
+      color: #151a30;
+
+      &.--disabled {
+        background: #edf1f7;
+      }
+
+      &.--error {
+        border: 1px solid #e85600;
+      }
+    }
+
+    .error-message {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      margin-top: 4px;
+      color: #e85600;
+    }
+
+    .eye-icon,
+    .right-element {
+      position: absolute;
+      top: 23px;
+      right: 18px;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .left-element {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+}

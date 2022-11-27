@@ -1,0 +1,159 @@
+.send-assets-page {
+  width: 375px;
+  min-height: 600px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .custom-text-input {
+    width: 100%;
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
+    &.my-wallet {
+      margin-top: 25px;
+    }
+
+    &.asset > .input-box > .custom-input {
+      background: #fff;
+    }
+
+    .title-box {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 10px;
+      line-height: 16px;
+      color: #57627b;
+    }
+
+    .text-component {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 10px;
+      line-height: 16px;
+
+      background: #eef3fb;
+      border-radius: 8px;
+      height: 20px;
+      padding: 2px 8px;
+    }
+  }
+
+  .custom-box {
+    display: flex;
+    align-items: center;
+
+    .value {
+      margin-left: 8px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      color: #151a30;
+    }
+  }
+
+  .text-box {
+    display: flex;
+    align-items: center;
+
+    .text-1,
+    .text-2 {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #8f9bb3;
+    }
+
+    .text-2 {
+      font-weight: normal;
+      margin-left: 8px;
+    }
+  }
+
+  .send-footer-component {
+    margin-top: 172px;
+    padding-bottom: 20px;
+  }
+
+  .overlay {
+    .content {
+      height: 500px;
+    }
+  }
+
+  .asset-box-component {
+    margin-top: 17px;
+
+    width: 100%;
+
+    &-title {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 20px;
+      color: #151a30;
+
+      margin-left: 32px;
+      margin-bottom: 12px;
+    }
+
+    .currency-box-list {
+      height: 100%;
+
+      .currency-box-element {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+
+        background-color: #fff;
+        border-radius: 8px;
+
+        cursor: pointer;
+
+        .currency-value-box {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          margin-left: 16px;
+
+          .foreign-coin {
+            font-family: 'SF Pro Text';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            color: #151a30;
+          }
+
+          .vnd-coin {
+            font-family: 'SF Pro Text';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 16px;
+            color: #8f9bb3;
+          }
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 8px;
+        }
+
+        &:hover {
+          background: #f7f9fc;
+        }
+      }
+    }
+  }
+}

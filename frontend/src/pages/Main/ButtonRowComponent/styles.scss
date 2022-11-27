@@ -1,0 +1,15 @@
+.button-row-component {
+  margin-top: 28px;
+  display: flex;
+
+  .icon-button-box {
+    &:nth-child(2n) {
+      margin-left: 12px;
+    }
+
+    &:nth-child(2n + 1) {
+      margin-right: 12px;
+      margin-left: 12px;
+    }
+  }
+}

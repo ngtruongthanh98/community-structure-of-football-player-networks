@@ -1,0 +1,41 @@
+.header-main-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+
+  .left-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+
+    background: #f7f9fc;
+    border-radius: 8px;
+
+    padding: 0 19px 0 12px;
+
+    .wallet-name {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 20px;
+      color: #151a30;
+      margin-left: 12px;
+    }
+  }
+
+  .right-side {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    background: #f7f9fc;
+    border-radius: 8px;
+  }
+}

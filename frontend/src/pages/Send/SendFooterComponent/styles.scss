@@ -1,0 +1,43 @@
+.send-footer-component {
+  width: calc(100% - 40px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup {
+  .content-success-popup {
+    .text {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+
+      color: #151a30;
+
+      .bold {
+        font-weight: bold !important;
+      }
+    }
+
+    padding: 0 20px;
+    height: auto !important;
+  }
+
+  .custom-footer {
+    display: flex;
+    justify-content: center;
+    padding: 24px 20px 18px 22px;
+
+    .custom-button {
+      width: 100%;
+      background: #2f80ed;
+      border-radius: 8px;
+    }
+  }
+}
+
+.popup-success {
+  margin-top: 131px;
+}

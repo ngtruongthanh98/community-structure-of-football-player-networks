@@ -1,0 +1,86 @@
+.overlay {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  z-index: 10;
+}
+.popup {
+  margin: 18px auto;
+  background: #fff;
+  border-radius: 16px;
+  width: 336px;
+  position: relative;
+  transition: all 5s ease-in-out;
+
+  .header {
+    border-bottom: 1px solid #c5cee0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+      margin-left: 145px;
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #151a30;
+    }
+
+    .close-btn {
+      margin: 25px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .custom-header {
+    display: flex;
+    justify-content: center;
+
+    .title {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 28px;
+      color: #151a30;
+
+      margin: 24px auto;
+    }
+  }
+}
+
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  cursor: pointer;
+  color: #000;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px) {
+  .popup {
+    width: 70%;
+  }
+}

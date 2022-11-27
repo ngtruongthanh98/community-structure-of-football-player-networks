@@ -1,0 +1,31 @@
+.custom-button {
+  height: 40px;
+  width: fit-content;
+
+  background: linear-gradient(256.28deg, #1c94f4 0%, #1273ea 100%);
+  border-radius: 8px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.--is-white {
+  background: #f7f9fc;
+}
+
+.button-name {
+  font-family: 'SF Pro Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  padding: 10px 20px;
+  color: #ffffff;
+}
+
+.--is-blue {
+  color: #1273ea;
+}

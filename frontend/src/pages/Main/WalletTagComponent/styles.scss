@@ -1,0 +1,81 @@
+.wallet-tag-component {
+  width: 100%;
+  height: 152px;
+
+  background: linear-gradient(256.28deg, #1c94f4 0%, #1273ea 100%);
+  box-shadow: 0px 12px 20px -4px #c5cee0;
+  border-radius: 16px;
+
+  .wallet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 20px 14px 20px;
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .name {
+        font-family: 'SF Pro Text';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+        color: #fff;
+      }
+
+      .serial-number {
+        margin-left: 8px;
+
+        font-family: 'SF Pro Text';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #8dc9f9;
+      }
+    }
+
+    .icon-copy {
+      cursor: pointer;
+    }
+  }
+
+  .divider-bottom {
+    opacity: 0.5;
+    border-top: 1px solid #68b8f8;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .wallet-body {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .balance {
+    }
+
+    .usd {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: bold;
+      font-size: 32px;
+      line-height: 40px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .vnd {
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      color: #8dc9f9;
+    }
+  }
+}
