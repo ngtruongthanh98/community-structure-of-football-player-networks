@@ -1,8 +1,9 @@
 import './App.scss';
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
-import SalesPage from './pages/Sales';
-import Navbar from './components/Navbar';
+import OverviewPage from './pages/Overview';
+import CommunitiesPage from './pages/Communities';
+// import Navbar from './components/Navbar';
 import NavbarNext from './components/NavBarNext';
 import { Routes, Route } from 'react-router-dom';
 
@@ -11,13 +12,12 @@ function App() {
     <div className="App">
       <NavbarNext />
 
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/sales" element={<SalesPage />} />
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/overview" element={<OverviewPage />} />
+        <Route path="/communities" element={<CommunitiesPage />} />
+        <Route path="/about" element={<AboutPage />} />
+      </Routes>
     </div>
   );
 }
