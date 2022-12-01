@@ -44,8 +44,8 @@ const DebounceSelect = ({ fetchOptions, debounceTimeout = 800, ...props }) => {
         value: 'Cristiano Ronaldo',
       },
       {
-        label: 'Kilian Mbappe',
-        value: 'Kilian Mbappe',
+        label: 'Kylian Mbappe',
+        value: 'Kylian Mbappe',
       }
     );
   }

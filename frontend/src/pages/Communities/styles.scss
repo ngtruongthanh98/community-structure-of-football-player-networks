@@ -1,0 +1,45 @@
+.communities-page {
+  width: 100%;
+  height: calc(100vh - 76px);
+  display: flex;
+  flex-direction: column;
+
+  .search-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  }
+
+  .information-box {
+    margin-top: 24px;
+    width: 100%;
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      display: flex;
+      align-items: baseline;
+
+      &-content {
+        margin-bottom: 24px;
+        margin-left: 5px;
+      }
+
+      .remove-btn {
+        margin-left: 10px;
+      }
+    }
+  }
+}

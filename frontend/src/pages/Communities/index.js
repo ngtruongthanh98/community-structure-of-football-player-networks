@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
-
-import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
-import { Button } from '@nextui-org/react';
+import { Checkbox, Button } from '@nextui-org/react';
 
-const Home = () => {
+const Communities = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
+  const [selected, setSelected] = React.useState([]);
 
   const fetchPlayerData = () => {};
 
-  //! Temp data
-  const statsDataArray = [6, 10, 18, 14, 15, 17, 6, 11];
-
   useEffect(() => {
-    console.log('playerName: ', playerName);
-  }, [playerName]);
+    console.log('selected: ', selected);
+  }, [selected]);
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -24,7 +20,7 @@ const Home = () => {
   };
 
   return (
-    <div className="homepage">
+    <div className="communities-page">
       <div className="search-box">
         <div className="title">Search by player name</div>
         <DebounceSelect
@@ -46,11 +42,9 @@ const Home = () => {
           }}
           className="select-input"
         />
-      </div>
 
-      <div className="chart-box">
         {playerName && (
-          <div className="chart-box__body">
+          <div className="information-box">
             <div className="title">
               Current player: <span className="title-content"> {playerName}</span>
               <Button
@@ -64,7 +58,22 @@ const Home = () => {
               </Button>
             </div>
 
-            <RadarChart playerName={playerName} statsDataArray={statsDataArray} />
+            <Checkbox.Group
+              color="secondary"
+              defaultValue={[]}
+              label="Select categories"
+              value={selected}
+              onChange={setSelected}
+            >
+              <Checkbox value="defence">Defence</Checkbox>
+              <Checkbox value="physical">Physical</Checkbox>
+              <Checkbox value="speed">Speed</Checkbox>
+              <Checkbox value="vision">Vision</Checkbox>
+              <Checkbox value="attack">Attack</Checkbox>
+              <Checkbox value="technique">Technique</Checkbox>
+              <Checkbox value="aerial">Aerial</Checkbox>
+              <Checkbox value="mental">Mental</Checkbox>
+            </Checkbox.Group>
           </div>
         )}
       </div>
@@ -72,4 +81,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Communities;
