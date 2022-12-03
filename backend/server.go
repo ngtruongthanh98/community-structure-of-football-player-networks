@@ -1,6 +1,7 @@
 package main
 
 import (
+	"community-structure/controller"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -18,6 +19,8 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.GET("/recommend/:name", controller.GetRecommendedPlayerByName)
+
+	e.Logger.Fatal(e.Start(":9999"))
 
 }
