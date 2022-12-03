@@ -17,12 +17,13 @@ const Home = () => {
   async function fetchPlayerData(playerName) {
     console.log('fetching person', playerName);
     return getPlayerData(playerName).then((res) => {
-      const returnedValue = [
+      const returnedValue = res.data.map(elem => (
         {
-          label: `${res.data.name}`,
-          value: res.data.name,
-        },
-      ];
+          label: `${elem.name}`,
+          value: elem.name
+        }
+      ));
+
       return returnedValue;
     });
   }
