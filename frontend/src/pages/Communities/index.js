@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Checkbox, Button } from '@nextui-org/react';
-import { fetchPlayerData } from '../../utils';
-
+import { getPlayerData } from '../../services/player';
 import SimilarPlayers from './SimilarPlayers';
 
 const Communities = () => {
@@ -23,8 +22,26 @@ const Communities = () => {
     setIsShowSimilarPlayers(false);
   };
 
+  async function fetchUserList(name) {
+    if (name === '') {
+      return [];
+    }
+
+    return getPlayerData(name).then((res) => {
+      const returnedValue = res.data.map((item) => {
+        return {
+          label: `${item.name}`,
+          value: item.name,
+        };
+      });
+      return returnedValue;
+    });
+  }
+
   const handleSubmit = () => {
-    setIsShowSimilarPlayers(true);
+    if (selectedArray.length > 0) {
+      setIsShowSimilarPlayers(true);
+    }
   };
 
   return (
@@ -35,16 +52,16 @@ const Communities = () => {
           mode="multiple"
           value={value}
           placeholder="Find player name"
-          fetchOptions={() => fetchPlayerData(playerName)}
+          fetchOptions={fetchUserList}
           onChange={(newValue) => {
             setValue(newValue);
           }}
           style={{
             width: '300px',
           }}
-          onSelect={(value) => {
-            setValue([value]);
-            setPlayerName(value.label);
+          onSelect={(option) => {
+            setValue(option);
+            setPlayerName(option.value);
           }}
           className="select-input"
         />
@@ -88,6 +105,9 @@ const Communities = () => {
         )}
 
         {isShowSimilarPlayers && <SimilarPlayers className="similar-players" />}
+        {selectedArray.map((item) => (
+          <div>{item}</div>
+        ))}
       </div>
     </div>
   );
