@@ -28,27 +28,27 @@ const DebounceSelect = ({ fetchOptions, debounceTimeout = 800, ...props }) => {
   }, [fetchOptions, debounceTimeout]);
 
   // console.log(options);
-  if (options.length === 0) {
-    // Example condition, its not fully handling
-    options.push(
-      {
-        label: 'Mohamed Salah',
-        value: 'Mohamed Salah',
-      },
-      {
-        label: 'Sadio Mane',
-        value: 'Sadio Mane',
-      },
-      {
-        label: 'Cristiano Ronaldo',
-        value: 'Cristiano Ronaldo',
-      },
-      {
-        label: 'Kylian Mbappe',
-        value: 'Kylian Mbappe',
-      }
-    );
-  }
+  // if (options.length === 0) {
+  // Example condition, its not fully handling
+  // options.push(
+  //   {
+  //     label: 'Mohamed Salah',
+  //     value: 'Mohamed Salah',
+  //   },
+  //   {
+  //     label: 'Sadio Mane',
+  //     value: 'Sadio Mane',
+  //   },
+  //   {
+  //     label: 'Cristiano Ronaldo',
+  //     value: 'Cristiano Ronaldo',
+  //   },
+  //   {
+  //     label: 'Kylian Mbappe',
+  //     value: 'Kylian Mbappe',
+  //   }
+  // );
+  // }
 
   // console.log(options);
 

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './styles.scss';
-
 import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
-import { fetchPlayerData } from '../../utils';
+import { getPlayerData } from '../../services/player';
 
 const Home = () => {
   const [value, setValue] = useState([]);
@@ -18,6 +17,22 @@ const Home = () => {
     setPlayerName('');
   };
 
+  async function fetchUserList(name) {
+    if (name === '') {
+      return [];
+    }
+
+    return getPlayerData(name).then((res) => {
+      const returnedValue = res.data.map((item) => {
+        return {
+          label: `${item.name}`,
+          value: item.name,
+        };
+      });
+      return returnedValue;
+    });
+  }
+
   return (
     <div className="homepage">
       <div className="search-box">
@@ -26,7 +41,7 @@ const Home = () => {
           mode="multiple"
           value={value}
           placeholder="Find player name"
-          fetchOptions={() => fetchPlayerData(playerName)}
+          fetchOptions={fetchUserList}
           onChange={(newValue) => {
             setValue(newValue);
           }}
@@ -34,7 +49,7 @@ const Home = () => {
             width: '300px',
           }}
           onSelect={(option) => {
-            setValue([option]);
+            setValue(option);
             setPlayerName(option.value);
           }}
           className="select-input"
