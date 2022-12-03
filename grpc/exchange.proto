@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message RecommendPlayerRequest {
+    string name = 1;
+}
+
+message RecommendPlayerResponse {
+    message RecommendPLayer {
+        int64 id = 1;
+        string name = 2;
+    }
+    
+    repeated RecommendPLayer players = 1; 
+}
