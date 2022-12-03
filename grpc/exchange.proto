@@ -1,5 +1,9 @@
 syntax = "proto3";
 
+service PlayerInfo {
+    rpc GetRecommendedPlayerByName(RecommendPlayerRequest) returns (RecommendPlayerResponse) {}
+}
+
 message RecommendPlayerRequest {
     string name = 1;
 }
