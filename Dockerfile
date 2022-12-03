@@ -17,4 +17,6 @@ ENV PATH="${PATH}:/usr/local/go/bin"
 WORKDIR /app
 COPY . .
 
+RUN /app/script/build.sh
+
 CMD /app/script/run.sh
