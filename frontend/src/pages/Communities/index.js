@@ -17,6 +17,13 @@ const Communities = () => {
   const handleRemovePlayer = () => {
     setValue([]);
     setPlayerName('');
+    setSelected([]);
+  };
+
+  const handleSubmit = () => {
+    setValue([]);
+    setPlayerName('');
+    setSelected([]);
   };
 
   return (
@@ -71,9 +78,13 @@ const Communities = () => {
               <Checkbox value="vision">Vision</Checkbox>
               <Checkbox value="attack">Attack</Checkbox>
               <Checkbox value="technique">Technique</Checkbox>
-              <Checkbox value="aerial">Aerial</Checkbox>
-              <Checkbox value="mental">Mental</Checkbox>
+              {/* <Checkbox value="aerial">Aerial</Checkbox>
+              <Checkbox value="mental">Mental</Checkbox> */}
             </Checkbox.Group>
+
+            <Button auto color="gradient" rounded className="submit-btn" onClick={handleSubmit}>
+              Submit
+            </Button>
           </div>
         )}
       </div>

@@ -4,10 +4,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 
-  .customized-chart {
-    margin-top: 48px;
-    height: auto;
-    width: auto;
+  .chart-box {
+    width: 900px;
+
+    .customized-chart {
+      margin-top: 48px;
+      height: auto;
+      width: auto;
+    }
   }
 }
