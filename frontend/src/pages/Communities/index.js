@@ -3,10 +3,13 @@ import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Checkbox, Button } from '@nextui-org/react';
 
+import SimilarPlayers from './SimilarPlayers';
+
 const Communities = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
   const [selected, setSelected] = React.useState([]);
+  const [isShowSimilarPlayers, setIsShowSimilarPlayers] = useState(false);
 
   const fetchPlayerData = () => {};
 
@@ -18,12 +21,11 @@ const Communities = () => {
     setValue([]);
     setPlayerName('');
     setSelected([]);
+    setIsShowSimilarPlayers(false);
   };
 
   const handleSubmit = () => {
-    setValue([]);
-    setPlayerName('');
-    setSelected([]);
+    setIsShowSimilarPlayers(true);
   };
 
   return (
@@ -87,6 +89,8 @@ const Communities = () => {
             </Button>
           </div>
         )}
+
+        {isShowSimilarPlayers && <SimilarPlayers className="similar-players" />}
       </div>
     </div>
   );
