@@ -28,11 +28,15 @@ const Home = () => {
   }
 
   useEffect(() => {
-    fetchPlayerData(value.key).then((res) => {
+    if (!playerName) {
+      return;
+    }
+
+    fetchPlayerData(playerName).then((res) => {
       console.log(res.data);
       setValue([res.data]);
     });
-  }, [value]);
+  }, [playerName]);
 
   const handleRemovePlayer = () => {
     setValue([]);
