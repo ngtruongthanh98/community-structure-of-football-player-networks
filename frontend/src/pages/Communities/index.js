@@ -2,25 +2,24 @@ import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Checkbox, Button } from '@nextui-org/react';
+import { fetchPlayerData } from '../../utils';
 
 import SimilarPlayers from './SimilarPlayers';
 
 const Communities = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
-  const [selected, setSelected] = React.useState([]);
+  const [selectedArray, setSelectedArray] = React.useState([]);
   const [isShowSimilarPlayers, setIsShowSimilarPlayers] = useState(false);
 
-  const fetchPlayerData = () => {};
-
   useEffect(() => {
-    console.log('selected: ', selected);
-  }, [selected]);
+    console.log('selectedArray: ', selectedArray);
+  }, [selectedArray]);
 
   const handleRemovePlayer = () => {
     setValue([]);
     setPlayerName('');
-    setSelected([]);
+    setSelectedArray([]);
     setIsShowSimilarPlayers(false);
   };
 
@@ -36,7 +35,7 @@ const Communities = () => {
           mode="multiple"
           value={value}
           placeholder="Find player name"
-          fetchOptions={fetchPlayerData}
+          fetchOptions={() => fetchPlayerData(playerName)}
           onChange={(newValue) => {
             setValue(newValue);
           }}
@@ -45,8 +44,6 @@ const Communities = () => {
           }}
           onSelect={(value) => {
             setValue([value]);
-            console.log('select value', value);
-
             setPlayerName(value.label);
           }}
           className="select-input"
@@ -71,8 +68,8 @@ const Communities = () => {
               color="secondary"
               defaultValue={[]}
               label="Select categories"
-              value={selected}
-              onChange={setSelected}
+              value={selectedArray}
+              onChange={setSelectedArray}
             >
               <Checkbox value="defence">Defence</Checkbox>
               <Checkbox value="physical">Physical</Checkbox>

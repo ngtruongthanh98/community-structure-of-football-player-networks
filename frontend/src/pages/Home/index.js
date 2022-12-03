@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './styles.scss';
 
 import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
-
-import { getPlayerData } from '../../services/player';
+import { fetchPlayerData } from '../../utils';
 
 const Home = () => {
   const [value, setValue] = useState([]);
@@ -13,21 +12,6 @@ const Home = () => {
 
   //! Temp data
   const statsDataArray = [6, 10, 18, 14, 15, 17, 6, 11];
-
-  const fetchPlayerData = () => {
-    if (!playerName) {
-      return;
-    }
-
-    return getPlayerData(playerName).then((res) => {
-      const returnedValue = res.data.map((elem) => ({
-        label: `${elem.name}`,
-        value: elem.name,
-      }));
-
-      return returnedValue;
-    });
-  };
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -42,7 +26,7 @@ const Home = () => {
           mode="multiple"
           value={value}
           placeholder="Find player name"
-          fetchOptions={fetchPlayerData}
+          fetchOptions={() => fetchPlayerData(playerName)}
           onChange={(newValue) => {
             setValue(newValue);
           }}
@@ -51,8 +35,6 @@ const Home = () => {
           }}
           onSelect={(option) => {
             setValue([option]);
-            console.log('select value', option.value);
-
             setPlayerName(option.value);
           }}
           className="select-input"
