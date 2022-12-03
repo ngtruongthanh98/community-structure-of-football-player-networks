@@ -14,30 +14,20 @@ const Home = () => {
   //! Temp data
   const statsDataArray = [6, 10, 18, 14, 15, 17, 6, 11];
 
-  async function fetchPlayerData(playerName) {
-    console.log('fetching person', playerName);
-    return getPlayerData(playerName).then((res) => {
-      const returnedValue = res.data.map(elem => (
-        {
-          label: `${elem.name}`,
-          value: elem.name
-        }
-      ));
-
-      return returnedValue;
-    });
-  }
-
-  useEffect(() => {
+  const fetchPlayerData = () => {
     if (!playerName) {
       return;
     }
 
-    fetchPlayerData(playerName).then((res) => {
-      console.log(res.data);
-      setValue([res.data]);
+    return getPlayerData(playerName).then((res) => {
+      const returnedValue = res.data.map((elem) => ({
+        label: `${elem.name}`,
+        value: elem.name,
+      }));
+
+      return returnedValue;
     });
-  }, [playerName]);
+  };
 
   const handleRemovePlayer = () => {
     setValue([]);
