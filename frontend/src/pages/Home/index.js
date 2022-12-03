@@ -5,18 +5,34 @@ import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
 
+import { getPlayerData } from '../../services/player';
+
 const Home = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
 
-  const fetchPlayerData = () => {};
-
   //! Temp data
   const statsDataArray = [6, 10, 18, 14, 15, 17, 6, 11];
 
+  async function fetchPlayerData(playerName) {
+    console.log('fetching person', playerName);
+    return getPlayerData(playerName).then((res) => {
+      const returnedValue = [
+        {
+          label: `${res.data.name}`,
+          value: res.data.name,
+        },
+      ];
+      return returnedValue;
+    });
+  }
+
   useEffect(() => {
-    console.log('playerName: ', playerName);
-  }, [playerName]);
+    fetchPlayerData(value.key).then((res) => {
+      console.log(res.data);
+      setValue([res.data]);
+    });
+  }, [value]);
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -42,7 +58,7 @@ const Home = () => {
             setValue([value]);
             console.log('select value', value);
 
-            setPlayerName(value.label);
+            setPlayerName(value.name);
           }}
           className="select-input"
         />
