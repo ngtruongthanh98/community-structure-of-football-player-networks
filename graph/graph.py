@@ -23,3 +23,9 @@ class FootballPlayerGraph():
 
 
     
+
+
+if __name__ == "__main__":
+    football_graph = FootballPlayerGraph("parse")
+    
+    pass
