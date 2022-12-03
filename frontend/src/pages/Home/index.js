@@ -28,11 +28,15 @@ const Home = () => {
   }
 
   useEffect(() => {
-    fetchPlayerData(value.key).then((res) => {
+    if (!playerName) {
+      return;
+    }
+
+    fetchPlayerData(playerName).then((res) => {
       console.log(res.data);
       setValue([res.data]);
     });
-  }, [value]);
+  }, [playerName]);
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -54,11 +58,11 @@ const Home = () => {
           style={{
             width: '300px',
           }}
-          onSelect={(value) => {
-            setValue([value]);
-            console.log('select value', value);
+          onSelect={(option) => {
+            setValue([option]);
+            console.log('select value', option.value);
 
-            setPlayerName(value.name);
+            setPlayerName(option.value);
           }}
           className="select-input"
         />
