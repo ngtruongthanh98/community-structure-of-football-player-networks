@@ -4,6 +4,7 @@ import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
 import { getPlayerData } from '../../services/player';
+import { Card, Text } from '@nextui-org/react';
 
 const Home = () => {
   const [value, setValue] = useState([]);
@@ -72,7 +73,30 @@ const Home = () => {
               </Button>
             </div>
 
-            <RadarChart playerName={playerName} statsDataArray={statsDataArray} />
+            <div className="detail-information">
+              <Card
+                isHoverable
+                variant="bordered"
+                className="player-stats-card"
+                css={{ mw: '400px' }}
+              >
+                <Card.Header>
+                  <Text b>Player Statistics</Text>
+                </Card.Header>
+
+                <Card.Divider />
+
+                <Card.Body>
+                  <Text>Position: Forward</Text>
+                  <Text>ID: 353535</Text>
+                  <Text>Age: 24</Text>
+                  <Text>Height: 1,78m</Text>
+                  <Text>Weight: 75kg</Text>
+                </Card.Body>
+              </Card>
+
+              <RadarChart playerName={playerName} statsDataArray={statsDataArray} />
+            </div>
           </div>
         )}
       </div>
