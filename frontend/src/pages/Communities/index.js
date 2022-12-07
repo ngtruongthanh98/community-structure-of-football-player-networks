@@ -1,22 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
-import { Checkbox, Button } from '@nextui-org/react';
+import { Checkbox, Modal, Button, Text, Loading } from '@nextui-org/react';
+import { getPlayerData } from '../../services/player';
+import SimilarPlayers from './SimilarPlayers';
 
 const Communities = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
-  const [selected, setSelected] = React.useState([]);
+  const [selectedArray, setSelectedArray] = useState([]);
+  const [isShowSimilarPlayers, setIsShowSimilarPlayers] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchPlayerData = () => {};
+  const topStats = ['Defence', 'Physical', 'Speed', 'Vision', 'Attack', 'Technique', 'Dribbling'];
 
   useEffect(() => {
-    console.log('selected: ', selected);
-  }, [selected]);
+    console.log('selectedArray: ', selectedArray);
+  }, [selectedArray]);
 
   const handleRemovePlayer = () => {
     setValue([]);
     setPlayerName('');
+    setSelectedArray([]);
+    setIsShowSimilarPlayers(false);
+  };
+
+  async function fetchUserList(name) {
+    if (name === '') {
+      return [];
+    }
+
+    return getPlayerData(name).then((res) => {
+      const returnedValue = res.data.map((item) => {
+        return {
+          label: `${item.name}`,
+          value: item.name,
+        };
+      });
+      return returnedValue;
+    });
+  }
+
+  const handleSubmit = () => {
+    if (selectedArray.length === 0) {
+      setVisible(true);
+      return;
+    }
+
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsShowSimilarPlayers(true);
+
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const closeHandler = () => {
+    setVisible(false);
+    console.log('closed');
   };
 
   return (
@@ -27,18 +70,16 @@ const Communities = () => {
           mode="multiple"
           value={value}
           placeholder="Find player name"
-          fetchOptions={fetchPlayerData}
+          fetchOptions={fetchUserList}
           onChange={(newValue) => {
             setValue(newValue);
           }}
           style={{
             width: '300px',
           }}
-          onSelect={(value) => {
-            setValue([value]);
-            console.log('select value', value);
-
-            setPlayerName(value.label);
+          onSelect={(option) => {
+            setValue(option);
+            setPlayerName(option.value);
           }}
           className="select-input"
         />
@@ -61,21 +102,58 @@ const Communities = () => {
             <Checkbox.Group
               color="secondary"
               defaultValue={[]}
-              label="Select categories"
-              value={selected}
-              onChange={setSelected}
+              label="Select top categories"
+              value={selectedArray}
+              onChange={setSelectedArray}
             >
-              <Checkbox value="defence">Defence</Checkbox>
-              <Checkbox value="physical">Physical</Checkbox>
-              <Checkbox value="speed">Speed</Checkbox>
-              <Checkbox value="vision">Vision</Checkbox>
-              <Checkbox value="attack">Attack</Checkbox>
-              <Checkbox value="technique">Technique</Checkbox>
-              <Checkbox value="aerial">Aerial</Checkbox>
-              <Checkbox value="mental">Mental</Checkbox>
+              {topStats.map((item) => (
+                <Checkbox value={item}>{item}</Checkbox>
+              ))}
             </Checkbox.Group>
+
+            <Button auto color="gradient" rounded className="submit-btn" onClick={handleSubmit}>
+              Submit
+            </Button>
+
+            <Modal
+              closeButton
+              animated={false}
+              aria-labelledby="modal-title"
+              open={visible}
+              onClose={closeHandler}
+            >
+              <Modal.Header>
+                <Text id="modal-title" size={18}>
+                  <Text b size={18}>
+                    Notification
+                  </Text>
+                </Text>
+              </Modal.Header>
+              <Modal.Body>
+                <Text>Please select at least one category</Text>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button auto flat onClick={closeHandler}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         )}
+
+        <div className="detail-information">
+          {isLoading ? (
+            <Loading>Finding similar players</Loading>
+          ) : (
+            isShowSimilarPlayers && (
+              <SimilarPlayers className="similar-players" topStats={topStats} />
+            )
+          )}
+        </div>
+
+        {/* {selectedArray.map((item) => (
+          <div>{item}</div>
+        ))} */}
       </div>
     </div>
   );

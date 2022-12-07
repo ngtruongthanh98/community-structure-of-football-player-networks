@@ -24,7 +24,7 @@ const TableNext = (props) => {
     {
       id: 1,
       name: 'Đoàn Trần Cao Trí',
-      role: 'Leader, BA',
+      role: 'Leader, PM',
       team: '-',
       status: 'active',
       age: '29',

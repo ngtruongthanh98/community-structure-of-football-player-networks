@@ -5,7 +5,9 @@ import ScatterChart from '../../components/Charts/ScatterChart';
 const Overview = () => {
   return (
     <div className="overview-page">
-      <ScatterChart className="customized-chart" />
+      <div className="chart-box">
+        <ScatterChart className="customized-chart" />
+      </div>
     </div>
   );
 };

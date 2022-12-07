@@ -1,7 +1,9 @@
 # community-structure-of-football-player-dataset
+
 Find similar players from a given player's name
 
 ## Run
+
 Running the first time by executing these commands
 
 ```bash
@@ -12,6 +14,7 @@ $ make run
 It will create a container named **csofpn**. You now can access it through **http://localhost:3000/**
 
 ## Test
+
 Testing requires to mount current working directory into the container. So run these commands:
 
 ```bash
@@ -27,4 +30,10 @@ Re-build container requires you to delete the existed container named **csofpn**
 
 ```bash
 $ ./rm.sh
+```
+
+## Check logs
+
+```bash
+$ docker logs -f csofpn
 ```

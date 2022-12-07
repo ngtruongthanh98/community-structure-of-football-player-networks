@@ -8,10 +8,10 @@ const NavigationBarNext = () => {
       name: 'Home',
       route: '/',
     },
-    {
-      name: 'Overview',
-      route: '/overview',
-    },
+    // {
+    //   name: 'Overview',
+    //   route: '/overview',
+    // },
     {
       name: 'Communities',
       route: '/communities',
@@ -54,9 +54,9 @@ const NavigationBarNext = () => {
         <Navbar.Link isActive={isActive('/')} href="/">
           Home
         </Navbar.Link>
-        <Navbar.Link isActive={isActive('/overview')} href="/overview">
+        {/* <Navbar.Link isActive={isActive('/overview')} href="/overview">
           Overview
-        </Navbar.Link>
+        </Navbar.Link> */}
         <Navbar.Link isActive={isActive('/communities')} href="/communities">
           Communities
         </Navbar.Link>
