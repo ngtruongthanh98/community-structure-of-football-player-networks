@@ -145,7 +145,9 @@ const Communities = () => {
           {isLoading ? (
             <Loading>Finding similar players</Loading>
           ) : (
-            isShowSimilarPlayers && <SimilarPlayers className="similar-players" />
+            isShowSimilarPlayers && (
+              <SimilarPlayers className="similar-players" topStats={topStats} />
+            )
           )}
         </div>
 

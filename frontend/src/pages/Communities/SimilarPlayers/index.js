@@ -7,8 +7,8 @@ const SimilarPlayers = (props) => {
     <div className={props.className}>
       <div className="player-box">
         <div className="playerName">Mohamed Salah</div>
-
         <RadarChart />
+        Top Stats: {props.topStats.toString()}
       </div>
     </div>
   );
