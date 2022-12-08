@@ -87,8 +87,8 @@ const Home = () => {
                 <Card.Divider />
 
                 <Card.Body>
-                  <Text>Position: Forward</Text>
                   <Text>ID: 353535</Text>
+                  <Text>Position: Forward</Text>
                   <Text>Age: 24</Text>
                   <Text>Height: 1,78m</Text>
                   <Text>Weight: 75kg</Text>
