@@ -1,0 +1,36 @@
+.player-container {
+  margin-top: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .position-map-image {
+    max-width: 500px;
+  }
+
+  .input-container {
+    display: flex;
+    justify-content: center;
+
+    &__column {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      + .input-container__column {
+        margin-left: 24px;
+      }
+
+      .nextui-input-main-container {
+        margin-bottom: 24px;
+      }
+    }
+  }
+}

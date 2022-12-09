@@ -1,44 +1,19 @@
 .management-page {
-  // display: flex;
-  // justify-content: center;
-  // width: 100%;
-
   margin: 0 24px;
 
-  .add-player-container {
-    margin-top: 24px;
-
+  .change-page-bar {
     display: flex;
-    flex-direction: column;
     align-items: center;
 
-    .title {
-      font-size: 24px;
+    .page-name {
+      font-size: 18px;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-right: 24px;
+      margin: 24px;
     }
 
-    .position-map-image {
-      max-width: 500px;
-    }
-
-    .input-container {
-      display: flex;
-      justify-content: center;
-
-      &__column {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-
-        + .input-container__column {
-          margin-left: 24px;
-        }
-
-        .nextui-input-main-container {
-          margin-bottom: 24px;
-        }
-      }
+    .nextui-switch {
+      background-color: blue;
     }
   }
 }
