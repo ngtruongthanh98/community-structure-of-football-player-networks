@@ -30,7 +30,10 @@ const Home = () => {
       const returnedValue = res.data.map((item) => {
         return {
           label: `${item.name}`,
-          value: item,
+          value: {
+            name: item.name,
+            id: item.id,
+          },
         };
       });
       return returnedValue;
