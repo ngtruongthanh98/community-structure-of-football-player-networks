@@ -3,7 +3,7 @@ import './styles.scss';
 import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
-import { getPlayerData } from '../../services/player';
+import { getPlayer } from '../../services/player';
 import { Card, Text } from '@nextui-org/react';
 
 const Home = () => {
@@ -23,7 +23,7 @@ const Home = () => {
       return [];
     }
 
-    return getPlayerData(name).then((res) => {
+    return getPlayer(name).then((res) => {
       const returnedValue = res.data.map((item) => {
         return {
           label: `${item.name}`,
@@ -87,8 +87,8 @@ const Home = () => {
                 <Card.Divider />
 
                 <Card.Body>
-                  <Text>Position: Forward</Text>
                   <Text>ID: 353535</Text>
+                  <Text>Position: Forward</Text>
                   <Text>Age: 24</Text>
                   <Text>Height: 1,78m</Text>
                   <Text>Weight: 75kg</Text>

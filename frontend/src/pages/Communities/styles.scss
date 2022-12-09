@@ -31,10 +31,13 @@
     .title {
       display: flex;
       align-items: baseline;
+      font-size: 24px;
+      font-weight: 400;
 
       &-content {
         margin-bottom: 24px;
         margin-left: 5px;
+        font-weight: 600;
       }
 
       .remove-btn {
@@ -58,8 +61,6 @@
       &:not(:first-child) {
         margin-top: 0;
       }
-
-      // space between checkbox
     }
 
     .nextui-checkbox-label + .nextui-checkbox-label {
