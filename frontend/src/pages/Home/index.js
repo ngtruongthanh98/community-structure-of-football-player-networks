@@ -12,8 +12,25 @@ const Home = () => {
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
 
-  //! Temp data
-  const statsDataArray = [6, 10, 18, 14, 15, 17, 6, 11];
+  const getLabelArray = (dataArray) => {
+    if (!dataArray) return [];
+    else {
+      const labelArray = dataArray.map((item) => {
+        return item.name;
+      });
+      return labelArray;
+    }
+  };
+
+  const getStatsArray = (dataArray) => {
+    if (!dataArray) return [];
+    else {
+      const statsArray = dataArray.map((item) => {
+        return item.value;
+      });
+      return statsArray;
+    }
+  };
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -100,14 +117,18 @@ const Home = () => {
 
                 <Card.Body>
                   <Text>ID: {playerData.id}</Text>
-                  <Text>Position: {playerData.positions}</Text>
-                  <Text>Age: 24</Text>
-                  <Text>Height: {playerData.height}</Text>
-                  <Text>Weight: {playerData.weight}</Text>
+                  <Text>Position: {playerData.positions && playerData.positions.join(', ')}</Text>
+                  <Text>DoB: {playerData.birth}</Text>
+                  <Text>Height: {playerData.height} (cm)</Text>
+                  <Text>Weight: {playerData.weight} (kg)</Text>
                 </Card.Body>
               </Card>
 
-              <RadarChart playerName={playerName} statsDataArray={statsDataArray} />
+              <RadarChart
+                playerName={playerName}
+                statsLabelArray={getLabelArray(playerData.attributes)}
+                statsDataArray={getStatsArray(playerData.attributes)}
+              />
             </div>
           </div>
         )}
