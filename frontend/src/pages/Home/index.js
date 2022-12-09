@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
-import { getPlayer } from '../../services/player';
+import { getPlayer, getPlayerDetail } from '../../services/player';
 import { Card, Text } from '@nextui-org/react';
 
 const Home = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
+  const [playerId, setPlayerId] = useState('');
+  const [playerData, setPlayerData] = useState({});
 
   //! Temp data
   const statsDataArray = [6, 10, 18, 14, 15, 17, 6, 11];
@@ -16,6 +18,7 @@ const Home = () => {
   const handleRemovePlayer = () => {
     setValue([]);
     setPlayerName('');
+    setPlayerId('');
   };
 
   async function fetchUserList(name) {
@@ -27,12 +30,20 @@ const Home = () => {
       const returnedValue = res.data.map((item) => {
         return {
           label: `${item.name}`,
-          value: item.name,
+          value: item,
         };
       });
       return returnedValue;
     });
   }
+
+  useEffect(() => {
+    if (!playerId) return;
+
+    getPlayerDetail(playerId).then((res) => {
+      setPlayerData(res.data);
+    });
+  }, [playerId]);
 
   return (
     <div className="homepage">
@@ -51,7 +62,8 @@ const Home = () => {
           }}
           onSelect={(option) => {
             setValue(option);
-            setPlayerName(option.value);
+            setPlayerName(option.value.name);
+            setPlayerId(option.value.id);
           }}
           className="select-input"
         />
@@ -87,11 +99,11 @@ const Home = () => {
                 <Card.Divider />
 
                 <Card.Body>
-                  <Text>ID: 353535</Text>
-                  <Text>Position: Forward</Text>
+                  <Text>ID: {playerData.id}</Text>
+                  <Text>Position: {playerData.positions}</Text>
                   <Text>Age: 24</Text>
-                  <Text>Height: 1,78m</Text>
-                  <Text>Weight: 75kg</Text>
+                  <Text>Height: {playerData.height}</Text>
+                  <Text>Weight: {playerData.weight}</Text>
                 </Card.Body>
               </Card>
 
