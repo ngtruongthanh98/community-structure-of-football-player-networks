@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Checkbox, Modal, Button, Text, Loading } from '@nextui-org/react';
-import { getPlayerData } from '../../services/player';
+import { getPlayer } from '../../services/player';
 import SimilarPlayers from './SimilarPlayers';
 
 const Communities = () => {
@@ -31,7 +31,7 @@ const Communities = () => {
       return [];
     }
 
-    return getPlayerData(name).then((res) => {
+    return getPlayer(name).then((res) => {
       const returnedValue = res.data.map((item) => {
         return {
           label: `${item.name}`,
