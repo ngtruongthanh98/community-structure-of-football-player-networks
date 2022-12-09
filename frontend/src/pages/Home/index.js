@@ -5,6 +5,7 @@ import DebounceSelect from '../../components/DebounceSelect';
 import { Button } from '@nextui-org/react';
 import { getPlayer, getPlayerDetail } from '../../services/player';
 import { Card, Text } from '@nextui-org/react';
+import { getLabelArray, getStatsArray } from '../../utils';
 
 const Home = () => {
   const [value, setValue] = useState([]);
@@ -12,25 +13,25 @@ const Home = () => {
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
 
-  const getLabelArray = (dataArray) => {
-    if (!dataArray) return [];
-    else {
-      const labelArray = dataArray.map((item) => {
-        return item.name;
-      });
-      return labelArray;
-    }
-  };
+  // const getLabelArray = (dataArray) => {
+  //   if (!dataArray) return [];
+  //   else {
+  //     const labelArray = dataArray.map((item) => {
+  //       return item.name;
+  //     });
+  //     return labelArray;
+  //   }
+  // };
 
-  const getStatsArray = (dataArray) => {
-    if (!dataArray) return [];
-    else {
-      const statsArray = dataArray.map((item) => {
-        return item.value;
-      });
-      return statsArray;
-    }
-  };
+  // const getStatsArray = (dataArray) => {
+  //   if (!dataArray) return [];
+  //   else {
+  //     const statsArray = dataArray.map((item) => {
+  //       return item.value;
+  //     });
+  //     return statsArray;
+  //   }
+  // };
 
   const handleRemovePlayer = () => {
     setValue([]);

@@ -2,22 +2,38 @@ import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Checkbox, Modal, Button, Text, Loading } from '@nextui-org/react';
-import { getPlayer } from '../../services/player';
+import { getPlayer, getPlayerDetail } from '../../services/player';
 import SimilarPlayers from './SimilarPlayers';
+import { getLabelArray, getStatsArray } from '../../utils';
 
 const Communities = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
+  const [playerId, setPlayerId] = useState('');
+  const [playerData, setPlayerData] = useState({});
+  const [topStats, setTopStats] = useState([]);
+
   const [selectedArray, setSelectedArray] = useState([]);
   const [isShowSimilarPlayers, setIsShowSimilarPlayers] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const topStats = ['Defence', 'Physical', 'Speed', 'Vision', 'Attack', 'Technique', 'Dribbling'];
-
   useEffect(() => {
     console.log('selectedArray: ', selectedArray);
   }, [selectedArray]);
+
+  useEffect(() => {
+    if (!playerId) return;
+
+    getPlayerDetail(playerId).then((res) => {
+      setPlayerData(res.data);
+    });
+  }, [playerId]);
+
+  useEffect(() => {
+    if (!playerData) return;
+    setTopStats(getLabelArray(playerData.attributes));
+  }, [playerData]);
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -34,8 +50,8 @@ const Communities = () => {
     return getPlayer(name).then((res) => {
       const returnedValue = res.data.map((item) => {
         return {
-          label: `${item.name}`,
-          value: item.name,
+          label: item.name,
+          value: item.id,
         };
       });
       return returnedValue;
@@ -79,7 +95,8 @@ const Communities = () => {
           }}
           onSelect={(option) => {
             setValue(option);
-            setPlayerName(option.value);
+            setPlayerName(option.label);
+            setPlayerId(option.value);
           }}
           className="select-input"
         />
@@ -150,10 +167,6 @@ const Communities = () => {
             )
           )}
         </div>
-
-        {/* {selectedArray.map((item) => (
-          <div>{item}</div>
-        ))} */}
       </div>
     </div>
   );
