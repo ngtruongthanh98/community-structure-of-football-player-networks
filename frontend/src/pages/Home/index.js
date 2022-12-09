@@ -29,11 +29,8 @@ const Home = () => {
     return getPlayer(name).then((res) => {
       const returnedValue = res.data.map((item) => {
         return {
-          label: `${item.name}`,
-          value: {
-            name: item.name,
-            id: item.id,
-          },
+          label: item.name,
+          value: item.id,
         };
       });
       return returnedValue;
@@ -65,8 +62,8 @@ const Home = () => {
           }}
           onSelect={(option) => {
             setValue(option);
-            setPlayerName(option.value.name);
-            setPlayerId(option.value.id);
+            setPlayerName(option.label);
+            setPlayerId(option.value);
           }}
           className="select-input"
         />
