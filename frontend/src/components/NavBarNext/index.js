@@ -17,6 +17,10 @@ const NavigationBarNext = () => {
       route: '/communities',
     },
     {
+      name: 'Management',
+      route: '/management',
+    },
+    {
       name: 'About us',
       route: '/about',
     },
@@ -59,6 +63,9 @@ const NavigationBarNext = () => {
         </Navbar.Link> */}
         <Navbar.Link isActive={isActive('/communities')} href="/communities">
           Communities
+        </Navbar.Link>
+        <Navbar.Link isActive={isActive('/management')} href="/management">
+          Management
         </Navbar.Link>
         <Navbar.Link isActive={isActive('/about')} href="/about">
           About us

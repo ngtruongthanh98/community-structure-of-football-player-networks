@@ -31,10 +31,13 @@
     .title {
       display: flex;
       align-items: baseline;
+      font-size: 24px;
+      font-weight: 400;
 
       &-content {
         margin-bottom: 24px;
         margin-left: 5px;
+        font-weight: 600;
       }
 
       .remove-btn {
@@ -44,6 +47,24 @@
 
     .submit-btn {
       margin-top: 24px;
+    }
+  }
+
+  .detail-information {
+    margin-top: 24px;
+  }
+
+  .nextui-checkbox-group-items {
+    flex-direction: row;
+
+    .nextui-checkbox-label {
+      &:not(:first-child) {
+        margin-top: 0;
+      }
+    }
+
+    .nextui-checkbox-label + .nextui-checkbox-label {
+      margin-left: 10px;
     }
   }
 }
