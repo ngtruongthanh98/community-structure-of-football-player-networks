@@ -1,4 +1,5 @@
 from concurrent import futures
+import graph
 
 import logging
 import grpc
@@ -10,7 +11,9 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
     def __init__(self):
         pass
 
-
+    def GetBestAttributesByPlayerID(self, request, context):
+        res = exchange_pb2.AttributeResponse()
+        return exchange_pb2.AttributeResponse(attributes=[])
 
 
 def serve():
@@ -24,4 +27,5 @@ def serve():
 
 if __name__ == '__main__':
     logging.basicConfig()
+    graph.InitData()
     serve()

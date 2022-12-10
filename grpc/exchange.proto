@@ -4,6 +4,7 @@ option go_package = "./grpc";
 
 service PlayerInfo {
     rpc GetRecommendedPlayerByName(RecommendPlayerRequest) returns (RecommendPlayerResponse) {}
+    rpc GetBestAttributesByPlayerID(AttributeRequest) returns (AttributeResponse) {}
 }
 
 message RecommendPlayerRequest {
@@ -17,4 +18,17 @@ message RecommendPlayerResponse {
     }
     
     repeated RecommendPLayer players = 1; 
+}
+
+message AttributeRequest {
+    string id = 1;
+}
+
+message AttributeResponse {
+    message Attribute {
+        int64 index = 1;
+        string name = 2;
+    }
+
+    repeated Attribute attributes = 1;
 }
