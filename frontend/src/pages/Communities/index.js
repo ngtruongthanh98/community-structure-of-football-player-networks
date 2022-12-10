@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './styles.scss';
 import { Text, Switch } from '@nextui-org/react';
 import FindSimilarPlayersPage from './FindSimilarPlayersPage';
+import BuildAttributesGraphPage from './BuildAttributesGraphPage';
 
 const Communities = () => {
   const [isFindSimilarPlayers, setIsFindSimilarPlayers] = useState(false);
@@ -18,7 +19,7 @@ const Communities = () => {
         <Text className="page-name">Find similar players</Text>
       </div>
 
-      {isFindSimilarPlayers && <FindSimilarPlayersPage />}
+      {isFindSimilarPlayers ? <FindSimilarPlayersPage /> : <BuildAttributesGraphPage />}
     </div>
   );
 };
