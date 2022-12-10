@@ -6,21 +6,21 @@ import AddNewPlayer from './AddNewPlayer';
 import DeletePlayer from './DeletePlayer';
 
 const Management = () => {
-  const [isAddPlayerPage, setIsAddPlayerPage] = useState(true);
+  const [isDeletePlayerPage, setIsDeletePlayerPage] = useState(false);
 
   const onToggle = () => {
-    setIsAddPlayerPage(!isAddPlayerPage);
+    setIsDeletePlayerPage(!isDeletePlayerPage);
   };
 
   return (
     <div className="management-page">
       <div className="change-page-bar">
-        <Text className="page-name">Delete player</Text>
-        <Switch checked={isAddPlayerPage} onChange={onToggle} />
         <Text className="page-name">Add player</Text>
+        <Switch checked={isDeletePlayerPage} onChange={onToggle} />
+        <Text className="page-name">Delete player</Text>
       </div>
 
-      {isAddPlayerPage ? <AddNewPlayer /> : <DeletePlayer />}
+      {isDeletePlayerPage ? <DeletePlayer /> : <AddNewPlayer />}
     </div>
   );
 };
