@@ -11,16 +11,13 @@ const Communities = () => {
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
-  const [topStats, setTopStats] = useState([]);
+  const [attributes, setAttributes] = useState([]);
 
+  const [topStats, setTopStats] = useState([]);
   const [selectedArray, setSelectedArray] = useState([]);
   const [isShowSimilarPlayers, setIsShowSimilarPlayers] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    console.log('selectedArray: ', selectedArray);
-  }, [selectedArray]);
 
   useEffect(() => {
     if (!playerId) return;
@@ -33,6 +30,7 @@ const Communities = () => {
   useEffect(() => {
     if (!playerData) return;
     setTopStats(getLabelArray(playerData.attributes));
+    setAttributes(playerData.attributes);
   }, [playerData]);
 
   const handleRemovePlayer = () => {
@@ -59,7 +57,7 @@ const Communities = () => {
   }
 
   const handleSubmit = () => {
-    if (selectedArray.length === 0) {
+    if (selectedArray.length < 3) {
       setVisible(true);
       return;
     }
@@ -123,9 +121,8 @@ const Communities = () => {
               value={selectedArray}
               onChange={setSelectedArray}
             >
-              {topStats.map((item) => (
-                <Checkbox value={item}>{item}</Checkbox>
-              ))}
+              {attributes &&
+                attributes.map((item) => <Checkbox value={item}>{item.name}</Checkbox>)}
             </Checkbox.Group>
 
             <Button auto color="gradient" rounded className="submit-btn" onClick={handleSubmit}>
@@ -147,7 +144,7 @@ const Communities = () => {
                 </Text>
               </Modal.Header>
               <Modal.Body>
-                <Text>Please select at least one category</Text>
+                <Text>Please select at least 3 categories</Text>
               </Modal.Body>
               <Modal.Footer>
                 <Button auto flat onClick={closeHandler}>
@@ -163,7 +160,13 @@ const Communities = () => {
             <Loading>Finding similar players</Loading>
           ) : (
             isShowSimilarPlayers && (
-              <SimilarPlayers className="similar-players" topStats={topStats} />
+              <SimilarPlayers
+                className="similar-players"
+                playerName={playerName}
+                topStats={topStats}
+                statsLabelArray={getLabelArray(selectedArray)}
+                statsDataArray={getStatsArray(selectedArray)}
+              />
             )
           )}
         </div>
