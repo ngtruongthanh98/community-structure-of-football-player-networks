@@ -14,3 +14,10 @@ export const getAttribute = (attribute) => {
   const url = `http://localhost:9999/graph/${attribute}`;
   return axios.get(url);
 };
+
+// ###############################
+
+export const getPlayerInCommunity = (playerId, algorithm) => {
+  const url = `http://localhost:9999/graph/${playerId}/${algorithm}`;
+  return axios.get(url);
+};
