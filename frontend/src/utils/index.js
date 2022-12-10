@@ -7,3 +7,23 @@ export const PrettyPrintJson = ({ data }) => (
     <pre>{JSON.stringify(data, null, 2)}</pre>
   </div>
 );
+
+export const getLabelArray = (dataArray) => {
+  if (!dataArray) return [];
+  else {
+    const labelArray = dataArray.map((item) => {
+      return item.name;
+    });
+    return labelArray;
+  }
+};
+
+export const getStatsArray = (dataArray) => {
+  if (!dataArray) return [];
+  else {
+    const statsArray = dataArray.map((item) => {
+      return item.value;
+    });
+    return statsArray;
+  }
+};

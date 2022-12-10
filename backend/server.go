@@ -20,6 +20,7 @@ func main() {
 	})
 
 	e.GET("/recommend/:name", controller.GetRecommendedPlayerByName)
+	e.GET("/player/:id", controller.GetPlayerByID)
 
 	e.Logger.Fatal(e.Start(":9999"))
 

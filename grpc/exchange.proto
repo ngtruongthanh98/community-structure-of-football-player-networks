@@ -1,5 +1,11 @@
 syntax = "proto3";
 
+option go_package = "./grpc";
+
+service PlayerInfo {
+    rpc GetRecommendedPlayerByName(RecommendPlayerRequest) returns (RecommendPlayerResponse) {}
+}
+
 message RecommendPlayerRequest {
     string name = 1;
 }

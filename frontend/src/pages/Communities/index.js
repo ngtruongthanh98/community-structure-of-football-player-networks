@@ -2,22 +2,36 @@ import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../components/DebounceSelect';
 import { Checkbox, Modal, Button, Text, Loading } from '@nextui-org/react';
-import { getPlayer } from '../../services/player';
+import { getPlayer, getPlayerDetail } from '../../services/player';
 import SimilarPlayers from './SimilarPlayers';
+import { getLabelArray, getStatsArray } from '../../utils';
 
 const Communities = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
+  const [playerId, setPlayerId] = useState('');
+  const [playerData, setPlayerData] = useState({});
+  const [attributes, setAttributes] = useState([]);
+
+  const [topStats, setTopStats] = useState([]);
   const [selectedArray, setSelectedArray] = useState([]);
   const [isShowSimilarPlayers, setIsShowSimilarPlayers] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const topStats = ['Defence', 'Physical', 'Speed', 'Vision', 'Attack', 'Technique', 'Dribbling'];
+  useEffect(() => {
+    if (!playerId) return;
+
+    getPlayerDetail(playerId).then((res) => {
+      setPlayerData(res.data);
+    });
+  }, [playerId]);
 
   useEffect(() => {
-    console.log('selectedArray: ', selectedArray);
-  }, [selectedArray]);
+    if (!playerData) return;
+    setTopStats(getLabelArray(playerData.attributes));
+    setAttributes(playerData.attributes);
+  }, [playerData]);
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -34,8 +48,8 @@ const Communities = () => {
     return getPlayer(name).then((res) => {
       const returnedValue = res.data.map((item) => {
         return {
-          label: `${item.name}`,
-          value: item.name,
+          label: item.name,
+          value: item.id,
         };
       });
       return returnedValue;
@@ -43,7 +57,7 @@ const Communities = () => {
   }
 
   const handleSubmit = () => {
-    if (selectedArray.length === 0) {
+    if (selectedArray.length < 3) {
       setVisible(true);
       return;
     }
@@ -79,7 +93,8 @@ const Communities = () => {
           }}
           onSelect={(option) => {
             setValue(option);
-            setPlayerName(option.value);
+            setPlayerName(option.label);
+            setPlayerId(option.value);
           }}
           className="select-input"
         />
@@ -106,9 +121,8 @@ const Communities = () => {
               value={selectedArray}
               onChange={setSelectedArray}
             >
-              {topStats.map((item) => (
-                <Checkbox value={item}>{item}</Checkbox>
-              ))}
+              {attributes &&
+                attributes.map((item) => <Checkbox value={item}>{item.name}</Checkbox>)}
             </Checkbox.Group>
 
             <Button auto color="gradient" rounded className="submit-btn" onClick={handleSubmit}>
@@ -130,7 +144,7 @@ const Communities = () => {
                 </Text>
               </Modal.Header>
               <Modal.Body>
-                <Text>Please select at least one category</Text>
+                <Text>Please select at least 3 categories</Text>
               </Modal.Body>
               <Modal.Footer>
                 <Button auto flat onClick={closeHandler}>
@@ -146,14 +160,16 @@ const Communities = () => {
             <Loading>Finding similar players</Loading>
           ) : (
             isShowSimilarPlayers && (
-              <SimilarPlayers className="similar-players" topStats={topStats} />
+              <SimilarPlayers
+                className="similar-players"
+                playerName={playerName}
+                topStats={topStats}
+                statsLabelArray={getLabelArray(selectedArray)}
+                statsDataArray={getStatsArray(selectedArray)}
+              />
             )
           )}
         </div>
-
-        {/* {selectedArray.map((item) => (
-          <div>{item}</div>
-        ))} */}
       </div>
     </div>
   );
