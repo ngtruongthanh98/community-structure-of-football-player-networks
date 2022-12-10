@@ -1,6 +1,7 @@
 package model
 
 import (
+	ex "community-structure/grpc"
 	"encoding/csv"
 	"log"
 	"os"
@@ -129,6 +130,8 @@ func GetPlayerByID(id string) Player {
 			break
 		}
 	}
+
+	ex.ExchangeGraphClientInstance().GetBestAttributesByPlayerID(id)
 
 	return res
 }

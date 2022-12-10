@@ -1,6 +1,8 @@
 package grpc
 
 import (
+	context "context"
+	"log"
 	"sync"
 	"time"
 
@@ -9,18 +11,32 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
-type ExchangeClient struct {
-	*grpcpool.Pool
-}
+const (
+	ExchangeClientTimeout = 20
+)
 
 var (
 	ExchangeGraphClient *ExchangeClient
 	ExchangeGraphSync   sync.Once
 )
 
+type ExchangeClient struct {
+	*grpcpool.Pool
+}
+
+type AttributeModel struct {
+	Index int64
+	Name  string
+}
+
+type AttributeResponseModel struct {
+	Attributes []AttributeModel
+}
+
 func ExchangeGraphClientInstance() *ExchangeClient {
 	ExchangeGraphSync.Do(func() {
-
+		ExchangeGraphClient = &ExchangeClient{}
+		ExchangeGraphClient.init()
 	})
 
 	return ExchangeGraphClient
@@ -45,4 +61,42 @@ func (e *ExchangeClient) init() {
 	if err != nil {
 		glog.Errorf("Failed to create record service grpc pool: %v", err)
 	}
+}
+
+func (e *ExchangeClient) GetBestAttributesByPlayerID(id string) (*AttributeResponseModel, error) {
+	conn, err := e.Pool.Get(context.Background())
+	if err != nil {
+		glog.Errorf("GetBestAttributesByPlayerID connection from pool err: %s", err.Error())
+		return nil, err
+	}
+	defer func() {
+		conn.Close()
+		if r := recover(); r != nil {
+			log.Fatal("Recovered in f", r)
+		}
+	}()
+
+	client := NewPlayerInfoClient(conn.ClientConn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(ExchangeClientTimeout)*time.Second)
+	defer cancel()
+
+	var result *AttributeResponseModel = &AttributeResponseModel{}
+	res, err := client.GetBestAttributesByPlayerID(ctx, &AttributeRequest{
+		Id: id,
+	})
+
+	if err != nil {
+		glog.Errorf("GetBestAttributesByPlayerID ExchangeClient: %s", err.Error())
+		return nil, err
+	}
+
+	for _, r := range res.Attributes {
+		result.Attributes = append(result.Attributes, AttributeModel{
+			Index: r.Index,
+			Name:  r.Name,
+		})
+	}
+
+	return result, err
+
 }

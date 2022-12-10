@@ -114,6 +114,100 @@ func (x *RecommendPlayerResponse) GetPlayers() []*RecommendPlayerResponse_Recomm
 	return nil
 }
 
+type AttributeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *AttributeRequest) Reset() {
+	*x = AttributeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_exchange_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AttributeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AttributeRequest) ProtoMessage() {}
+
+func (x *AttributeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_exchange_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AttributeRequest.ProtoReflect.Descriptor instead.
+func (*AttributeRequest) Descriptor() ([]byte, []int) {
+	return file_exchange_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AttributeRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type AttributeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Attributes []*AttributeResponse_Attribute `protobuf:"bytes,1,rep,name=attributes,proto3" json:"attributes,omitempty"`
+}
+
+func (x *AttributeResponse) Reset() {
+	*x = AttributeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_exchange_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AttributeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AttributeResponse) ProtoMessage() {}
+
+func (x *AttributeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_exchange_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AttributeResponse.ProtoReflect.Descriptor instead.
+func (*AttributeResponse) Descriptor() ([]byte, []int) {
+	return file_exchange_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AttributeResponse) GetAttributes() []*AttributeResponse_Attribute {
+	if x != nil {
+		return x.Attributes
+	}
+	return nil
+}
+
 type RecommendPlayerResponse_RecommendPLayer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -126,7 +220,7 @@ type RecommendPlayerResponse_RecommendPLayer struct {
 func (x *RecommendPlayerResponse_RecommendPLayer) Reset() {
 	*x = RecommendPlayerResponse_RecommendPLayer{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_exchange_proto_msgTypes[2]
+		mi := &file_exchange_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -139,7 +233,7 @@ func (x *RecommendPlayerResponse_RecommendPLayer) String() string {
 func (*RecommendPlayerResponse_RecommendPLayer) ProtoMessage() {}
 
 func (x *RecommendPlayerResponse_RecommendPLayer) ProtoReflect() protoreflect.Message {
-	mi := &file_exchange_proto_msgTypes[2]
+	mi := &file_exchange_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,6 +263,61 @@ func (x *RecommendPlayerResponse_RecommendPLayer) GetName() string {
 	return ""
 }
 
+type AttributeResponse_Attribute struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Index int64  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *AttributeResponse_Attribute) Reset() {
+	*x = AttributeResponse_Attribute{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_exchange_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AttributeResponse_Attribute) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AttributeResponse_Attribute) ProtoMessage() {}
+
+func (x *AttributeResponse_Attribute) ProtoReflect() protoreflect.Message {
+	mi := &file_exchange_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AttributeResponse_Attribute.ProtoReflect.Descriptor instead.
+func (*AttributeResponse_Attribute) Descriptor() ([]byte, []int) {
+	return file_exchange_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *AttributeResponse_Attribute) GetIndex() int64 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *AttributeResponse_Attribute) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_exchange_proto protoreflect.FileDescriptor
 
 var file_exchange_proto_rawDesc = []byte{
@@ -185,14 +334,29 @@ var file_exchange_proto_rawDesc = []byte{
 	0x0a, 0x0f, 0x52, 0x65, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x64, 0x50, 0x4c, 0x61, 0x79, 0x65,
 	0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69,
 	0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x32, 0x5f, 0x0a, 0x0a, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x49,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x22, 0x0a, 0x10, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75,
+	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x88, 0x01, 0x0a, 0x11, 0x41, 0x74,
+	0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x3c, 0x0a, 0x0a, 0x61, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74,
+	0x65, 0x52, 0x0a, 0x61, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x1a, 0x35, 0x0a,
+	0x09, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e,
+	0x64, 0x65, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78,
+	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x32, 0xa7, 0x01, 0x0a, 0x0a, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x49,
 	0x6e, 0x66, 0x6f, 0x12, 0x51, 0x0a, 0x1a, 0x47, 0x65, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x6d, 0x6d,
 	0x65, 0x6e, 0x64, 0x65, 0x64, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x42, 0x79, 0x4e, 0x61, 0x6d,
 	0x65, 0x12, 0x17, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x64, 0x50, 0x6c, 0x61,
 	0x79, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x52, 0x65, 0x63,
 	0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x64, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08, 0x5a, 0x06, 0x2e, 0x2f, 0x67, 0x72, 0x70, 0x63,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x1b, 0x47, 0x65, 0x74, 0x42, 0x65, 0x73,
+	0x74, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x42, 0x79, 0x50, 0x6c, 0x61,
+	0x79, 0x65, 0x72, 0x49, 0x44, 0x12, 0x11, 0x2e, 0x41, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x41, 0x74, 0x74, 0x72, 0x69,
+	0x62, 0x75, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08,
+	0x5a, 0x06, 0x2e, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -207,21 +371,27 @@ func file_exchange_proto_rawDescGZIP() []byte {
 	return file_exchange_proto_rawDescData
 }
 
-var file_exchange_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_exchange_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_exchange_proto_goTypes = []interface{}{
 	(*RecommendPlayerRequest)(nil),                  // 0: RecommendPlayerRequest
 	(*RecommendPlayerResponse)(nil),                 // 1: RecommendPlayerResponse
-	(*RecommendPlayerResponse_RecommendPLayer)(nil), // 2: RecommendPlayerResponse.RecommendPLayer
+	(*AttributeRequest)(nil),                        // 2: AttributeRequest
+	(*AttributeResponse)(nil),                       // 3: AttributeResponse
+	(*RecommendPlayerResponse_RecommendPLayer)(nil), // 4: RecommendPlayerResponse.RecommendPLayer
+	(*AttributeResponse_Attribute)(nil),             // 5: AttributeResponse.Attribute
 }
 var file_exchange_proto_depIdxs = []int32{
-	2, // 0: RecommendPlayerResponse.players:type_name -> RecommendPlayerResponse.RecommendPLayer
-	0, // 1: PlayerInfo.GetRecommendedPlayerByName:input_type -> RecommendPlayerRequest
-	1, // 2: PlayerInfo.GetRecommendedPlayerByName:output_type -> RecommendPlayerResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: RecommendPlayerResponse.players:type_name -> RecommendPlayerResponse.RecommendPLayer
+	5, // 1: AttributeResponse.attributes:type_name -> AttributeResponse.Attribute
+	0, // 2: PlayerInfo.GetRecommendedPlayerByName:input_type -> RecommendPlayerRequest
+	2, // 3: PlayerInfo.GetBestAttributesByPlayerID:input_type -> AttributeRequest
+	1, // 4: PlayerInfo.GetRecommendedPlayerByName:output_type -> RecommendPlayerResponse
+	3, // 5: PlayerInfo.GetBestAttributesByPlayerID:output_type -> AttributeResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_exchange_proto_init() }
@@ -255,7 +425,43 @@ func file_exchange_proto_init() {
 			}
 		}
 		file_exchange_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AttributeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_exchange_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AttributeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_exchange_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RecommendPlayerResponse_RecommendPLayer); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_exchange_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AttributeResponse_Attribute); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -273,7 +479,7 @@ func file_exchange_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_exchange_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
