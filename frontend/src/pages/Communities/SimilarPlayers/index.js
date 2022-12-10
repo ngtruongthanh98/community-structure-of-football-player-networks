@@ -9,6 +9,7 @@ const SimilarPlayers = (props) => {
         {/* <div className="playerName">Mohamed Salah</div> */}
         {props.statsLabelArray.length > 2 && (
           <RadarChart
+            className="customized-radar-chart"
             playerName={props.playerName}
             statsLabelArray={props.statsLabelArray}
             statsDataArray={props.statsDataArray}
