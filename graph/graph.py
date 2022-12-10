@@ -84,7 +84,7 @@ def get_relevant_attr(corr, threshold=0.7):
             if relevant == str(idx):
                 continue
         
-        relevant_attr_dict[frozenset([idx, relevant])] = row[relevant]
+            relevant_attr_dict[frozenset([idx, relevant])] = row[relevant]
 
     return relevant_attr_dict
   
@@ -184,6 +184,7 @@ def InitData():
 
     dataset_3 = dataset_2[dataset_2.PositionsDesc != 'C'].reset_index(drop=True)
     dataset_3.to_csv('../dataset3.csv')
+    print(dataset_3.head(1))
 
 
 

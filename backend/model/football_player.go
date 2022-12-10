@@ -31,11 +31,16 @@ type Player struct {
 
 var (
 	playerName    []RecommendedPlayer
-	attributeName []string
+	attributeName map[string]int64
+
+	mapConversionIndex2ID map[int64]string
+	mapConversionID2Index map[string]int64
 )
 
 func init() {
-	filePath := "../dataset.csv"
+	mapConversionID2Index = make(map[string]int64, 0)
+	mapConversionIndex2ID = make(map[int64]string, 0)
+	filePath := "../dataset3.csv"
 	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal("Unable to read input file "+filePath, err)
@@ -43,7 +48,7 @@ func init() {
 	defer f.Close()
 
 	playerName = make([]RecommendedPlayer, 0)
-	attributeName = make([]string, 0)
+	attributeName = make(map[string]int64)
 
 	csvReader := csv.NewReader(f)
 	records, err := csvReader.ReadAll()
@@ -53,15 +58,18 @@ func init() {
 
 	log.Print(len(records[0]))
 
-	for _, ele := range records[0] {
-		attributeName = append(attributeName, ele)
+	for idx, ele := range records[0] {
+		// attributeName = append(attributeName, ele)
+		attributeName[ele] = int64(idx)
 	}
 
-	for index, element := range records {
-		if index == 0 {
-			continue
-		}
+	records = records[1:]
+	log.Print(records[0])
 
+	for index, element := range records {
+		// log.Println(index)
+		mapConversionID2Index[element[0]] = int64(index)
+		mapConversionIndex2ID[int64(index)] = element[0]
 		i, _ := strconv.ParseInt(element[0], 10, 64)
 		playerName = append(playerName, RecommendedPlayer{
 			Id:   i,
@@ -90,7 +98,7 @@ func GetRecommendedPlayerByName(subName string) []RecommendedPlayer {
 
 func GetPlayerByID(id string) Player {
 	var res Player
-	filePath := "../dataset.csv"
+	filePath := "../dataset3.csv"
 	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal("Unable to read input file "+filePath, err)
@@ -104,34 +112,38 @@ func GetPlayerByID(id string) Player {
 	if err != nil {
 		log.Fatal("Unable to parse file as CSV for "+filePath, err)
 	}
+	records = records[1:]
 
-	for index, ele := range playerName {
+	for _, ele := range playerName {
 		if ele.Id == _id {
-			playerInfo := records[index]
+			playerInfo := records[ele.Id]
 			res.Id = playerInfo[0]
-			res.Name = playerInfo[1]
-			res.Birth = playerInfo[3]
-			res.Height, _ = strconv.ParseInt(playerInfo[9], 10, 64)
-			res.Weight, _ = strconv.ParseInt(playerInfo[10], 10, 64)
-			res.Positions = strings.FieldsFunc(playerInfo[73], func(r rune) bool {
+			res.Name = playerInfo[2]
+			res.Birth = playerInfo[4]
+			res.Height, _ = strconv.ParseInt(playerInfo[6], 10, 64)
+			res.Weight, _ = strconv.ParseInt(playerInfo[7], 10, 64)
+			res.Positions = strings.FieldsFunc(playerInfo[len(playerInfo)-1], func(r rune) bool {
 				return r == '/' || r == ' '
 			})
 
-			var att []Attribute = make([]Attribute, 0)
-			for i := 13; i < 20; i++ {
+			att, err := ex.ExchangeGraphClientInstance().GetBestAttributesByPlayerID(id)
+			if err != nil {
+				log.Fatal(err)
+				return res
+			}
+			var at []Attribute = make([]Attribute, 0)
+			for _, attri := range att.Attributes {
 
-				val, _ := strconv.ParseInt(playerInfo[i], 10, 64)
-				att = append(att, Attribute{
-					Name:  attributeName[i],
+				val, _ := strconv.ParseInt(playerInfo[attributeName[attri.Name]], 10, 64)
+				at = append(at, Attribute{
+					Name:  attri.Name,
 					Value: val,
 				})
 			}
-			res.Attributes = att
+			res.Attributes = at
 			break
 		}
 	}
-
-	ex.ExchangeGraphClientInstance().GetBestAttributesByPlayerID(id)
 
 	return res
 }
