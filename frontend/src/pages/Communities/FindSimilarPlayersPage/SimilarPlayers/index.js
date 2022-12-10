@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.scss';
-import RadarChart from '../../../components/Charts/RadarChart';
+import RadarChart from '../../../../components/Charts/RadarChart';
 
 const SimilarPlayers = (props) => {
   return (

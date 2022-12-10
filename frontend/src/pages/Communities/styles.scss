@@ -67,4 +67,20 @@
       margin-left: 10px;
     }
   }
+
+  .change-page-bar {
+    display: flex;
+    align-items: center;
+
+    .page-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-right: 24px;
+      margin: 24px;
+    }
+
+    .nextui-switch {
+      background-color: blue;
+    }
+  }
 }
