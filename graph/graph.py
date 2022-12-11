@@ -184,7 +184,7 @@ def InitData():
 
     dataset_3 = dataset_2[dataset_2.PositionsDesc != 'C'].reset_index(drop=True)
     dataset_3.to_csv('../dataset3.csv')
-    print(dataset_3.head(1))
+    print(dataset_3.iloc[1:3, 4:10].to_numpy())
 
 
 
@@ -193,3 +193,8 @@ def InitData():
 #     football_graph = FootballPlayerGraph("parse")
     
 #     pass
+
+# def generate_player_data(file_name):
+
+
+# def BuildGraph():
