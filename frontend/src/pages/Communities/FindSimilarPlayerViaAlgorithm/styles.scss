@@ -12,36 +12,13 @@
     margin-bottom: 16px;
   }
 
-  .main-container {
+  .input-container {
     display: flex;
-    justify-content: center;
-    width: 100%;
+    flex-direction: column;
 
-    margin-top: 24px;
-
-    &__left {
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      .text-label {
-        margin-bottom: 5px;
-        color: var(--nextui-colors-accents8);
-      }
-    }
-
-    &__right {
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      .nextui-radio-group-label {
-        text-align: center;
-      }
+    .text-label {
+      margin-bottom: 5px;
+      color: var(--nextui-colors-accents8);
     }
   }
 
