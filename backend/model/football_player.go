@@ -124,7 +124,7 @@ func GetPlayerByID(id string) Player {
 			res.Height, _ = strconv.ParseInt(playerInfo[6], 10, 64)
 			res.Weight, _ = strconv.ParseInt(playerInfo[7], 10, 64)
 			res.Positions = strings.FieldsFunc(playerInfo[len(playerInfo)-1], func(r rune) bool {
-				return r == '/' || r == ' '
+				return r == '/' || r == ' ' || r == ','
 			})
 
 			att, err := ex.ExchangeGraphClientInstance().GetBestAttributesByPlayerID(id)
