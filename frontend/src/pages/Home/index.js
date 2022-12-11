@@ -9,7 +9,7 @@ import { getLabelArray, getStatsArray } from '../../utils';
 import Skeleton from 'react-loading-skeleton';
 import { isEmpty } from 'lodash';
 
-const attributeTitle = ['Name', 'ID', 'Position', 'DoB', 'Height', 'Weight'];
+const attributeTitle = ['Name', 'ID', 'Positions', 'Birth', 'Height', 'Weight'];
 
 const Home = () => {
   const [value, setValue] = useState([]);
@@ -95,7 +95,7 @@ const Home = () => {
                 isHoverable
                 variant="bordered"
                 className="player-stats-card"
-                css={{ mw: '400px' }}
+                css={{ mw: '500px' }}
               >
                 <Card.Header>
                   <Text b>Player Statistics</Text>
@@ -107,16 +107,16 @@ const Home = () => {
                     <Grid.Container gap={2}>
                       {attributeTitle.map((item, index) => (
                         <Grid xs={12} key={index}>
-                          <div className="flex-box">
-                            <span>
-                              <Text b>{item}:</Text>
-                            </span>{' '}
+                          <Grid xs={6}>
+                            <Text b>{item}:</Text>
+                          </Grid>
+                          <Grid xs={6}>
                             <Skeleton
                               height={20}
-                              width={150}
+                              width={100}
                               className="player-statistic-skeleton"
                             />
-                          </div>
+                          </Grid>
                         </Grid>
                       ))}
                     </Grid.Container>
@@ -126,12 +126,28 @@ const Home = () => {
                     <Grid.Container gap={2}>
                       {attributeTitle.map((item, index) => (
                         <Grid xs={12} key={index}>
-                          <div className="flex-box">
-                            <span>
-                              <Text b>{item}:</Text>
-                            </span>{' '}
-                            <Text>{playerData[item]}</Text>
-                          </div>
+                          <Grid xs={6}>
+                            <Text b>{item}:</Text>
+                          </Grid>
+                          <Grid xs={6}>
+                            {item === 'Positions' ? (
+                              <Text>{playerData.positions && playerData.positions.join(', ')}</Text>
+                            ) : (
+                              <Text>
+                                {item === 'Name'
+                                  ? playerData.name
+                                  : item === 'ID'
+                                  ? playerData.id
+                                  : item === 'Birth'
+                                  ? playerData.birth
+                                  : item === 'Height'
+                                  ? playerData.height + ' (cm)'
+                                  : item === 'Weight'
+                                  ? playerData.weight + ' (kg)'
+                                  : ''}
+                              </Text>
+                            )}
+                          </Grid>
                         </Grid>
                       ))}
                     </Grid.Container>
