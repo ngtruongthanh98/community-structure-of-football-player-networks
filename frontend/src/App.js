@@ -7,6 +7,7 @@ import ManagementPage from './pages/Management';
 // import Navbar from './components/Navbar';
 import NavbarNext from './components/NavBarNext';
 import { Routes, Route } from 'react-router-dom';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function App() {
   return (

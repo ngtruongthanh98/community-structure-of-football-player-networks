@@ -68,4 +68,13 @@
       }
     }
   }
+
+  .flex-box {
+    display: flex;
+
+    .player-statistic-skeleton {
+      margin-right: 24px;
+      margin-left: 24px;
+    }
+  }
 }
