@@ -3,7 +3,7 @@ import './styles.scss';
 import DebounceSelect from '../../../components/DebounceSelect';
 import { getPlayer } from '../../../services/player';
 import { getPlayerInCommunity } from '../../../services/graph';
-import { Radio, Table, Text, Button, Modal } from '@nextui-org/react';
+import { Grid, Radio, Table, Text, Button, Modal } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 
 const FindSimilarPlayerViaAlgorithm = () => {
@@ -87,30 +87,32 @@ const FindSimilarPlayerViaAlgorithm = () => {
     <div className="similar-players-page">
       <div className="title">Find similar players</div>
 
-      <div className="main-container">
-        <div className="main-container__left">
-          <Text className="text-label">Enter player name</Text>
-          <DebounceSelect
-            mode="multiple"
-            value={value}
-            placeholder="Enter a player name"
-            fetchOptions={fetchUserList}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
-            style={{
-              width: '300px',
-            }}
-            className="select-input"
-            onSelect={(option) => {
-              setValue(option);
-              setPlayerName(option.label);
-              setPlayerId(option.value);
-            }}
-          />
-        </div>
+      <Grid.Container gap={2} justify="center">
+        <Grid xs={12} md={6} justify="center">
+          <div className="input-container">
+            <Text className="text-label">Enter player name</Text>
+            <DebounceSelect
+              mode="multiple"
+              value={value}
+              placeholder="Enter a player name"
+              fetchOptions={fetchUserList}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
+              style={{
+                width: '300px',
+              }}
+              className="select-input"
+              onSelect={(option) => {
+                setValue(option);
+                setPlayerName(option.label);
+                setPlayerId(option.value);
+              }}
+            />
+          </div>
+        </Grid>
 
-        <div className="main-container__right">
+        <Grid xs={12} md={6} justify="center">
           <Radio.Group
             label="Choose an algorithm"
             defaultValue="KMeans"
@@ -122,8 +124,8 @@ const FindSimilarPlayerViaAlgorithm = () => {
             <Radio value="Louvain">Louvain</Radio>
             <Radio value="Hierachical">Hierachical</Radio>
           </Radio.Group>
-        </div>
-      </div>
+        </Grid>
+      </Grid.Container>
 
       <Button shadow color="primary" auto onPress={onHandleClick} className="submit-btn">
         Find similar players
