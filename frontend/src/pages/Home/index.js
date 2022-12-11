@@ -7,7 +7,7 @@ import { getPlayer, getPlayerDetail } from '../../services/player';
 import { Card, Text, Grid } from '@nextui-org/react';
 import { getLabelArray, getStatsArray } from '../../utils';
 import Skeleton from 'react-loading-skeleton';
-import { isEmpty } from 'lodash';
+import { isEmpty, _ } from 'lodash';
 
 const attributeTitle = ['Name', 'ID', 'Positions', 'Birth', 'Height', 'Weight'];
 
@@ -131,7 +131,7 @@ const Home = () => {
                           </Grid>
                           <Grid xs={6}>
                             {item === 'Positions' ? (
-                              <Text>{playerData.positions && playerData.positions.join(', ')}</Text>
+                              <Text>{_.join(playerData.positions, ', ')}</Text>
                             ) : (
                               <Text>
                                 {item === 'Name'
