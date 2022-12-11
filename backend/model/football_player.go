@@ -73,7 +73,7 @@ func init() {
 		i, _ := strconv.ParseInt(element[0], 10, 64)
 		playerName = append(playerName, RecommendedPlayer{
 			Id:   i,
-			Name: element[1],
+			Name: element[2],
 		})
 
 		if index >= 1000 {
@@ -87,6 +87,7 @@ func GetRecommendedPlayerByName(subName string) []RecommendedPlayer {
 	res = make([]RecommendedPlayer, 0)
 
 	log.Print("GetRecommendedPlayerByName Subname: " + subName)
+	log.Print(playerName)
 	for _, ele := range playerName {
 		if strings.Contains(ele.Name, subName) {
 			res = append(res, ele)
