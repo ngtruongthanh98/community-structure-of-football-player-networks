@@ -184,8 +184,7 @@ def InitData():
 
     dataset_3 = dataset_2[dataset_2.PositionsDesc != 'C'].reset_index(drop=True)
     dataset_3.to_csv('../dataset3.csv')
-    print(dataset_3.head(1))
-
+    
 
 
 
@@ -193,3 +192,27 @@ def InitData():
 #     football_graph = FootballPlayerGraph("parse")
     
 #     pass
+
+def generate_player_data(file_name):
+    dataset = pd.read_csv(file_name)
+    node_array = dataset.iloc[0:1000, 7:69].to_numpy()
+    f_sparse = open('../player_edge_sparse.txt', 'w')
+    f_dense = open('../player_edge_dense.txt', 'w')
+    
+    for (index_source, player_data) in enumerate(node_array):
+        diff = node_array - player_data    
+        diff_square = diff **2
+        score_array = np.sum(diff_square, axis=1)
+        for (index_dest, edge) in enumerate(score_array):
+            if edge == 0:
+                continue
+            if edge < 700:
+                f_sparse.write("{} {} {}\n".format(index_source, index_dest, edge))
+            f_dense.write("{} {} {}\n".format(index_source, index_dest, edge))
+
+    f_sparse.close()
+    f_dense.close()
+    print("Done generate player data")
+
+def BuildGraph():
+    generate_player_data('../dataset3.csv')

@@ -18,3 +18,10 @@ func GetPlayerByID(c echo.Context) error {
 	res := model.GetPlayerByID(id)
 	return c.JSON(http.StatusOK, res)
 }
+
+func GetSimilarPlayerList(c echo.Context) error {
+	playerID := c.Param("playerId")
+	algoName := c.Param("algoName")
+	res := model.GetSimilarPlayerList(playerID, algoName)
+	return c.JSON(http.StatusOK, res)
+}
