@@ -26,6 +26,24 @@
     margin-top: 24px;
   }
 
+  .player-name-box {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+
+    .clear-btn {
+      margin-left: 16px;
+    }
+  }
+
+  .image-box {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .similar-players-table {
     width: 100%;
     margin-top: 24px;

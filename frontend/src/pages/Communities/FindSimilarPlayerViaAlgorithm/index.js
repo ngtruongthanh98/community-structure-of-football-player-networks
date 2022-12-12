@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../../components/DebounceSelect';
 import { getPlayer } from '../../../services/player';
@@ -11,6 +11,8 @@ const FindSimilarPlayerViaAlgorithm = () => {
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
+  // const [playerName, setPlayerName] = useState('Ronaldo'); //! test
+  // const [playerId, setPlayerId] = useState('777'); // ! test
   // const [playerData, setPlayerData] = useState({
   //   name: 'Cristiano Ronaldo',
   //   similarPlayers: [
@@ -60,7 +62,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
     });
   }
 
-  const onHandleClick = async () => {
+  const onGetPlayerData = async () => {
     if (!playerName) {
       setErrorMessage('Please enter player name');
       setVisible(true);
@@ -78,6 +80,23 @@ const FindSimilarPlayerViaAlgorithm = () => {
       console.log('error', error);
     }
   };
+
+  const handleClearPlayerData = () => {
+    setValue([]);
+    setPlayerName('');
+    setPlayerId('');
+    setPlayerData({});
+  };
+
+  useEffect(() => {
+    console.log('change algorithm: ', algorithm);
+
+    if (!playerName) {
+      return;
+    }
+
+    onGetPlayerData();
+  }, [algorithm]);
 
   const onCloseModal = () => {
     setVisible(false);
@@ -127,9 +146,22 @@ const FindSimilarPlayerViaAlgorithm = () => {
         </Grid>
       </Grid.Container>
 
-      <Button shadow color="primary" auto onPress={onHandleClick} className="submit-btn">
+      <Button shadow color="primary" auto onPress={onGetPlayerData} className="submit-btn">
         Find similar players
       </Button>
+
+      {!isEmpty(playerData) && (
+        <div className="player-name-box">
+          <Text>
+            <Text b>Player: </Text>
+            {playerData.name}
+          </Text>
+
+          <Button shadow color="error" auto onPress={handleClearPlayerData} className="clear-btn">
+            Clear result
+          </Button>
+        </div>
+      )}
 
       {!isEmpty(playerData) && (
         <Table
@@ -142,11 +174,21 @@ const FindSimilarPlayerViaAlgorithm = () => {
           className="similar-players-table"
         >
           <Table.Header>
-            <Table.Column key="name">Name</Table.Column>
-            <Table.Column key="id">Id</Table.Column>
-            <Table.Column key="height">Height</Table.Column>
-            <Table.Column key="weight">Weight</Table.Column>
-            <Table.Column key="similarity">Similarity</Table.Column>
+            <Table.Column key="name" allowsSorting>
+              Name
+            </Table.Column>
+            <Table.Column key="id" allowsSorting>
+              Id
+            </Table.Column>
+            <Table.Column key="height" allowsSorting>
+              Height
+            </Table.Column>
+            <Table.Column key="weight" allowsSorting>
+              Weight
+            </Table.Column>
+            <Table.Column key="similarity" allowsSorting>
+              Similarity
+            </Table.Column>
           </Table.Header>
           <Table.Body>
             {playerData.similarPlayers.map((item) => {
@@ -165,7 +207,18 @@ const FindSimilarPlayerViaAlgorithm = () => {
       )}
 
       {!isEmpty(playerData) && (
-        <img src={playerData.graphUrl} alt="graph" className="graph-image" />
+        <div className="image-box">
+          <Text>
+            Struture Community Graph - <Text b>{algorithm}</Text>
+          </Text>
+          <img
+            src={playerData.graphUrl}
+            alt="graph"
+            className="graph-image"
+            width="500px"
+            height="300px"
+          />
+        </div>
       )}
 
       <Modal
