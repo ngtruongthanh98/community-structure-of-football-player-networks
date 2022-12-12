@@ -24,6 +24,11 @@ class PlayerInfoStub(object):
                 request_serializer=exchange__pb2.AttributeRequest.SerializeToString,
                 response_deserializer=exchange__pb2.AttributeResponse.FromString,
                 )
+        self.GetSimilarPlayerList = channel.unary_unary(
+                '/PlayerInfo/GetSimilarPlayerList',
+                request_serializer=exchange__pb2.GraphByPlayerAndAlgoRequest.SerializeToString,
+                response_deserializer=exchange__pb2.GraphByPlayerAndAlgoResponse.FromString,
+                )
 
 
 class PlayerInfoServicer(object):
@@ -41,6 +46,12 @@ class PlayerInfoServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetSimilarPlayerList(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PlayerInfoServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -53,6 +64,11 @@ def add_PlayerInfoServicer_to_server(servicer, server):
                     servicer.GetBestAttributesByPlayerID,
                     request_deserializer=exchange__pb2.AttributeRequest.FromString,
                     response_serializer=exchange__pb2.AttributeResponse.SerializeToString,
+            ),
+            'GetSimilarPlayerList': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSimilarPlayerList,
+                    request_deserializer=exchange__pb2.GraphByPlayerAndAlgoRequest.FromString,
+                    response_serializer=exchange__pb2.GraphByPlayerAndAlgoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -95,5 +111,22 @@ class PlayerInfo(object):
         return grpc.experimental.unary_unary(request, target, '/PlayerInfo/GetBestAttributesByPlayerID',
             exchange__pb2.AttributeRequest.SerializeToString,
             exchange__pb2.AttributeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetSimilarPlayerList(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/PlayerInfo/GetSimilarPlayerList',
+            exchange__pb2.GraphByPlayerAndAlgoRequest.SerializeToString,
+            exchange__pb2.GraphByPlayerAndAlgoResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

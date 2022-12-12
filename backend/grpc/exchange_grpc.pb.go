@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PlayerInfoClient interface {
 	GetRecommendedPlayerByName(ctx context.Context, in *RecommendPlayerRequest, opts ...grpc.CallOption) (*RecommendPlayerResponse, error)
 	GetBestAttributesByPlayerID(ctx context.Context, in *AttributeRequest, opts ...grpc.CallOption) (*AttributeResponse, error)
+	GetSimilarPlayerList(ctx context.Context, in *GraphByPlayerAndAlgoRequest, opts ...grpc.CallOption) (*GraphByPlayerAndAlgoResponse, error)
 }
 
 type playerInfoClient struct {
@@ -52,12 +53,22 @@ func (c *playerInfoClient) GetBestAttributesByPlayerID(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *playerInfoClient) GetSimilarPlayerList(ctx context.Context, in *GraphByPlayerAndAlgoRequest, opts ...grpc.CallOption) (*GraphByPlayerAndAlgoResponse, error) {
+	out := new(GraphByPlayerAndAlgoResponse)
+	err := c.cc.Invoke(ctx, "/PlayerInfo/GetSimilarPlayerList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlayerInfoServer is the server API for PlayerInfo service.
 // All implementations must embed UnimplementedPlayerInfoServer
 // for forward compatibility
 type PlayerInfoServer interface {
 	GetRecommendedPlayerByName(context.Context, *RecommendPlayerRequest) (*RecommendPlayerResponse, error)
 	GetBestAttributesByPlayerID(context.Context, *AttributeRequest) (*AttributeResponse, error)
+	GetSimilarPlayerList(context.Context, *GraphByPlayerAndAlgoRequest) (*GraphByPlayerAndAlgoResponse, error)
 	mustEmbedUnimplementedPlayerInfoServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedPlayerInfoServer) GetRecommendedPlayerByName(context.Context,
 }
 func (UnimplementedPlayerInfoServer) GetBestAttributesByPlayerID(context.Context, *AttributeRequest) (*AttributeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBestAttributesByPlayerID not implemented")
+}
+func (UnimplementedPlayerInfoServer) GetSimilarPlayerList(context.Context, *GraphByPlayerAndAlgoRequest) (*GraphByPlayerAndAlgoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSimilarPlayerList not implemented")
 }
 func (UnimplementedPlayerInfoServer) mustEmbedUnimplementedPlayerInfoServer() {}
 
@@ -120,6 +134,24 @@ func _PlayerInfo_GetBestAttributesByPlayerID_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlayerInfo_GetSimilarPlayerList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GraphByPlayerAndAlgoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlayerInfoServer).GetSimilarPlayerList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/PlayerInfo/GetSimilarPlayerList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlayerInfoServer).GetSimilarPlayerList(ctx, req.(*GraphByPlayerAndAlgoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlayerInfo_ServiceDesc is the grpc.ServiceDesc for PlayerInfo service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var PlayerInfo_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBestAttributesByPlayerID",
 			Handler:    _PlayerInfo_GetBestAttributesByPlayerID_Handler,
+		},
+		{
+			MethodName: "GetSimilarPlayerList",
+			Handler:    _PlayerInfo_GetSimilarPlayerList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
