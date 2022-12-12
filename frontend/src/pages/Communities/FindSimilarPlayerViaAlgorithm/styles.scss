@@ -36,6 +36,14 @@
     }
   }
 
+  .similar-players-box {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .image-box {
     margin-top: 24px;
     display: flex;

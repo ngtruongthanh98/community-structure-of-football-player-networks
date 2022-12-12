@@ -164,47 +164,52 @@ const FindSimilarPlayerViaAlgorithm = () => {
       )}
 
       {!isEmpty(playerData) && (
-        <Table
-          aria-label="Example static collection table"
-          css={{
-            height: 'auto',
-            minWidth: '500px',
-          }}
-          selectionMode="single"
-          className="similar-players-table"
-        >
-          <Table.Header>
-            <Table.Column key="name" allowsSorting>
-              Name
-            </Table.Column>
-            <Table.Column key="id" allowsSorting>
-              Id
-            </Table.Column>
-            <Table.Column key="height" allowsSorting>
-              Height
-            </Table.Column>
-            <Table.Column key="weight" allowsSorting>
-              Weight
-            </Table.Column>
-            <Table.Column key="similarity" allowsSorting>
-              Similarity
-            </Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {playerData.similarPlayer &&
-              playerData.similarPlayer.map((item) => {
-                return (
-                  <Table.Row key={item.id}>
-                    <Table.Cell>{item.name}</Table.Cell>
-                    <Table.Cell>{item.id}</Table.Cell>
-                    <Table.Cell>{item.height}</Table.Cell>
-                    <Table.Cell>{item.weight}</Table.Cell>
-                    <Table.Cell>{item.similarity}</Table.Cell>
-                  </Table.Row>
-                );
-              })}
-          </Table.Body>
-        </Table>
+        <div className="similar-players-box">
+          <Text>
+            <Text b>Similar players: </Text>
+          </Text>
+          <Table
+            aria-label="Example static collection table"
+            css={{
+              height: 'auto',
+              minWidth: '500px',
+            }}
+            selectionMode="single"
+            className="similar-players-table"
+          >
+            <Table.Header>
+              <Table.Column key="name" allowsSorting>
+                Name
+              </Table.Column>
+              <Table.Column key="id" allowsSorting>
+                Id
+              </Table.Column>
+              <Table.Column key="height" allowsSorting>
+                Height
+              </Table.Column>
+              <Table.Column key="weight" allowsSorting>
+                Weight
+              </Table.Column>
+              <Table.Column key="similarity" allowsSorting>
+                Similarity
+              </Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {playerData.similarPlayer &&
+                playerData.similarPlayer.map((item) => {
+                  return (
+                    <Table.Row key={item.id}>
+                      <Table.Cell>{item.name}</Table.Cell>
+                      <Table.Cell>{item.id}</Table.Cell>
+                      <Table.Cell>{item.height}</Table.Cell>
+                      <Table.Cell>{item.weight}</Table.Cell>
+                      <Table.Cell>{item.similarity}</Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+            </Table.Body>
+          </Table>
+        </div>
       )}
 
       {!isEmpty(playerData) && (
@@ -214,7 +219,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
           </Text>
           <img
             // src={playerData.graphURL}
-            src={require(playerData.graphURL || '../../../assets/graph.png')}
+            src={require('../../../assets/graph.png')}
             alt="graph"
             className="graph-image"
             width="500px"
