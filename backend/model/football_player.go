@@ -160,7 +160,7 @@ func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 	var res SimilarPlayerByID
 
 	res = SimilarPlayerByID{
-		Name: "Phan Gia Anh",
+		Name: "Group Planar",
 		SimilarPlayer: []Player{
 			{
 				Name:       "Doan Tran Cao Tri",
@@ -190,9 +190,51 @@ func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 				Weight:     70,
 				Similarity: 0.87,
 			},
+			{
+				Name:       "Phan Gia Anh",
+				Id:         "PGA",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.87,
+			},
+			{
+				Name:       "Doan Tran Cao Tri",
+				Id:         "DTCT",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.9,
+			},
+			{
+				Name:       "Nguyen Duc Phu",
+				Id:         "NDP",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.89,
+			},
+			{
+				Name:       "Vu Phuong Thao",
+				Id:         "VPT",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.88,
+			},
+			{
+				Name:       "Nguyen Truong Thanh",
+				Id:         "NTT",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.87,
+			},
+			{
+				Name:       "Phan Gia Anh",
+				Id:         "PGA",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.87,
+			},
 		},
 
-		GraphURL: "/app/graph.png",
+		GraphURL: "../../../assets/graph.png",
 	}
 	return res
 }

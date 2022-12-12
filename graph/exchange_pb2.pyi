@@ -24,6 +24,29 @@ class AttributeResponse(_message.Message):
     attributes: _containers.RepeatedCompositeFieldContainer[AttributeResponse.Attribute]
     def __init__(self, attributes: _Optional[_Iterable[_Union[AttributeResponse.Attribute, _Mapping]]] = ...) -> None: ...
 
+class GraphByPlayerAndAlgoRequest(_message.Message):
+    __slots__ = ["algorithm", "id"]
+    ALGORITHM_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    algorithm: str
+    id: str
+    def __init__(self, id: _Optional[str] = ..., algorithm: _Optional[str] = ...) -> None: ...
+
+class GraphByPlayerAndAlgoResponse(_message.Message):
+    __slots__ = ["similars", "url"]
+    class SimilarPlayer(_message.Message):
+        __slots__ = ["index", "similar"]
+        INDEX_FIELD_NUMBER: _ClassVar[int]
+        SIMILAR_FIELD_NUMBER: _ClassVar[int]
+        index: str
+        similar: float
+        def __init__(self, index: _Optional[str] = ..., similar: _Optional[float] = ...) -> None: ...
+    SIMILARS_FIELD_NUMBER: _ClassVar[int]
+    URL_FIELD_NUMBER: _ClassVar[int]
+    similars: _containers.RepeatedCompositeFieldContainer[GraphByPlayerAndAlgoResponse.SimilarPlayer]
+    url: str
+    def __init__(self, similars: _Optional[_Iterable[_Union[GraphByPlayerAndAlgoResponse.SimilarPlayer, _Mapping]]] = ..., url: _Optional[str] = ...) -> None: ...
+
 class RecommendPlayerRequest(_message.Message):
     __slots__ = ["name"]
     NAME_FIELD_NUMBER: _ClassVar[int]

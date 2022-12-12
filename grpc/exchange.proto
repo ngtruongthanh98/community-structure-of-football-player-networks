@@ -5,6 +5,7 @@ option go_package = "./grpc";
 service PlayerInfo {
     rpc GetRecommendedPlayerByName(RecommendPlayerRequest) returns (RecommendPlayerResponse) {}
     rpc GetBestAttributesByPlayerID(AttributeRequest) returns (AttributeResponse) {}
+    rpc GetSimilarPlayerList(GraphByPlayerAndAlgoRequest) returns (GraphByPlayerAndAlgoResponse) {}
 }
 
 message RecommendPlayerRequest {
@@ -31,4 +32,20 @@ message AttributeResponse {
     }
 
     repeated Attribute attributes = 1;
+}
+
+
+message GraphByPlayerAndAlgoRequest {
+    string id = 1;
+    string algorithm = 2;
+}
+
+message GraphByPlayerAndAlgoResponse {
+    message SimilarPlayer {
+        string index = 1;
+        float similar = 2;
+    }
+
+    repeated SimilarPlayer similars = 1;
+    string url = 2;
 }
