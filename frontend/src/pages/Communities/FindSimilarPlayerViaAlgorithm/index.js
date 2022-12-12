@@ -213,7 +213,8 @@ const FindSimilarPlayerViaAlgorithm = () => {
             Struture Community Graph - <Text b>{algorithm}</Text>
           </Text>
           <img
-            src={playerData.graphURL}
+            // src={playerData.graphURL}
+            src={require(playerData.graphURL || '../../../assets/graph.png')}
             alt="graph"
             className="graph-image"
             width="500px"
