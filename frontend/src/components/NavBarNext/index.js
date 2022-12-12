@@ -35,7 +35,7 @@ const NavigationBarNext = () => {
   };
 
   return (
-    <Navbar isBordered variant="sticky">
+    <Navbar isBordered variant="fixed">
       <Navbar.Toggle showIn="xs" />
       <Navbar.Brand
         css={{

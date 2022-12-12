@@ -222,8 +222,6 @@ const FindSimilarPlayerViaAlgorithm = () => {
             src={require('../../../assets/graph.png')}
             alt="graph"
             className="graph-image"
-            width="500px"
-            height="300px"
           />
         </div>
       )}
