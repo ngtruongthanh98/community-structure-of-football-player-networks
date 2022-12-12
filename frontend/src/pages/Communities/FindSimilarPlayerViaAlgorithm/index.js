@@ -15,7 +15,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
   // const [playerId, setPlayerId] = useState('777'); // ! test
   // const [playerData, setPlayerData] = useState({
   //   name: 'Cristiano Ronaldo',
-  //   similarPlayers: [
+  //   similarPlayer: [
   //     {
   //       name: 'Lionel Messi',
   //       id: 1,
@@ -191,17 +191,18 @@ const FindSimilarPlayerViaAlgorithm = () => {
             </Table.Column>
           </Table.Header>
           <Table.Body>
-            {playerData.similarPlayers.map((item) => {
-              return (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.id}</Table.Cell>
-                  <Table.Cell>{item.height}</Table.Cell>
-                  <Table.Cell>{item.weight}</Table.Cell>
-                  <Table.Cell>{item.similarity}</Table.Cell>
-                </Table.Row>
-              );
-            })}
+            {playerData.similarPlayer &&
+              playerData.similarPlayer.map((item) => {
+                return (
+                  <Table.Row key={item.id}>
+                    <Table.Cell>{item.name}</Table.Cell>
+                    <Table.Cell>{item.id}</Table.Cell>
+                    <Table.Cell>{item.height}</Table.Cell>
+                    <Table.Cell>{item.weight}</Table.Cell>
+                    <Table.Cell>{item.similarity}</Table.Cell>
+                  </Table.Row>
+                );
+              })}
           </Table.Body>
         </Table>
       )}
@@ -212,7 +213,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
             Struture Community Graph - <Text b>{algorithm}</Text>
           </Text>
           <img
-            src={playerData.graphUrl}
+            src={playerData.graphURL}
             alt="graph"
             className="graph-image"
             width="500px"
