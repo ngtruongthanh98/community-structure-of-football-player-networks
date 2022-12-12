@@ -27,6 +27,13 @@ type Player struct {
 	Birth      string      `json:"birth"`
 	Positions  []string    `json:"positions"`
 	Attributes []Attribute `json:"attributes"`
+	Similarity float64     `json:"similarity"`
+}
+
+type SimilarPlayerByID struct {
+	Name          string   `json:"name"`
+	SimilarPlayer []Player `json:"similarPlayer"`
+	GraphURL      string   `json:"graphURL"`
 }
 
 var (
@@ -146,5 +153,46 @@ func GetPlayerByID(id string) Player {
 		}
 	}
 
+	return res
+}
+
+func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
+	var res SimilarPlayerByID
+
+	res = SimilarPlayerByID{
+		Name: "Phan Gia Anh",
+		SimilarPlayer: []Player{
+			{
+				Name:       "Doan Tran Cao Tri",
+				Id:         "DTCT",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.9,
+			},
+			{
+				Name:       "Nguyen Duc Phu",
+				Id:         "NDP",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.89,
+			},
+			{
+				Name:       "Vu Phuong Thao",
+				Id:         "VPT",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.88,
+			},
+			{
+				Name:       "Nguyen Truong Thanh",
+				Id:         "NTT",
+				Height:     180,
+				Weight:     70,
+				Similarity: 0.87,
+			},
+		},
+
+		GraphURL: "/app/graph.png",
+	}
 	return res
 }
