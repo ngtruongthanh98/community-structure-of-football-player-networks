@@ -8,56 +8,28 @@ import { isEmpty } from 'lodash';
 import { connect } from 'react-redux';
 import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
 
-const algorithmList = ['KMeans', 'Louvain', 'Hierachical'];
+// const algorithmList = ['KMeans', 'Louvain', 'Hierarchical'];
 
 const FindSimilarPlayerViaAlgorithm = (props) => {
   const calledAlgorithms = useRef([]);
+  const playerIdRef = useRef(undefined);
 
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
-  // const [playerName, setPlayerName] = useState('Ronaldo'); //! test
-  // const [playerId, setPlayerId] = useState('777'); // ! test
-  // const [playerData, setPlayerData] = useState({
-  //   name: 'Cristiano Ronaldo',
-  //   similarPlayer: [
-  //     {
-  //       name: 'Lionel Messi',
-  //       id: 1,
-  //       similarity: 0.9,
-  //       height: 170,
-  //       weight: 70,
-  //     },
-  //     {
-  //       name: 'Neymar',
-  //       id: 2,
-  //       similarity: 0.8,
-  //       height: 175,
-  //       weight: 75,
-  //     },
-  //     {
-  //       name: 'Kylian Mbappe',
-  //       id: 3,
-  //       similarity: 0.7,
-  //       height: 180,
-  //       weight: 80,
-  //     },
-  //   ],
-  //   graphUrl: 'https://i.imgur.com/1Q9ZQ9r.png',
-  // });
 
   const [algorithm, setAlgorithm] = useState('KMeans');
 
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const tableObject = {
+  const tableObject = useRef({
     playerId: undefined,
-    kmeams: {},
-    louvain: {},
-    hierarchical: {},
-  };
+    KMeans: {},
+    Louvain: {},
+    Hierarchical: {},
+  });
 
   const doSetPlayerId = (playerId) => {
     props.dispatch(setPlayerIdAction(playerId));
@@ -86,9 +58,14 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       return;
     }
 
-    console.log('playerName', playerName);
-    console.log('playerId', playerId);
-    console.log('algorithm', algorithm);
+    if (playerIdRef.current !== playerId) {
+      tableObject.current = {
+        playerId: playerId,
+        KMeans: {},
+        Louvain: {},
+        Hierarchical: {},
+      };
+    }
 
     try {
       const response = await getPlayerInCommunity(playerId, algorithm);
@@ -98,7 +75,12 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       if (!calledAlgorithms.current.includes(algorithm)) {
         calledAlgorithms.current.push(algorithm);
 
-        tableObject[algorithm.toLocaleLowerCase()] = {};
+        // set tableObject
+        tableObject.current.playerId = playerId;
+        tableObject.current[algorithm] = response.data;
+
+        // set redux
+        props.dispatch(setDataObjectAction(tableObject.current));
       }
     } catch (error) {
       console.log('error', error);
@@ -110,6 +92,8 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     setPlayerName('');
     setPlayerId('');
     setPlayerData({});
+    calledAlgorithms.current = [];
+    playerIdRef.current = undefined;
   };
 
   const onCloseModal = () => {
@@ -118,8 +102,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
   useEffect(() => {
     console.log('props.initalState: ', props.initalState);
-
-    console.log('calledAlgorithms.current: ', calledAlgorithms.current);
   });
 
   return (
@@ -145,18 +127,11 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               onSelect={(option) => {
                 setValue(option);
                 setPlayerName(option.label);
+
                 setPlayerId(option.value);
+                playerId.current = option.value;
+
                 doSetPlayerId(option.value);
-
-                // set graph data to default when change player
-                const dataObject = {
-                  playerId: option.value,
-                  kmeams: {},
-                  louvain: {},
-                  hierarchical: {},
-                };
-
-                props.dispatch(setDataObjectAction(dataObject));
               }}
             />
           </div>
@@ -172,7 +147,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
           >
             <Radio value="KMeans">K-Means</Radio>
             <Radio value="Louvain">Louvain</Radio>
-            <Radio value="Hierachical">Hierachical</Radio>
+            <Radio value="Hierarchical">Hierarchical</Radio>
           </Radio.Group>
         </Grid>
       </Grid.Container>
@@ -248,7 +223,63 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
           <Text>
             Struture Community Graph - <Text b>{algorithm}</Text>
           </Text>
-          <img src={playerData.graphURL} alt="graph" className="graph-image" />
+          <img
+            src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
+            alt="graph"
+            className="graph-image"
+          />
+        </div>
+      )}
+
+      {!isEmpty(playerData) && (
+        <div className="graph-comparision">
+          <Text b>Graph Comparision</Text>
+
+          <Table
+            css={{
+              height: 'auto',
+              minWidth: '500px',
+            }}
+          >
+            <Table.Header>
+              <Table.Column>
+                <Text b>Algorithm</Text>
+              </Table.Column>
+              <Table.Column>
+                <Text b>Find Community</Text>
+              </Table.Column>
+              <Table.Column>
+                <Text b>Find Similar Players</Text>
+              </Table.Column>
+            </Table.Header>
+
+            <Table.Body>
+              {!isEmpty(props.initalState.dataObject.Louvain?.executionProc) && (
+                <Table.Row>
+                  <Table.Cell>Louvain</Table.Cell>
+                  {props.initalState?.dataObject?.Louvain?.executionProc?.map((item) => {
+                    return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                  })}
+                </Table.Row>
+              )}
+              {!isEmpty(props.initalState.dataObject.KMeans?.executionProc) && (
+                <Table.Row>
+                  <Table.Cell>KMeans</Table.Cell>
+                  {props.initalState?.dataObject?.KMeans?.executionProc?.map((item) => {
+                    return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                  })}
+                </Table.Row>
+              )}
+              {!isEmpty(props.initalState.dataObject.Hierarchical?.executionProc) && (
+                <Table.Row>
+                  <Table.Cell>Hierarchical</Table.Cell>
+                  {props.initalState?.dataObject?.Hierarchical?.executionProc?.map((item) => {
+                    return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                  })}
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
         </div>
       )}
 
