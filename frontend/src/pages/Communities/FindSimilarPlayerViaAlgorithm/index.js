@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../../components/DebounceSelect';
 import { getPlayer } from '../../../services/player';
 import { getPlayerInCommunity } from '../../../services/graph';
 import { Grid, Radio, Table, Text, Button, Modal } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
+import { connect } from 'react-redux';
+import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
 
-const FindSimilarPlayerViaAlgorithm = () => {
+const algorithmList = ['KMeans', 'Louvain', 'Hierachical'];
+
+const FindSimilarPlayerViaAlgorithm = (props) => {
+  const calledAlgorithms = useRef([]);
+
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
@@ -46,6 +52,17 @@ const FindSimilarPlayerViaAlgorithm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
 
+  const tableObject = {
+    playerId: undefined,
+    kmeams: {},
+    louvain: {},
+    hierarchical: {},
+  };
+
+  const doSetPlayerId = (playerId) => {
+    props.dispatch(setPlayerIdAction(playerId));
+  };
+
   async function fetchUserList(name) {
     if (name === '') {
       return [];
@@ -76,6 +93,11 @@ const FindSimilarPlayerViaAlgorithm = () => {
     try {
       const response = await getPlayerInCommunity(playerId, algorithm);
       setPlayerData(response.data);
+
+      // set calledAlgorithms
+      if (!calledAlgorithms.current.includes(algorithm)) {
+        calledAlgorithms.current.push(algorithm);
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -88,20 +110,15 @@ const FindSimilarPlayerViaAlgorithm = () => {
     setPlayerData({});
   };
 
-  // useEffect(() => {
-  //   console.log('change algorithm: ', algorithm);
-
-  //   if (!playerName) {
-  //     return;
-  //   }
-
-  //   onGetPlayerData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [algorithm]);
-
   const onCloseModal = () => {
     setVisible(false);
   };
+
+  useEffect(() => {
+    console.log('props.initalState: ', props.initalState);
+
+    console.log('calledAlgorithms.current: ', calledAlgorithms.current);
+  });
 
   return (
     <div className="similar-players-page">
@@ -127,6 +144,17 @@ const FindSimilarPlayerViaAlgorithm = () => {
                 setValue(option);
                 setPlayerName(option.label);
                 setPlayerId(option.value);
+                doSetPlayerId(option.value);
+
+                // set graph data to default when change player
+                const dataObject = {
+                  playerId: option.value,
+                  kmeams: {},
+                  louvain: {},
+                  hierarchical: {},
+                };
+
+                props.dispatch(setDataObjectAction(dataObject));
               }}
             />
           </div>
@@ -249,4 +277,12 @@ const FindSimilarPlayerViaAlgorithm = () => {
   );
 };
 
-export default FindSimilarPlayerViaAlgorithm;
+const mapStateToProps = (state) => ({
+  initalState: state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindSimilarPlayerViaAlgorithm);
