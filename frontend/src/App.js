@@ -8,11 +8,14 @@ import ManagementPage from './pages/Management';
 import NavbarNext from './components/NavBarNext';
 import { Routes, Route } from 'react-router-dom';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { connect } from 'react-redux';
 
-function App() {
+function App(props) {
   return (
     <div className="App">
       <NavbarNext />
+
+      {console.log('props.initalState: ', props.initalState)}
 
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -25,4 +28,12 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  initalState: state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

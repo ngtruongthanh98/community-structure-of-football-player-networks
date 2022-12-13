@@ -6,6 +6,8 @@ import { getPlayerInCommunity } from '../../../services/graph';
 import { Grid, Radio, Table, Text, Button, Modal } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 
+const algorithmList = ['KMeans', 'Louvain', 'Hierachical'];
+
 const FindSimilarPlayerViaAlgorithm = () => {
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
@@ -45,6 +47,8 @@ const FindSimilarPlayerViaAlgorithm = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
+
+  const tableObject = {};
 
   async function fetchUserList(name) {
     if (name === '') {
