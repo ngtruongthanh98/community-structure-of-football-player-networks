@@ -65,4 +65,12 @@
   .graph-image {
     margin-top: 24px;
   }
+
+  .graph-comparision {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
