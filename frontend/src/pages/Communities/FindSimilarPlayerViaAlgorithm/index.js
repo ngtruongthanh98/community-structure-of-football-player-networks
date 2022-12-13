@@ -88,16 +88,16 @@ const FindSimilarPlayerViaAlgorithm = () => {
     setPlayerData({});
   };
 
-  useEffect(() => {
-    console.log('change algorithm: ', algorithm);
+  // useEffect(() => {
+  //   console.log('change algorithm: ', algorithm);
 
-    if (!playerName) {
-      return;
-    }
+  //   if (!playerName) {
+  //     return;
+  //   }
 
-    onGetPlayerData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [algorithm]);
+  //   onGetPlayerData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [algorithm]);
 
   const onCloseModal = () => {
     setVisible(false);
