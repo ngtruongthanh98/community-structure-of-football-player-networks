@@ -19,25 +19,32 @@ type Attribute struct {
 	Value int64  `json:"value"`
 }
 
+type ExecutionStage struct {
+	Name string  `json:"executionName"`
+	Time float64 `json:"executionTime"`
+}
+
 type Player struct {
 	Id         string      `json:"id"`
 	Name       string      `json:"name"`
 	Height     int64       `json:"height"`
 	Weight     int64       `json:"weight"`
-	Birth      string      `json:"birth"`
-	Positions  []string    `json:"positions"`
-	Attributes []Attribute `json:"attributes"`
+	Birth      string      `json:"birth,omitempty"`
+	Positions  []string    `json:"positions,omitempty"`
+	Attributes []Attribute `json:"attributes,omitempty"`
 	Similarity float64     `json:"similarity"`
 }
 
 type SimilarPlayerByID struct {
-	Name          string   `json:"name"`
-	SimilarPlayer []Player `json:"similarPlayer"`
-	GraphURL      string   `json:"graphURL"`
+	Name          string           `json:"name"`
+	SimilarPlayer []Player         `json:"similarPlayer"`
+	ExecutionProc []ExecutionStage `json:"executionProc"`
+	GraphURL      string           `json:"graphURL"`
 }
 
 var (
-	playerName    []RecommendedPlayer
+	playerName []RecommendedPlayer
+
 	attributeName map[string]int64
 
 	mapConversionIndex2ID map[int64]string
@@ -159,85 +166,112 @@ func GetPlayerByID(id string) Player {
 func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 	var res SimilarPlayerByID
 
-	res = SimilarPlayerByID{
-		Name: "Group Planar",
-		SimilarPlayer: []Player{
-			{
-				Name:       "Doan Tran Cao Tri",
-				Id:         "DTCT",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.9,
-			},
-			{
-				Name:       "Nguyen Duc Phu",
-				Id:         "NDP",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.89,
-			},
-			{
-				Name:       "Vu Phuong Thao",
-				Id:         "VPT",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.88,
-			},
-			{
-				Name:       "Nguyen Truong Thanh",
-				Id:         "NTT",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.87,
-			},
-			{
-				Name:       "Phan Gia Anh",
-				Id:         "PGA",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.87,
-			},
-			{
-				Name:       "Doan Tran Cao Tri",
-				Id:         "DTCT",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.9,
-			},
-			{
-				Name:       "Nguyen Duc Phu",
-				Id:         "NDP",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.89,
-			},
-			{
-				Name:       "Vu Phuong Thao",
-				Id:         "VPT",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.88,
-			},
-			{
-				Name:       "Nguyen Truong Thanh",
-				Id:         "NTT",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.87,
-			},
-			{
-				Name:       "Phan Gia Anh",
-				Id:         "PGA",
-				Height:     180,
-				Weight:     70,
-				Similarity: 0.87,
-			},
-		},
+	// res = SimilarPlayerByID{
+	// 	Name: "Group Planar",
+	// 	SimilarPlayer: []Player{
+	// 		{
+	// 			Name:       "Doan Tran Cao Tri",
+	// 			Id:         "DTCT",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.9,
+	// 		},
+	// 		{
+	// 			Name:       "Nguyen Duc Phu",
+	// 			Id:         "NDP",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.89,
+	// 		},
+	// 		{
+	// 			Name:       "Vu Phuong Thao",
+	// 			Id:         "VPT",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.88,
+	// 		},
+	// 		{
+	// 			Name:       "Nguyen Truong Thanh",
+	// 			Id:         "NTT",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.87,
+	// 		},
+	// 		{
+	// 			Name:       "Phan Gia Anh",
+	// 			Id:         "PGA",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.87,
+	// 		},
+	// 		{
+	// 			Name:       "Doan Tran Cao Tri",
+	// 			Id:         "DTCT",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.9,
+	// 		},
+	// 		{
+	// 			Name:       "Nguyen Duc Phu",
+	// 			Id:         "NDP",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.89,
+	// 		},
+	// 		{
+	// 			Name:       "Vu Phuong Thao",
+	// 			Id:         "VPT",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.88,
+	// 		},
+	// 		{
+	// 			Name:       "Nguyen Truong Thanh",
+	// 			Id:         "NTT",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.87,
+	// 		},
+	// 		{
+	// 			Name:       "Phan Gia Anh",
+	// 			Id:         "PGA",
+	// 			Height:     180,
+	// 			Weight:     70,
+	// 			Similarity: 0.87,
+	// 		},
+	// 	},
 
-		GraphURL: "http://localhost:3000/graph.png",
+	// 	GraphURL: "http://localhost:3000/graph.png",
+	// }
+
+	mainPlayer := GetPlayerByID(id)
+	res.Name = mainPlayer.Name
+
+	re, err := ex.ExchangeGraphClientInstance().GetSimilarPlayerList(id, algo)
+	if err != nil {
+		log.Fatal(err)
+		return res
 	}
 
-	ex.ExchangeGraphClientInstance().GetSimilarPlayerList(id, algo)
+	log.Print(re)
+
+	for _, r := range re.ExecutionProc {
+		res.ExecutionProc = append(res.ExecutionProc, ExecutionStage{
+			Name: r.Name,
+			Time: r.Time,
+		})
+	}
+
+	for _, r := range re.SimilarPlayer {
+		player := GetPlayerByID(r.Id)
+		res.SimilarPlayer = append(res.SimilarPlayer, Player{
+			Id:         player.Id,
+			Name:       player.Name,
+			Height:     player.Height,
+			Weight:     player.Weight,
+			Similarity: r.Similarity,
+		})
+	}
 
 	return res
 }
