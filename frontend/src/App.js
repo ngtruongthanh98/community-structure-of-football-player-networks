@@ -15,8 +15,6 @@ function App(props) {
     <div className="App">
       <NavbarNext />
 
-      {console.log('props.initalState: ', props.initalState)}
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/overview" element={<OverviewPage />} />
