@@ -27,6 +27,7 @@ foot_atr = ['LeftFoot', 'RightFoot']
 
 
 G_Louvain = nx.Graph()
+Community_Louvain = {}
 G_Hierarchical = nx.Graph()
 G_KMeans = nx.Graph()
 Score_Table = np.empty((1, 1000), int)
@@ -233,7 +234,7 @@ def generate_player_data(file_name):
         for (index_dest, edge) in enumerate(score_array):
             if edge == 0:
                 continue
-            if edge < 700:
+            if edge < 800:
                 f_sparse.write("{} {} {}\n".format(index_source, index_dest, edge))
             f_dense.write("{} {} {}\n".format(index_source, index_dest, edge))
 
@@ -260,21 +261,22 @@ def read_data_to_graph(graph:nx.Graph):
 
 def build_louvain_graph():
     global G_Louvain
+    global Community_Louvain
     read_data_to_graph(G_Louvain)
     partition = detect_communities(G_Louvain, randomized=True)
-    print(nx.info(G_Louvain))
+    print([node for node in G_Louvain])
     print(partition)
     print(len(partition))
     print("Modularity for best partition:", modularity(G_Louvain, partition))
 
-    community_map = {}
     for community, nodes in enumerate(partition):
         for node in nodes:
-            community_map[node] = community
+            print(community, node)
+            Community_Louvain[node] = community
     
     cmap = plt.get_cmap("jet")
-    pos = nx.spring_layout(G_Louvain, k=0.12)
-    indexed = [community_map.get(node) for node in G_Louvain]
+    pos = nx.spring_layout(G_Louvain, weight='weight', k=0.001)
+    indexed = [Community_Louvain.get(node) for node in G_Louvain]
     plt.axis("off")
     print("huh")
     nx.draw_networkx_nodes(G_Louvain, pos=pos, cmap=cmap, node_color=indexed, node_size=20, alpha=1)

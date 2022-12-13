@@ -40,6 +40,10 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
 
         return res
 
+    def GetSimilarPlayerList(self, request, context):
+        print(request.algorithm, request.id)
+        return super().GetSimilarPlayerList(request, context)
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
