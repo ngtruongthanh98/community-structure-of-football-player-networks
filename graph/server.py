@@ -8,7 +8,9 @@ import exchange_pb2
 import exchange_pb2_grpc
 import datetime
 import numpy as np
-
+import random
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
     def __init__(self):
@@ -60,8 +62,8 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
                 score_comm[node] = graph.Score_Table[int(id), int(node)]
             # print(score_comm)
             best_score_comm = dict(sorted(score_comm.items(), key=lambda item: item[1]))
-            best_score_index = list(best_score_comm.keys())
-            best_score_index = best_score_index[1:11]
+            best_score_index_ = list(best_score_comm.keys())
+            best_score_index = best_score_index_[1:11]
             print(best_score_index)
             # best_score_comm = np.argsort(score_comm)
             # best_score_comm = best_score_comm[1:11]
@@ -73,6 +75,37 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             res.procs.add(name='GetBestSimilar', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
 
+            visualize_graph = list()
+            visualize_graph.append(best_score_index_[0:11])
+            for index, sub_comm in enumerate(graph.Partition_Louvain):
+                if index != group:
+                    sub_random = random.sample(sub_comm, 10)
+                    visualize_graph.append(sub_random)
+
+            print(visualize_graph)
+            visualize_graph_flatten = [item for sublist in visualize_graph for item in sublist]
+            VGraph = nx.Graph()
+            for item1 in visualize_graph_flatten:
+                for item2 in visualize_graph_flatten:
+                    score = graph.Score_Table[int(item1), int(item2)]
+                    if score == 0:
+                        continue
+                    
+                    if score < graph.threshold:
+                        VGraph.add_edge(int(item1), int(item2), weight=score)
+
+            cmap = plt.get_cmap("jet")
+            pos = nx.spring_layout(VGraph, k=0.12)
+            indexed = [graph.Community_Louvain.get(node) for node in VGraph]
+            plt.axis("off")
+            nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=30, alpha=1)
+            nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
+            name = '../frontend/public/graph_Louvain' + str(id) + '.png'
+            plt.savefig(name)
+
+            res.url = 'http://localhost:3000/graph_Louvain' + str(id) + '.png'
+            res.procs.add(name='Visualize', time=(datetime.datetime.now()-start).microseconds)
+            start = datetime.datetime.now()
         return res
 
 

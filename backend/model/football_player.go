@@ -273,5 +273,7 @@ func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 		})
 	}
 
+	res.GraphURL = re.GraphURL
+
 	return res
 }
