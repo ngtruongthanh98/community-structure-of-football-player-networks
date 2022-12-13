@@ -234,7 +234,7 @@ func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 			},
 		},
 
-		GraphURL: "../../../assets/graph.png",
+		GraphURL: "http://localhost:3000/graph.png",
 	}
 	return res
 }

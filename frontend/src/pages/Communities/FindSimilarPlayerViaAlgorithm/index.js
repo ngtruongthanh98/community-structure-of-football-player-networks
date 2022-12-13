@@ -96,6 +96,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
     }
 
     onGetPlayerData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [algorithm]);
 
   const onCloseModal = () => {
@@ -217,12 +218,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
           <Text>
             Struture Community Graph - <Text b>{algorithm}</Text>
           </Text>
-          <img
-            // src={playerData.graphURL}
-            src={require('../../../assets/graph.png')}
-            alt="graph"
-            className="graph-image"
-          />
+          <img src={playerData.graphURL} alt="graph" className="graph-image" />
         </div>
       )}
 
