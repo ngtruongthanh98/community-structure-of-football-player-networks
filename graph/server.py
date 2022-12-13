@@ -28,15 +28,15 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         i = 0
         res = exchange_pb2.AttributeResponse()
         for pos in main_pos:
-            corr_matrix = graph.get_corr_matrix_for_pos(dataset_3, main_pos[0], threshold_for_pos_familarity, using_mental_attr)
+            corr_matrix = graph.get_corr_matrix_for_pos(dataset_3, main_pos[i], threshold_for_pos_familarity, using_mental_attr)
             high_corr_attr = graph.get_relevant_attr(corr_matrix, corr_threshold)
             print(high_corr_attr)
             high_corr_group = graph.get_relevant_group(high_corr_attr)
             recommend_att = graph.get_player_feature(player, high_corr_group, using_mental_attr, number_of_attribute)
             print(f"Recommended attributes for {pos}: ", recommend_att)
             i += 1
-            for i in recommend_att:
-                res.attributes.add(index=0, name=i)
+            for k in recommend_att:
+                res.attributes.add(index=0, name=k)
 
         return res
 
