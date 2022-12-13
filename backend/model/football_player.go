@@ -94,7 +94,7 @@ func GetRecommendedPlayerByName(subName string) []RecommendedPlayer {
 	res = make([]RecommendedPlayer, 0)
 
 	log.Print("GetRecommendedPlayerByName Subname: " + subName)
-	log.Print(playerName)
+	// log.Print(playerName)
 	for _, ele := range playerName {
 		if strings.Contains(ele.Name, subName) {
 			res = append(res, ele)
@@ -236,5 +236,8 @@ func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 
 		GraphURL: "http://localhost:3000/graph.png",
 	}
+
+	ex.ExchangeGraphClientInstance().GetSimilarPlayerList(id, algo)
+
 	return res
 }
