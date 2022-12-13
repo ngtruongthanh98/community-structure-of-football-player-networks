@@ -88,15 +88,16 @@ const FindSimilarPlayerViaAlgorithm = () => {
     setPlayerData({});
   };
 
-  useEffect(() => {
-    console.log('change algorithm: ', algorithm);
+  // useEffect(() => {
+  //   console.log('change algorithm: ', algorithm);
 
-    if (!playerName) {
-      return;
-    }
+  //   if (!playerName) {
+  //     return;
+  //   }
 
-    onGetPlayerData();
-  }, [algorithm]);
+  //   onGetPlayerData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [algorithm]);
 
   const onCloseModal = () => {
     setVisible(false);
@@ -217,12 +218,7 @@ const FindSimilarPlayerViaAlgorithm = () => {
           <Text>
             Struture Community Graph - <Text b>{algorithm}</Text>
           </Text>
-          <img
-            // src={playerData.graphURL}
-            src={require('../../../assets/graph.png')}
-            alt="graph"
-            className="graph-image"
-          />
+          <img src={playerData.graphURL} alt="graph" className="graph-image" />
         </div>
       )}
 
