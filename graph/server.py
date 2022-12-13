@@ -41,8 +41,10 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         return res
 
     def GetSimilarPlayerList(self, request, context):
+        res = exchange_pb2.GraphByPlayerAndAlgoResponse()
         print(request.algorithm, request.id)
-        return super().GetSimilarPlayerList(request, context)
+
+        return res
 
 
 def serve():
