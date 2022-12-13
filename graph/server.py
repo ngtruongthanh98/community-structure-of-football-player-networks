@@ -6,6 +6,8 @@ import logging
 import grpc
 import exchange_pb2
 import exchange_pb2_grpc
+import datetime
+import numpy as np
 
 
 class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
@@ -44,11 +46,32 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         res = exchange_pb2.GraphByPlayerAndAlgoResponse()
         id = request.id
         algo = request.algorithm
-
+        start = datetime.datetime.now()
         if algo == "Louvain":
             group = graph.Community_Louvain[int(id)]
-            print(group)
-            print(graph.Partition_Louvain[group])
+            comm = graph.Partition_Louvain[group]
+
+            res.procs.add(name='FindCommunity', time=(datetime.datetime.now()-start).microseconds)
+            start = datetime.datetime.now()
+
+            # print(comm)
+            score_comm = {}
+            for node in comm:
+                score_comm[node] = graph.Score_Table[int(id), int(node)]
+            # print(score_comm)
+            best_score_comm = dict(sorted(score_comm.items(), key=lambda item: item[1]))
+            best_score_index = list(best_score_comm.keys())
+            best_score_index = best_score_index[1:11]
+            print(best_score_index)
+            # best_score_comm = np.argsort(score_comm)
+            # best_score_comm = best_score_comm[1:11]
+            max_score = np.max(comm)
+            for player in best_score_index:
+                res.similars.add(index=str(player), similar=((float)(max_score - best_score_comm[player]))/max_score)
+            # print(best_score_comm)
+
+            res.procs.add(name='GetBestSimilar', time=(datetime.datetime.now()-start).microseconds)
+            start = datetime.datetime.now()
 
         return res
 

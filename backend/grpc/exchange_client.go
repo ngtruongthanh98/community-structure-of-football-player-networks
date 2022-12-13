@@ -29,6 +29,11 @@ type AttributeModel struct {
 	Name  string
 }
 
+type ExecutionStage struct {
+	Name string
+	Time float64
+}
+
 type AttributeResponseModel struct {
 	Attributes []AttributeModel
 }
@@ -44,9 +49,10 @@ type Player struct {
 }
 
 type SimilarPlayerByID struct {
-	Name          string   `json:"name"`
-	SimilarPlayer []Player `json:"similarPlayer"`
-	GraphURL      string   `json:"graphURL"`
+	Name          string           `json:"name"`
+	SimilarPlayer []Player         `json:"similarPlayer"`
+	ExecutionProc []ExecutionStage `json:"executionProc"`
+	GraphURL      string           `json:"graphURL"`
 }
 
 func ExchangeGraphClientInstance() *ExchangeClient {
@@ -147,6 +153,12 @@ func (e *ExchangeClient) GetSimilarPlayerList(id, algo string) (*SimilarPlayerBy
 		result.SimilarPlayer = append(result.SimilarPlayer, Player{
 			Id:         r.Index,
 			Similarity: float64(r.Similar),
+		})
+	}
+	for _, e := range res.Procs {
+		result.ExecutionProc = append(result.ExecutionProc, ExecutionStage{
+			Name: e.Name,
+			Time: float64(e.Time),
 		})
 	}
 	result.GraphURL = res.Url

@@ -267,7 +267,7 @@ def build_louvain_graph():
     read_data_to_graph(G_Louvain)
     Partition_Louvain = detect_communities(G_Louvain, randomized=True)
     
-    print(Partition_Louvain)
+    # print(Partition_Louvain)
     print(len(Partition_Louvain))
     print("Modularity for best partition:", modularity(G_Louvain, Partition_Louvain))
 
