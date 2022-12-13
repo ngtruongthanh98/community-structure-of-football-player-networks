@@ -97,6 +97,8 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       // set calledAlgorithms
       if (!calledAlgorithms.current.includes(algorithm)) {
         calledAlgorithms.current.push(algorithm);
+
+        tableObject[algorithm.toLocaleLowerCase()] = {};
       }
     } catch (error) {
       console.log('error', error);
