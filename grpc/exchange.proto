@@ -46,6 +46,12 @@ message GraphByPlayerAndAlgoResponse {
         float similar = 2;
     }
 
+    message Execution {
+        string name = 1;
+        float time = 2;
+    }
+
     repeated SimilarPlayer similars = 1;
-    string url = 2;
+    repeated Execution procs = 2;
+    string url = 3;
 }

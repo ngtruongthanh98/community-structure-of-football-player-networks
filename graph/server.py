@@ -42,7 +42,13 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
 
     def GetSimilarPlayerList(self, request, context):
         res = exchange_pb2.GraphByPlayerAndAlgoResponse()
-        print(request.algorithm, request.id)
+        id = request.id
+        algo = request.algorithm
+
+        if algo == "Louvain":
+            group = graph.Community_Louvain[int(id)]
+            print(group)
+            print(graph.Partition_Louvain[group])
 
         return res
 

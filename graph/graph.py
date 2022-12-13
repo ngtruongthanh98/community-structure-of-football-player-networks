@@ -28,6 +28,7 @@ foot_atr = ['LeftFoot', 'RightFoot']
 
 G_Louvain = nx.Graph()
 Community_Louvain = {}
+Partition_Louvain = []
 G_Hierarchical = nx.Graph()
 G_KMeans = nx.Graph()
 Score_Table = np.empty((1, 1000), int)
@@ -262,26 +263,27 @@ def read_data_to_graph(graph:nx.Graph):
 def build_louvain_graph():
     global G_Louvain
     global Community_Louvain
+    global Partition_Louvain
     read_data_to_graph(G_Louvain)
-    partition = detect_communities(G_Louvain, randomized=True)
-    print([node for node in G_Louvain])
-    print(partition)
-    print(len(partition))
-    print("Modularity for best partition:", modularity(G_Louvain, partition))
+    Partition_Louvain = detect_communities(G_Louvain, randomized=True)
+    
+    print(Partition_Louvain)
+    print(len(Partition_Louvain))
+    print("Modularity for best partition:", modularity(G_Louvain, Partition_Louvain))
 
-    for community, nodes in enumerate(partition):
+    for community, nodes in enumerate(Partition_Louvain):
         for node in nodes:
-            print(community, node)
+            # print(community, node)
             Community_Louvain[node] = community
     
-    cmap = plt.get_cmap("jet")
-    pos = nx.spring_layout(G_Louvain, weight='weight', k=0.001)
-    indexed = [Community_Louvain.get(node) for node in G_Louvain]
-    plt.axis("off")
-    print("huh")
-    nx.draw_networkx_nodes(G_Louvain, pos=pos, cmap=cmap, node_color=indexed, node_size=20, alpha=1)
-    nx.draw_networkx_edges(G_Louvain, pos=pos, alpha=0.2)
-    plt.show()    
+    # cmap = plt.get_cmap("jet")
+    # pos = nx.spring_layout(G_Louvain, weight='weight', k=0.001)
+    # indexed = [Community_Louvain.get(node) for node in G_Louvain]
+    # plt.axis("off")
+    # print("huh")
+    # nx.draw_networkx_nodes(G_Louvain, pos=pos, cmap=cmap, node_color=indexed, node_size=20, alpha=1)
+    # nx.draw_networkx_edges(G_Louvain, pos=pos, alpha=0.2)
+    # plt.show()    
 
 
 def BuildGraph():
