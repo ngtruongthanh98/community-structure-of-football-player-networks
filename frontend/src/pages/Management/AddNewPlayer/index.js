@@ -90,7 +90,7 @@ const AddNewPlayer = () => {
       <div className="title">Add a player</div>
 
       <Image
-        src="https://the18.com/sites/default/files/u100013226/20171004-The18-Image-Field.jpg"
+        src="http://localhost:3000/position-map.jpg"
         alt="Default Image"
         objectFit="cover"
         className="position-map-image"
