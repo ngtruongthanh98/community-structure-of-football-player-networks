@@ -179,19 +179,49 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               >
                 <Table.Header>
                   <Table.Column key="name" allowsSorting>
-                    <Text b> Name</Text>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Name
+                    </Text>
                   </Table.Column>
                   <Table.Column key="id" allowsSorting>
-                    <Text b>ID</Text>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      ID
+                    </Text>
                   </Table.Column>
                   <Table.Column key="height" allowsSorting>
-                    <Text b>Height</Text>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Height
+                    </Text>
                   </Table.Column>
                   <Table.Column key="weight" allowsSorting>
-                    <Text b>Weight</Text>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Weight
+                    </Text>
                   </Table.Column>
                   <Table.Column key="similarity" allowsSorting>
-                    <Text b>Similarity</Text>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Similarity
+                    </Text>
                   </Table.Column>
                 </Table.Header>
                 <Table.Body>
@@ -203,7 +233,11 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                           <Table.Cell>{item.id}</Table.Cell>
                           <Table.Cell>{item.height}</Table.Cell>
                           <Table.Cell>{item.weight}</Table.Cell>
-                          <Table.Cell>{item.similarity}</Table.Cell>
+                          <Table.Cell>
+                            <Text b color="primary">
+                              {item.similarity}
+                            </Text>
+                          </Table.Cell>
                         </Table.Row>
                       );
                     })}
@@ -221,18 +255,30 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               <Table
                 css={{
                   height: 'auto',
-                  minWidth: '500px',
+                  minWidth: '550px',
                 }}
               >
                 <Table.Header>
                   <Table.Column>
-                    <Text b>Algorithm</Text>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Algorithm
+                    </Text>
                   </Table.Column>
 
                   {playerData?.executionProc.map((item) => {
                     return (
                       <Table.Column>
-                        <Text b>{item.executionName}</Text>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          {item.executionName}
+                        </Text>
                       </Table.Column>
                     );
                   })}
@@ -241,7 +287,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>
-                      <Text b>Current:</Text> {algorithm}
+                      <Text b>Current:</Text> <Text color="primary">{algorithm}</Text>
                     </Table.Cell>
                     {playerData?.executionProc.map((item) => {
                       return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
@@ -250,7 +296,9 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
                   {!isEmpty(summarizeData.current.KMeans.executionProc) && (
                     <Table.Row>
-                      <Table.Cell>KMeans</Table.Cell>
+                      <Table.Cell>
+                        <Text color="warning">KMeans</Text>
+                      </Table.Cell>
                       {summarizeData.current.KMeans.executionProc.map((item) => {
                         return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
                       })}
@@ -259,7 +307,9 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
                   {!isEmpty(summarizeData.current.Louvain.executionProc) && (
                     <Table.Row>
-                      <Table.Cell>Louvain</Table.Cell>
+                      <Table.Cell>
+                        <Text color="error">Louvain</Text>
+                      </Table.Cell>
                       {summarizeData.current.Louvain.executionProc.map((item) => {
                         return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
                       })}
@@ -268,7 +318,9 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
                   {!isEmpty(summarizeData.current.Hierarchical.executionProc) && (
                     <Table.Row>
-                      <Table.Cell>Hierarchical</Table.Cell>
+                      <Table.Cell>
+                        <Text color="success">Hierarchical</Text>
+                      </Table.Cell>
                       {summarizeData.current.Hierarchical.executionProc.map((item) => {
                         return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
                       })}
