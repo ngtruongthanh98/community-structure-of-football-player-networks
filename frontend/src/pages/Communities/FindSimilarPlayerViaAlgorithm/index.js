@@ -3,7 +3,7 @@ import './styles.scss';
 import DebounceSelect from '../../../components/DebounceSelect';
 import { getPlayer } from '../../../services/player';
 import { getPlayerInCommunity } from '../../../services/graph';
-import { Grid, Radio, Table, Text, Button, Modal } from '@nextui-org/react';
+import { Grid, Radio, Table, Text, Button, Modal, Loading } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import { connect } from 'react-redux';
 import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
@@ -12,6 +12,7 @@ import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
 
 const FindSimilarPlayerViaAlgorithm = (props) => {
   const calledAlgorithms = useRef([]);
+  const isLoadFirstTime = useRef(true);
 
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
@@ -22,6 +23,8 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const summarizeData = useRef({
     playerId: undefined,
@@ -46,6 +49,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
           value: item.id,
         };
       });
+
       return returnedValue;
     });
   }
@@ -56,6 +60,8 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       setVisible(true);
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const response = await getPlayerInCommunity(playerId, algorithm);
@@ -68,6 +74,9 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
         summarizeData.current.playerId = playerId;
         summarizeData.current[algorithm] = response.data;
       }
+
+      setIsLoading(false);
+      isLoadFirstTime.current = false;
     } catch (error) {
       console.log('error', error);
     }
@@ -85,6 +94,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       Louvain: {},
       Hierarchical: {},
     };
+    isLoadFirstTime.current = true;
   };
 
   const onCloseModal = () => {
@@ -150,199 +160,212 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
         Find similar players
       </Button>
 
-      {!isEmpty(playerData) && (
-        <div className="player-name-box">
-          <Text>
-            <Text b>Player: </Text>
-            {playerData.name}
-          </Text>
-
-          <Button shadow color="error" auto onPress={handleClearPlayerData} className="clear-btn">
-            Clear result
-          </Button>
-        </div>
-      )}
-
-      <Grid.Container gap={2} justify="center">
-        <Grid xs={12} md={6} justify="center">
+      {isLoading & isLoadFirstTime.current ? (
+        <Loading className="loading-similar" />
+      ) : (
+        <>
           {!isEmpty(playerData) && (
-            <div className="similar-players-box">
+            <div className="player-name-box">
               <Text>
-                <Text b>Similar players: </Text>
+                <Text b>Player: </Text>
+                {playerData.name}
               </Text>
-              <Table
-                css={{
-                  height: 'auto',
-                  minWidth: '500px',
-                }}
-                className="similar-players-table"
+
+              <Button
+                shadow
+                color="error"
+                auto
+                onPress={handleClearPlayerData}
+                className="clear-btn"
               >
-                <Table.Header>
-                  <Table.Column key="name" allowsSorting>
-                    <Text
-                      css={{
-                        fontSize: '18px',
-                      }}
-                    >
-                      Name
-                    </Text>
-                  </Table.Column>
-                  <Table.Column key="id" allowsSorting>
-                    <Text
-                      css={{
-                        fontSize: '18px',
-                      }}
-                    >
-                      ID
-                    </Text>
-                  </Table.Column>
-                  <Table.Column key="height" allowsSorting>
-                    <Text
-                      css={{
-                        fontSize: '18px',
-                      }}
-                    >
-                      Height
-                    </Text>
-                  </Table.Column>
-                  <Table.Column key="weight" allowsSorting>
-                    <Text
-                      css={{
-                        fontSize: '18px',
-                      }}
-                    >
-                      Weight
-                    </Text>
-                  </Table.Column>
-                  <Table.Column key="similarity" allowsSorting>
-                    <Text
-                      css={{
-                        fontSize: '18px',
-                      }}
-                    >
-                      Similarity
-                    </Text>
-                  </Table.Column>
-                </Table.Header>
-                <Table.Body>
-                  {playerData.similarPlayer &&
-                    playerData.similarPlayer.map((item) => {
-                      return (
-                        <Table.Row key={item.id}>
-                          <Table.Cell>{item.name}</Table.Cell>
-                          <Table.Cell>{item.id}</Table.Cell>
-                          <Table.Cell>{item.height}</Table.Cell>
-                          <Table.Cell>{item.weight}</Table.Cell>
-                          <Table.Cell>
-                            <Text b color="primary">
-                              {item.similarity}
-                            </Text>
-                          </Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                </Table.Body>
-              </Table>
+                Clear result
+              </Button>
             </div>
           )}
-        </Grid>
 
-        <Grid xs={12} md={6} justify="center">
-          {!isEmpty(playerData.executionProc) && (
-            <div className="graph-comparision">
-              <Text b>Graph Comparision</Text>
+          <Grid.Container gap={2} justify="center">
+            <Grid xs={12} md={6} justify="center">
+              {!isEmpty(playerData) && (
+                <div className="similar-players-box">
+                  <Text>
+                    <Text b>Similar players</Text>
+                  </Text>
+                  <Table
+                    css={{
+                      height: 'auto',
+                      minWidth: '500px',
+                    }}
+                    className="similar-players-table"
+                  >
+                    <Table.Header>
+                      <Table.Column key="name" allowsSorting>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          Name
+                        </Text>
+                      </Table.Column>
+                      <Table.Column key="id" allowsSorting>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          ID
+                        </Text>
+                      </Table.Column>
+                      <Table.Column key="height" allowsSorting>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          Height
+                        </Text>
+                      </Table.Column>
+                      <Table.Column key="weight" allowsSorting>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          Weight
+                        </Text>
+                      </Table.Column>
+                      <Table.Column key="similarity" allowsSorting>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          Similarity
+                        </Text>
+                      </Table.Column>
+                    </Table.Header>
+                    <Table.Body>
+                      {playerData.similarPlayer &&
+                        playerData.similarPlayer.map((item) => {
+                          return (
+                            <Table.Row key={item.id}>
+                              <Table.Cell>{item.name}</Table.Cell>
+                              <Table.Cell>{item.id}</Table.Cell>
+                              <Table.Cell>{item.height}</Table.Cell>
+                              <Table.Cell>{item.weight}</Table.Cell>
+                              <Table.Cell>
+                                <Text b color="primary">
+                                  {item.similarity}
+                                </Text>
+                              </Table.Cell>
+                            </Table.Row>
+                          );
+                        })}
+                    </Table.Body>
+                  </Table>
+                </div>
+              )}
+            </Grid>
 
-              <Table
-                css={{
-                  height: 'auto',
-                }}
-              >
-                <Table.Header>
-                  <Table.Column>
-                    <Text
-                      css={{
-                        fontSize: '18px',
-                      }}
-                    >
-                      Algorithm
-                    </Text>
-                  </Table.Column>
+            <Grid xs={12} md={6} justify="center">
+              {!isEmpty(playerData.executionProc) && (
+                <div className="graph-comparision">
+                  <Text b>Graph Comparision</Text>
 
-                  {playerData?.executionProc.map((item) => {
-                    return (
+                  <Table
+                    css={{
+                      height: 'auto',
+                    }}
+                    className="graph-comparision-table"
+                  >
+                    <Table.Header>
                       <Table.Column>
                         <Text
                           css={{
                             fontSize: '18px',
                           }}
                         >
-                          {item.executionName}
+                          Algorithm
                         </Text>
                       </Table.Column>
-                    );
-                  })}
-                </Table.Header>
 
-                <Table.Body>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Text b>Current:</Text> <Text color="primary">{algorithm}</Text>
-                    </Table.Cell>
-                    {playerData?.executionProc.map((item) => {
-                      return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                    })}
-                  </Table.Row>
-
-                  {!isEmpty(summarizeData.current.KMeans.executionProc) && (
-                    <Table.Row>
-                      <Table.Cell>
-                        <Text color="warning">KMeans</Text>
-                      </Table.Cell>
-                      {summarizeData.current.KMeans.executionProc.map((item) => {
-                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      {playerData?.executionProc.map((item) => {
+                        return (
+                          <Table.Column>
+                            <Text
+                              css={{
+                                fontSize: '18px',
+                              }}
+                            >
+                              {item.executionName}
+                            </Text>
+                          </Table.Column>
+                        );
                       })}
-                    </Table.Row>
-                  )}
+                    </Table.Header>
 
-                  {!isEmpty(summarizeData.current.Louvain.executionProc) && (
-                    <Table.Row>
-                      <Table.Cell>
-                        <Text color="error">Louvain</Text>
-                      </Table.Cell>
-                      {summarizeData.current.Louvain.executionProc.map((item) => {
-                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                      })}
-                    </Table.Row>
-                  )}
+                    <Table.Body>
+                      <Table.Row>
+                        <Table.Cell>
+                          <Text b>Current:</Text> <Text color="primary">{algorithm}</Text>
+                        </Table.Cell>
+                        {playerData?.executionProc.map((item) => {
+                          return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                        })}
+                      </Table.Row>
 
-                  {!isEmpty(summarizeData.current.Hierarchical.executionProc) && (
-                    <Table.Row>
-                      <Table.Cell>
-                        <Text color="success">Hierarchical</Text>
-                      </Table.Cell>
-                      {summarizeData.current.Hierarchical.executionProc.map((item) => {
-                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                      })}
-                    </Table.Row>
-                  )}
-                </Table.Body>
-              </Table>
+                      {!isEmpty(summarizeData.current.KMeans.executionProc) && (
+                        <Table.Row>
+                          <Table.Cell>
+                            <Text color="warning">KMeans</Text>
+                          </Table.Cell>
+                          {summarizeData.current.KMeans.executionProc.map((item) => {
+                            return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                          })}
+                        </Table.Row>
+                      )}
+
+                      {!isEmpty(summarizeData.current.Louvain.executionProc) && (
+                        <Table.Row>
+                          <Table.Cell>
+                            <Text color="error">Louvain</Text>
+                          </Table.Cell>
+                          {summarizeData.current.Louvain.executionProc.map((item) => {
+                            return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                          })}
+                        </Table.Row>
+                      )}
+
+                      {!isEmpty(summarizeData.current.Hierarchical.executionProc) && (
+                        <Table.Row>
+                          <Table.Cell>
+                            <Text color="success">Hierarchical</Text>
+                          </Table.Cell>
+                          {summarizeData.current.Hierarchical.executionProc.map((item) => {
+                            return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                          })}
+                        </Table.Row>
+                      )}
+                    </Table.Body>
+                  </Table>
+                </div>
+              )}
+            </Grid>
+          </Grid.Container>
+
+          {!isEmpty(playerData) && (
+            <div className="image-box">
+              <Text>
+                Struture Community Graph - <Text b>{algorithm}</Text>
+              </Text>
+              <img
+                src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
+                alt="graph"
+                className="graph-image"
+              />
             </div>
           )}
-        </Grid>
-      </Grid.Container>
-
-      {!isEmpty(playerData) && (
-        <div className="image-box">
-          <Text>
-            Struture Community Graph - <Text b>{algorithm}</Text>
-          </Text>
-          <img
-            src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
-            alt="graph"
-            className="graph-image"
-          />
-        </div>
+        </>
       )}
 
       <Modal
