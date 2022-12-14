@@ -72,5 +72,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .nextui-table-column-header {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
   }
 }

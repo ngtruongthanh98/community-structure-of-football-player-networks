@@ -255,7 +255,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               <Table
                 css={{
                   height: 'auto',
-                  minWidth: '550px',
                 }}
               >
                 <Table.Header>
