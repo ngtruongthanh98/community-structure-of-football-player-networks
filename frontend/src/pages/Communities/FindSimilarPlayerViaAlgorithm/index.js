@@ -79,6 +79,12 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     setPlayerId('');
     setPlayerData({});
     calledAlgorithms.current = [];
+    summarizeData.current = {
+      playerId: undefined,
+      KMeans: {},
+      Louvain: {},
+      Hierarchical: {},
+    };
   };
 
   const onCloseModal = () => {
@@ -111,6 +117,8 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               }}
               className="select-input"
               onSelect={(option) => {
+                handleClearPlayerData();
+
                 setValue(option);
                 setPlayerName(option.label);
 
@@ -118,11 +126,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                 playerId.current = option.value;
 
                 doSetPlayerId(option.value);
-
-                // clear summarizeData
-                summarizeData.current.KMeans = {};
-                summarizeData.current.Louvain = {};
-                summarizeData.current.Hierarchical = {};
               }}
             />
           </div>
