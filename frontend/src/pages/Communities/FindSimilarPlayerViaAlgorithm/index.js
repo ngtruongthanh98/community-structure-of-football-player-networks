@@ -12,7 +12,6 @@ import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
 
 const FindSimilarPlayerViaAlgorithm = (props) => {
   const calledAlgorithms = useRef([]);
-  const playerIdRef = useRef(undefined);
 
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
@@ -58,15 +57,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       return;
     }
 
-    if (playerIdRef.current !== playerId) {
-      tableObject.current = {
-        playerId: playerId,
-        KMeans: {},
-        Louvain: {},
-        Hierarchical: {},
-      };
-    }
-
     try {
       const response = await getPlayerInCommunity(playerId, algorithm);
       setPlayerData(response.data);
@@ -93,7 +83,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     setPlayerId('');
     setPlayerData({});
     calledAlgorithms.current = [];
-    playerIdRef.current = undefined;
   };
 
   const onCloseModal = () => {
@@ -231,7 +220,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
         </div>
       )}
 
-      {!isEmpty(playerData) && (
+      {!isEmpty(playerData.executionProc) && (
         <div className="graph-comparision">
           <Text b>Graph Comparision</Text>
 
@@ -245,39 +234,23 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               <Table.Column>
                 <Text b>Algorithm</Text>
               </Table.Column>
-              <Table.Column>
-                <Text b>Find Community</Text>
-              </Table.Column>
-              <Table.Column>
-                <Text b>Find Similar Players</Text>
-              </Table.Column>
+
+              {playerData?.executionProc.map((item) => {
+                return (
+                  <Table.Column>
+                    <Text b>{item.executionName}</Text>
+                  </Table.Column>
+                );
+              })}
             </Table.Header>
 
             <Table.Body>
-              {!isEmpty(props.initalState.dataObject.Louvain?.executionProc) && (
-                <Table.Row>
-                  <Table.Cell>Louvain</Table.Cell>
-                  {props.initalState?.dataObject?.Louvain?.executionProc?.map((item) => {
-                    return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                  })}
-                </Table.Row>
-              )}
-              {!isEmpty(props.initalState.dataObject.KMeans?.executionProc) && (
-                <Table.Row>
-                  <Table.Cell>KMeans</Table.Cell>
-                  {props.initalState?.dataObject?.KMeans?.executionProc?.map((item) => {
-                    return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                  })}
-                </Table.Row>
-              )}
-              {!isEmpty(props.initalState.dataObject.Hierarchical?.executionProc) && (
-                <Table.Row>
-                  <Table.Cell>Hierarchical</Table.Cell>
-                  {props.initalState?.dataObject?.Hierarchical?.executionProc?.map((item) => {
-                    return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                  })}
-                </Table.Row>
-              )}
+              <Table.Row>
+                <Table.Cell>{algorithm}</Table.Cell>
+                {playerData?.executionProc.map((item) => {
+                  return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                })}
+              </Table.Row>
             </Table.Body>
           </Table>
         </div>
