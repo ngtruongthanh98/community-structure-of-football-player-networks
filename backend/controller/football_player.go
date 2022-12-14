@@ -25,3 +25,8 @@ func GetSimilarPlayerList(c echo.Context) error {
 	res := model.GetSimilarPlayerList(playerID, algoName)
 	return c.JSON(http.StatusOK, res)
 }
+
+func ShowImage(c echo.Context) error {
+	path := c.Param("id")
+	return c.File("./static/" + path)
+}
