@@ -100,10 +100,10 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             plt.axis("off")
             nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=30, alpha=1)
             nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
-            name = '../frontend/public/graph_Louvain' + str(id) + '.png'
+            name = '../backend/static/graph_Louvain_' + str(id) + '.png'
             plt.savefig(name)
 
-            res.url = 'http://localhost:3000/graph_Louvain' + str(id) + '.png'
+            res.url = 'http://localhost:9999/static/graph_Louvain_' + str(id) + '.png'
             res.procs.add(name='Visualize', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
         return res
