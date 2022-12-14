@@ -23,7 +23,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const tableObject = useRef({
+  const summarizeData = useRef({
     playerId: undefined,
     KMeans: {},
     Louvain: {},
@@ -65,12 +65,8 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
       if (!calledAlgorithms.current.includes(algorithm)) {
         calledAlgorithms.current.push(algorithm);
 
-        // set tableObject
-        tableObject.current.playerId = playerId;
-        tableObject.current[algorithm] = response.data;
-
-        // set redux
-        props.dispatch(setDataObjectAction(tableObject.current));
+        summarizeData.current.playerId = playerId;
+        summarizeData.current[algorithm] = response.data;
       }
     } catch (error) {
       console.log('error', error);
@@ -91,6 +87,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
   useEffect(() => {
     console.log('props.initalState: ', props.initalState);
+    console.log('summarizeData.current: ', summarizeData.current);
   });
 
   return (
@@ -121,6 +118,11 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                 playerId.current = option.value;
 
                 doSetPlayerId(option.value);
+
+                // clear summarizeData
+                summarizeData.current.KMeans = {};
+                summarizeData.current.Louvain = {};
+                summarizeData.current.Hierarchical = {};
               }}
             />
           </div>
@@ -235,11 +237,40 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell>{algorithm}</Table.Cell>
+                    <Table.Cell>
+                      <Text b>Current:</Text> {algorithm}
+                    </Table.Cell>
                     {playerData?.executionProc.map((item) => {
                       return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
                     })}
                   </Table.Row>
+
+                  {!isEmpty(summarizeData.current.KMeans.executionProc) && (
+                    <Table.Row>
+                      <Table.Cell>KMeans</Table.Cell>
+                      {summarizeData.current.KMeans.executionProc.map((item) => {
+                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      })}
+                    </Table.Row>
+                  )}
+
+                  {!isEmpty(summarizeData.current.Louvain.executionProc) && (
+                    <Table.Row>
+                      <Table.Cell>Louvain</Table.Cell>
+                      {summarizeData.current.Louvain.executionProc.map((item) => {
+                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      })}
+                    </Table.Row>
+                  )}
+
+                  {!isEmpty(summarizeData.current.Hierarchical.executionProc) && (
+                    <Table.Row>
+                      <Table.Cell>Hierarchical</Table.Cell>
+                      {summarizeData.current.Hierarchical.executionProc.map((item) => {
+                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      })}
+                    </Table.Row>
+                  )}
                 </Table.Body>
               </Table>
             </div>
