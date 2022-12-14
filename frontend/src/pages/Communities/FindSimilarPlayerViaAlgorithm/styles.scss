@@ -12,6 +12,10 @@
     margin-bottom: 16px;
   }
 
+  .nextui-grid-container {
+    width: 80vw;
+  }
+
   .input-container {
     display: flex;
     flex-direction: column;
@@ -26,6 +30,33 @@
     margin-top: 24px;
   }
 
+  .player-name-box {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+
+    .clear-btn {
+      margin-left: 16px;
+    }
+  }
+
+  .similar-players-box {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-box {
+    width: 100%;
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .similar-players-table {
     width: 100%;
     margin-top: 24px;
@@ -33,5 +64,13 @@
 
   .graph-image {
     margin-top: 24px;
+  }
+
+  .graph-comparision {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }

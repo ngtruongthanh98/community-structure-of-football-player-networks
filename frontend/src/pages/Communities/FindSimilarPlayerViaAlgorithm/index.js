@@ -1,48 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './styles.scss';
 import DebounceSelect from '../../../components/DebounceSelect';
 import { getPlayer } from '../../../services/player';
 import { getPlayerInCommunity } from '../../../services/graph';
 import { Grid, Radio, Table, Text, Button, Modal } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
+import { connect } from 'react-redux';
+import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
 
-const FindSimilarPlayerViaAlgorithm = () => {
+// const algorithmList = ['KMeans', 'Louvain', 'Hierarchical'];
+
+const FindSimilarPlayerViaAlgorithm = (props) => {
+  const calledAlgorithms = useRef([]);
+
   const [value, setValue] = useState([]);
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
-  // const [playerData, setPlayerData] = useState({
-  //   name: 'Cristiano Ronaldo',
-  //   similarPlayers: [
-  //     {
-  //       name: 'Lionel Messi',
-  //       id: 1,
-  //       similarity: 0.9,
-  //       height: 170,
-  //       weight: 70,
-  //     },
-  //     {
-  //       name: 'Neymar',
-  //       id: 2,
-  //       similarity: 0.8,
-  //       height: 175,
-  //       weight: 75,
-  //     },
-  //     {
-  //       name: 'Kylian Mbappe',
-  //       id: 3,
-  //       similarity: 0.7,
-  //       height: 180,
-  //       weight: 80,
-  //     },
-  //   ],
-  //   graphUrl: 'https://i.imgur.com/1Q9ZQ9r.png',
-  // });
 
   const [algorithm, setAlgorithm] = useState('KMeans');
 
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
+
+  const summarizeData = useRef({
+    playerId: undefined,
+    KMeans: {},
+    Louvain: {},
+    Hierarchical: {},
+  });
+
+  const doSetPlayerId = (playerId) => {
+    props.dispatch(setPlayerIdAction(playerId));
+  };
 
   async function fetchUserList(name) {
     if (name === '') {
@@ -60,28 +50,51 @@ const FindSimilarPlayerViaAlgorithm = () => {
     });
   }
 
-  const onHandleClick = async () => {
+  const onGetPlayerData = async () => {
     if (!playerName) {
       setErrorMessage('Please enter player name');
       setVisible(true);
       return;
     }
 
-    console.log('playerName', playerName);
-    console.log('playerId', playerId);
-    console.log('algorithm', algorithm);
-
     try {
       const response = await getPlayerInCommunity(playerId, algorithm);
       setPlayerData(response.data);
+
+      // set calledAlgorithms
+      if (!calledAlgorithms.current.includes(algorithm)) {
+        calledAlgorithms.current.push(algorithm);
+
+        summarizeData.current.playerId = playerId;
+        summarizeData.current[algorithm] = response.data;
+      }
     } catch (error) {
       console.log('error', error);
     }
   };
 
+  const handleClearPlayerData = () => {
+    setValue([]);
+    setPlayerName('');
+    setPlayerId('');
+    setPlayerData({});
+    calledAlgorithms.current = [];
+    summarizeData.current = {
+      playerId: undefined,
+      KMeans: {},
+      Louvain: {},
+      Hierarchical: {},
+    };
+  };
+
   const onCloseModal = () => {
     setVisible(false);
   };
+
+  useEffect(() => {
+    console.log('props.initalState: ', props.initalState);
+    console.log('summarizeData.current: ', summarizeData.current);
+  });
 
   return (
     <div className="similar-players-page">
@@ -104,9 +117,15 @@ const FindSimilarPlayerViaAlgorithm = () => {
               }}
               className="select-input"
               onSelect={(option) => {
+                handleClearPlayerData();
+
                 setValue(option);
                 setPlayerName(option.label);
+
                 setPlayerId(option.value);
+                playerId.current = option.value;
+
+                doSetPlayerId(option.value);
               }}
             />
           </div>
@@ -122,50 +141,209 @@ const FindSimilarPlayerViaAlgorithm = () => {
           >
             <Radio value="KMeans">K-Means</Radio>
             <Radio value="Louvain">Louvain</Radio>
-            <Radio value="Hierachical">Hierachical</Radio>
+            <Radio value="Hierarchical">Hierarchical</Radio>
           </Radio.Group>
         </Grid>
       </Grid.Container>
 
-      <Button shadow color="primary" auto onPress={onHandleClick} className="submit-btn">
+      <Button shadow color="primary" auto onPress={onGetPlayerData} className="submit-btn">
         Find similar players
       </Button>
 
       {!isEmpty(playerData) && (
-        <Table
-          aria-label="Example static collection table"
-          css={{
-            height: 'auto',
-            minWidth: '500px',
-          }}
-          selectionMode="single"
-          className="similar-players-table"
-        >
-          <Table.Header>
-            <Table.Column key="name">Name</Table.Column>
-            <Table.Column key="id">Id</Table.Column>
-            <Table.Column key="height">Height</Table.Column>
-            <Table.Column key="weight">Weight</Table.Column>
-            <Table.Column key="similarity">Similarity</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {playerData.similarPlayers.map((item) => {
-              return (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.id}</Table.Cell>
-                  <Table.Cell>{item.height}</Table.Cell>
-                  <Table.Cell>{item.weight}</Table.Cell>
-                  <Table.Cell>{item.similarity}</Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
+        <div className="player-name-box">
+          <Text>
+            <Text b>Player: </Text>
+            {playerData.name}
+          </Text>
+
+          <Button shadow color="error" auto onPress={handleClearPlayerData} className="clear-btn">
+            Clear result
+          </Button>
+        </div>
       )}
 
+      <Grid.Container gap={2} justify="center">
+        <Grid xs={12} md={6} justify="center">
+          {!isEmpty(playerData) && (
+            <div className="similar-players-box">
+              <Text>
+                <Text b>Similar players: </Text>
+              </Text>
+              <Table
+                css={{
+                  height: 'auto',
+                  minWidth: '500px',
+                }}
+                className="similar-players-table"
+              >
+                <Table.Header>
+                  <Table.Column key="name" allowsSorting>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Name
+                    </Text>
+                  </Table.Column>
+                  <Table.Column key="id" allowsSorting>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      ID
+                    </Text>
+                  </Table.Column>
+                  <Table.Column key="height" allowsSorting>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Height
+                    </Text>
+                  </Table.Column>
+                  <Table.Column key="weight" allowsSorting>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Weight
+                    </Text>
+                  </Table.Column>
+                  <Table.Column key="similarity" allowsSorting>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Similarity
+                    </Text>
+                  </Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {playerData.similarPlayer &&
+                    playerData.similarPlayer.map((item) => {
+                      return (
+                        <Table.Row key={item.id}>
+                          <Table.Cell>{item.name}</Table.Cell>
+                          <Table.Cell>{item.id}</Table.Cell>
+                          <Table.Cell>{item.height}</Table.Cell>
+                          <Table.Cell>{item.weight}</Table.Cell>
+                          <Table.Cell>
+                            <Text b color="primary">
+                              {item.similarity}
+                            </Text>
+                          </Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
+                </Table.Body>
+              </Table>
+            </div>
+          )}
+        </Grid>
+
+        <Grid xs={12} md={6} justify="center">
+          {!isEmpty(playerData.executionProc) && (
+            <div className="graph-comparision">
+              <Text b>Graph Comparision</Text>
+
+              <Table
+                css={{
+                  height: 'auto',
+                  minWidth: '550px',
+                }}
+              >
+                <Table.Header>
+                  <Table.Column>
+                    <Text
+                      css={{
+                        fontSize: '18px',
+                      }}
+                    >
+                      Algorithm
+                    </Text>
+                  </Table.Column>
+
+                  {playerData?.executionProc.map((item) => {
+                    return (
+                      <Table.Column>
+                        <Text
+                          css={{
+                            fontSize: '18px',
+                          }}
+                        >
+                          {item.executionName}
+                        </Text>
+                      </Table.Column>
+                    );
+                  })}
+                </Table.Header>
+
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Text b>Current:</Text> <Text color="primary">{algorithm}</Text>
+                    </Table.Cell>
+                    {playerData?.executionProc.map((item) => {
+                      return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                    })}
+                  </Table.Row>
+
+                  {!isEmpty(summarizeData.current.KMeans.executionProc) && (
+                    <Table.Row>
+                      <Table.Cell>
+                        <Text color="warning">KMeans</Text>
+                      </Table.Cell>
+                      {summarizeData.current.KMeans.executionProc.map((item) => {
+                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      })}
+                    </Table.Row>
+                  )}
+
+                  {!isEmpty(summarizeData.current.Louvain.executionProc) && (
+                    <Table.Row>
+                      <Table.Cell>
+                        <Text color="error">Louvain</Text>
+                      </Table.Cell>
+                      {summarizeData.current.Louvain.executionProc.map((item) => {
+                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      })}
+                    </Table.Row>
+                  )}
+
+                  {!isEmpty(summarizeData.current.Hierarchical.executionProc) && (
+                    <Table.Row>
+                      <Table.Cell>
+                        <Text color="success">Hierarchical</Text>
+                      </Table.Cell>
+                      {summarizeData.current.Hierarchical.executionProc.map((item) => {
+                        return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                      })}
+                    </Table.Row>
+                  )}
+                </Table.Body>
+              </Table>
+            </div>
+          )}
+        </Grid>
+      </Grid.Container>
+
       {!isEmpty(playerData) && (
-        <img src={playerData.graphUrl} alt="graph" className="graph-image" />
+        <div className="image-box">
+          <Text>
+            Struture Community Graph - <Text b>{algorithm}</Text>
+          </Text>
+          <img
+            src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
+            alt="graph"
+            className="graph-image"
+          />
+        </div>
       )}
 
       <Modal
@@ -195,4 +373,12 @@ const FindSimilarPlayerViaAlgorithm = () => {
   );
 };
 
-export default FindSimilarPlayerViaAlgorithm;
+const mapStateToProps = (state) => ({
+  initalState: state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindSimilarPlayerViaAlgorithm);

@@ -29,8 +29,30 @@ type AttributeModel struct {
 	Name  string
 }
 
+type ExecutionStage struct {
+	Name string
+	Time float64
+}
+
 type AttributeResponseModel struct {
 	Attributes []AttributeModel
+}
+
+type Player struct {
+	Id         string   `json:"id"`
+	Name       string   `json:"name"`
+	Height     int64    `json:"height"`
+	Weight     int64    `json:"weight"`
+	Birth      string   `json:"birth"`
+	Positions  []string `json:"positions"`
+	Similarity float64  `json:"similarity"`
+}
+
+type SimilarPlayerByID struct {
+	Name          string           `json:"name"`
+	SimilarPlayer []Player         `json:"similarPlayer"`
+	ExecutionProc []ExecutionStage `json:"executionProc"`
+	GraphURL      string           `json:"graphURL"`
 }
 
 func ExchangeGraphClientInstance() *ExchangeClient {
@@ -96,7 +118,49 @@ func (e *ExchangeClient) GetBestAttributesByPlayerID(id string) (*AttributeRespo
 			Name:  r.Name,
 		})
 	}
-
 	return result, err
+}
 
+func (e *ExchangeClient) GetSimilarPlayerList(id, algo string) (*SimilarPlayerByID, error) {
+	conn, err := e.Pool.Get(context.Background())
+	if err != nil {
+		glog.Errorf("GetSimilarPlayerList connection from pool err: %s", err.Error())
+		return nil, err
+	}
+	defer func() {
+		conn.Close()
+		if r := recover(); r != nil {
+			log.Fatal("Recovered in f", r)
+		}
+	}()
+
+	client := NewPlayerInfoClient(conn.ClientConn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(ExchangeClientTimeout)*time.Second)
+	defer cancel()
+
+	var result *SimilarPlayerByID = &SimilarPlayerByID{}
+	res, err := client.GetSimilarPlayerList(ctx, &GraphByPlayerAndAlgoRequest{
+		Id:        id,
+		Algorithm: algo,
+	})
+
+	if err != nil {
+		glog.Errorf("GetSimilarPlayerList ExchangeClient: %s", err.Error())
+		return nil, err
+	}
+
+	for _, r := range res.Similars {
+		result.SimilarPlayer = append(result.SimilarPlayer, Player{
+			Id:         r.Index,
+			Similarity: float64(r.Similar),
+		})
+	}
+	for _, e := range res.Procs {
+		result.ExecutionProc = append(result.ExecutionProc, ExecutionStage{
+			Name: e.Name,
+			Time: float64(e.Time),
+		})
+	}
+	result.GraphURL = res.Url
+	return result, err
 }

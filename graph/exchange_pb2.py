@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x65xchange.proto\"&\n\x16RecommendPlayerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x81\x01\n\x17RecommendPlayerResponse\x12\x39\n\x07players\x18\x01 \x03(\x0b\x32(.RecommendPlayerResponse.RecommendPLayer\x1a+\n\x0fRecommendPLayer\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x1e\n\x10\x41ttributeRequest\x12\n\n\x02id\x18\x01 \x01(\t\"o\n\x11\x41ttributeResponse\x12\x30\n\nattributes\x18\x01 \x03(\x0b\x32\x1c.AttributeResponse.Attribute\x1a(\n\tAttribute\x12\r\n\x05index\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t2\xa7\x01\n\nPlayerInfo\x12Q\n\x1aGetRecommendedPlayerByName\x12\x17.RecommendPlayerRequest\x1a\x18.RecommendPlayerResponse\"\x00\x12\x46\n\x1bGetBestAttributesByPlayerID\x12\x11.AttributeRequest\x1a\x12.AttributeResponse\"\x00\x42\x08Z\x06./grpcb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x65xchange.proto\"&\n\x16RecommendPlayerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x81\x01\n\x17RecommendPlayerResponse\x12\x39\n\x07players\x18\x01 \x03(\x0b\x32(.RecommendPlayerResponse.RecommendPLayer\x1a+\n\x0fRecommendPLayer\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x1e\n\x10\x41ttributeRequest\x12\n\n\x02id\x18\x01 \x01(\t\"o\n\x11\x41ttributeResponse\x12\x30\n\nattributes\x18\x01 \x03(\x0b\x32\x1c.AttributeResponse.Attribute\x1a(\n\tAttribute\x12\r\n\x05index\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"<\n\x1bGraphByPlayerAndAlgoRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\talgorithm\x18\x02 \x01(\t\"\xfc\x01\n\x1cGraphByPlayerAndAlgoResponse\x12=\n\x08similars\x18\x01 \x03(\x0b\x32+.GraphByPlayerAndAlgoResponse.SimilarPlayer\x12\x36\n\x05procs\x18\x02 \x03(\x0b\x32\'.GraphByPlayerAndAlgoResponse.Execution\x12\x0b\n\x03url\x18\x03 \x01(\t\x1a/\n\rSimilarPlayer\x12\r\n\x05index\x18\x01 \x01(\t\x12\x0f\n\x07similar\x18\x02 \x01(\x02\x1a\'\n\tExecution\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x02\x32\xfe\x01\n\nPlayerInfo\x12Q\n\x1aGetRecommendedPlayerByName\x12\x17.RecommendPlayerRequest\x1a\x18.RecommendPlayerResponse\"\x00\x12\x46\n\x1bGetBestAttributesByPlayerID\x12\x11.AttributeRequest\x1a\x12.AttributeResponse\"\x00\x12U\n\x14GetSimilarPlayerList\x12\x1c.GraphByPlayerAndAlgoRequest\x1a\x1d.GraphByPlayerAndAlgoResponse\"\x00\x42\x08Z\x06./grpcb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'exchange_pb2', globals())
@@ -33,6 +33,14 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _ATTRIBUTERESPONSE._serialized_end=333
   _ATTRIBUTERESPONSE_ATTRIBUTE._serialized_start=293
   _ATTRIBUTERESPONSE_ATTRIBUTE._serialized_end=333
-  _PLAYERINFO._serialized_start=336
-  _PLAYERINFO._serialized_end=503
+  _GRAPHBYPLAYERANDALGOREQUEST._serialized_start=335
+  _GRAPHBYPLAYERANDALGOREQUEST._serialized_end=395
+  _GRAPHBYPLAYERANDALGORESPONSE._serialized_start=398
+  _GRAPHBYPLAYERANDALGORESPONSE._serialized_end=650
+  _GRAPHBYPLAYERANDALGORESPONSE_SIMILARPLAYER._serialized_start=562
+  _GRAPHBYPLAYERANDALGORESPONSE_SIMILARPLAYER._serialized_end=609
+  _GRAPHBYPLAYERANDALGORESPONSE_EXECUTION._serialized_start=611
+  _GRAPHBYPLAYERANDALGORESPONSE_EXECUTION._serialized_end=650
+  _PLAYERINFO._serialized_start=653
+  _PLAYERINFO._serialized_end=907
 # @@protoc_insertion_point(module_scope)

@@ -21,6 +21,8 @@ func main() {
 
 	e.GET("/recommend/:name", controller.GetRecommendedPlayerByName)
 	e.GET("/player/:id", controller.GetPlayerByID)
+	e.GET("/graph/:playerId/:algoName", controller.GetSimilarPlayerList)
+	e.GET("/static/:id", controller.ShowImage)
 
 	e.Logger.Fatal(e.Start(":9999"))
 

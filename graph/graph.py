@@ -3,6 +3,8 @@ import pandas as pd
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
+import networkx as nx
+from louvain import detect_communities, modularity
 
 
 personal_info = ['UID', 'Name', 'NationID', 'Born']
@@ -16,6 +18,30 @@ physical_attr = ['Acceleration', 'Agility', 'Balance', 'Jumping', 'NaturalFitnes
 hidden_attr = ['Consistency', 'Dirtiness', 'ImportantMatches', 'InjuryProness', 'Versatility', 'Adaptability', 'Ambition', 'Loyalty', 'Pressure',
   'Professional', 'Sportsmanship', 'Temperament', 'Controversy']
 foot_atr = ['LeftFoot', 'RightFoot']
+
+
+
+
+
+
+
+
+G_Louvain = nx.Graph()
+Community_Louvain = {}
+Partition_Louvain = []
+G_Hierarchical = nx.Graph()
+G_KMeans = nx.Graph()
+Score_Table = np.empty((1, 1000), int)
+threshold = 800
+
+
+
+
+
+
+
+
+
 
 def position_split(x):
     list_1 = x.split()
@@ -184,8 +210,7 @@ def InitData():
 
     dataset_3 = dataset_2[dataset_2.PositionsDesc != 'C'].reset_index(drop=True)
     dataset_3.to_csv('../dataset3.csv')
-    print(dataset_3.head(1))
-
+    
 
 
 
@@ -193,3 +218,86 @@ def InitData():
 #     football_graph = FootballPlayerGraph("parse")
     
 #     pass
+
+def generate_player_data(file_name):
+    global Score_Table
+    global threshold
+    dataset = pd.read_csv(file_name)
+    node_array = dataset.iloc[0:1000, 7:69].to_numpy()
+    f_sparse = open('../player_edge_sparse.txt', 'w')
+    f_dense = open('../player_edge_dense.txt', 'w')
+    
+    for (index_source, player_data) in enumerate(node_array):
+        diff = node_array - player_data    
+        diff_square = diff **2
+        score_array = np.sum(diff_square, axis=1)
+        # print(score_array.shape)
+        Score_Table = np.append(Score_Table, np.array([score_array]), axis=0)
+        for (index_dest, edge) in enumerate(score_array):
+            if edge == 0:
+                continue
+            if edge < threshold:
+                f_sparse.write("{} {} {}\n".format(index_source, index_dest, edge))
+            f_dense.write("{} {} {}\n".format(index_source, index_dest, edge))
+
+    f_sparse.close()
+    f_dense.close()
+    Score_Table = Score_Table[1:]
+    print(Score_Table)
+    print(Score_Table.shape)
+    print("Done generate player data")
+
+
+def read_data_to_graph(graph:nx.Graph):
+    file_name = '../player_edge_sparse.txt'
+    # file_name = '../player_edge_dense.txt'
+    with open(file_name, "r") as f:
+        for line in f:
+            if line[0] == "#":
+                continue
+            N_source, N_dest, weight = map(int, line.split())
+            graph.add_edge(N_source, N_dest, weight=weight)
+
+
+
+
+def build_louvain_graph():
+    global G_Louvain
+    global Community_Louvain
+    global Partition_Louvain
+    read_data_to_graph(G_Louvain)
+    Partition_Louvain = detect_communities(G_Louvain, randomized=True)
+    
+    print(Partition_Louvain)
+    print(len(Partition_Louvain))
+    print("Modularity for best partition:", modularity(G_Louvain, Partition_Louvain))
+
+    for community, nodes in enumerate(Partition_Louvain):
+        for node in nodes:
+            # print(community, node)
+            Community_Louvain[node] = community
+    
+    # cmap = plt.get_cmap("jet")
+    # A = nx.Graph()
+    # A.add_edge(1,2,weight=5)
+    # A.add_edge(1,3,weight=4)
+    # A.add_edge(2,3,weight=3)
+    # A.add_edge(1,4,weight=2)
+
+    # parts = detect_communities(A, randomized=True)
+    # print(parts)
+    # pos = nx.spring_layout(A, weight='weight', k=0.12)
+    # pos1 = nx.graphviz
+    # # indexed = [Community_Louvain.get(node) for node in G_Louvain]
+    # # print(indexed)
+    # print([node for node in A])
+    # plt.axis("off")
+    # # print("huh")
+    # nx.draw_networkx_nodes(A, pos=pos, cmap=cmap, node_color=[0,1,1,0] , node_size=20, alpha=1)
+    # nx.draw_networkx_edges(A, pos=pos, alpha=0.2)
+    # plt.show()    
+
+
+def BuildGraph():
+    generate_player_data('../dataset3.csv')
+    build_louvain_graph()
