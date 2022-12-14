@@ -63,11 +63,12 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             # print(score_comm)
             best_score_comm = dict(sorted(score_comm.items(), key=lambda item: item[1]))
             best_score_index_ = list(best_score_comm.keys())
+
             best_score_index = best_score_index_[1:11]
             print(best_score_index)
             # best_score_comm = np.argsort(score_comm)
             # best_score_comm = best_score_comm[1:11]
-            max_score = np.max(best_score_comm)
+            max_score = np.max(list(best_score_comm.values()))
             for player in best_score_index:
                 res.similars.add(index=str(player), similar=((float)(max_score - best_score_comm[player]))/max_score)
             # print(best_score_comm)

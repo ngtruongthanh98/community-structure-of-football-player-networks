@@ -3,6 +3,7 @@ package model
 import (
 	ex "community-structure/grpc"
 	"encoding/csv"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -32,7 +33,7 @@ type Player struct {
 	Birth      string      `json:"birth,omitempty"`
 	Positions  []string    `json:"positions,omitempty"`
 	Attributes []Attribute `json:"attributes,omitempty"`
-	Similarity float64     `json:"similarity"`
+	Similarity string      `json:"similarity"`
 }
 
 type SimilarPlayerByID struct {
@@ -269,7 +270,7 @@ func GetSimilarPlayerList(id, algo string) SimilarPlayerByID {
 			Name:       player.Name,
 			Height:     player.Height,
 			Weight:     player.Weight,
-			Similarity: r.Similarity,
+			Similarity: fmt.Sprintf("%.2f", r.Similarity*100) + "%",
 		})
 	}
 
