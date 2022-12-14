@@ -158,7 +158,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
         </div>
       )}
 
-      {/* Container 2 column */}
       <Grid.Container gap={2} justify="center">
         <Grid xs={12} md={6} justify="center">
           {!isEmpty(playerData) && (
@@ -167,29 +166,27 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                 <Text b>Similar players: </Text>
               </Text>
               <Table
-                aria-label="Example static collection table"
                 css={{
                   height: 'auto',
                   minWidth: '500px',
                 }}
-                selectionMode="single"
                 className="similar-players-table"
               >
                 <Table.Header>
                   <Table.Column key="name" allowsSorting>
-                    Name
+                    <Text b> Name</Text>
                   </Table.Column>
                   <Table.Column key="id" allowsSorting>
-                    Id
+                    <Text b>ID</Text>
                   </Table.Column>
                   <Table.Column key="height" allowsSorting>
-                    Height
+                    <Text b>Height</Text>
                   </Table.Column>
                   <Table.Column key="weight" allowsSorting>
-                    Weight
+                    <Text b>Weight</Text>
                   </Table.Column>
                   <Table.Column key="similarity" allowsSorting>
-                    Similarity
+                    <Text b>Similarity</Text>
                   </Table.Column>
                 </Table.Header>
                 <Table.Body>
