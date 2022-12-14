@@ -49,7 +49,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         id = request.id
         algo = request.algorithm
         start = datetime.datetime.now()
-        if algo == "Louvain":
+        if algo == "Louvain" or algo == "KMeans":
             group = graph.Community_Louvain[int(id)]
             comm = graph.Partition_Louvain[group]
 

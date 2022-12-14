@@ -1,5 +1,6 @@
 #!/bin/sh
 
+pip3 install grpcio
 pip3 install grpcio-tools
 pip3 install numpy
 pip3 install pandas
