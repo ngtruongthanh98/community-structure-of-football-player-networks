@@ -188,7 +188,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
               {!isEmpty(playerData) && (
                 <div className="similar-players-box">
                   <Text>
-                    <Text b>Similar players: </Text>
+                    <Text b>Similar players</Text>
                   </Text>
                   <Table
                     css={{
@@ -276,6 +276,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                     css={{
                       height: 'auto',
                     }}
+                    className="graph-comparision-table"
                   >
                     <Table.Header>
                       <Table.Column>

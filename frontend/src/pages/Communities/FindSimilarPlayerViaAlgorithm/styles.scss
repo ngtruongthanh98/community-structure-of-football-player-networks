@@ -50,6 +50,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .nextui-table-column-header {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .nextui-table-cell {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
   }
 
   .image-box {
@@ -80,6 +90,15 @@
     .nextui-table-column-header {
       padding-left: 12px;
       padding-right: 12px;
+    }
+
+    .nextui-table-cell {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .graph-comparision-table {
+      margin-top: 24px;
     }
   }
 }
