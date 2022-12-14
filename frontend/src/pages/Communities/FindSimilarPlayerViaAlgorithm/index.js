@@ -158,54 +158,97 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
         </div>
       )}
 
-      {!isEmpty(playerData) && (
-        <div className="similar-players-box">
-          <Text>
-            <Text b>Similar players: </Text>
-          </Text>
-          <Table
-            aria-label="Example static collection table"
-            css={{
-              height: 'auto',
-              minWidth: '500px',
-            }}
-            selectionMode="single"
-            className="similar-players-table"
-          >
-            <Table.Header>
-              <Table.Column key="name" allowsSorting>
-                Name
-              </Table.Column>
-              <Table.Column key="id" allowsSorting>
-                Id
-              </Table.Column>
-              <Table.Column key="height" allowsSorting>
-                Height
-              </Table.Column>
-              <Table.Column key="weight" allowsSorting>
-                Weight
-              </Table.Column>
-              <Table.Column key="similarity" allowsSorting>
-                Similarity
-              </Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {playerData.similarPlayer &&
-                playerData.similarPlayer.map((item) => {
-                  return (
-                    <Table.Row key={item.id}>
-                      <Table.Cell>{item.name}</Table.Cell>
-                      <Table.Cell>{item.id}</Table.Cell>
-                      <Table.Cell>{item.height}</Table.Cell>
-                      <Table.Cell>{item.weight}</Table.Cell>
-                      <Table.Cell>{item.similarity}</Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
-        </div>
-      )}
+      {/* Container 2 column */}
+      <Grid.Container gap={2} justify="center">
+        <Grid xs={12} md={6} justify="center">
+          {!isEmpty(playerData) && (
+            <div className="similar-players-box">
+              <Text>
+                <Text b>Similar players: </Text>
+              </Text>
+              <Table
+                aria-label="Example static collection table"
+                css={{
+                  height: 'auto',
+                  minWidth: '500px',
+                }}
+                selectionMode="single"
+                className="similar-players-table"
+              >
+                <Table.Header>
+                  <Table.Column key="name" allowsSorting>
+                    Name
+                  </Table.Column>
+                  <Table.Column key="id" allowsSorting>
+                    Id
+                  </Table.Column>
+                  <Table.Column key="height" allowsSorting>
+                    Height
+                  </Table.Column>
+                  <Table.Column key="weight" allowsSorting>
+                    Weight
+                  </Table.Column>
+                  <Table.Column key="similarity" allowsSorting>
+                    Similarity
+                  </Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {playerData.similarPlayer &&
+                    playerData.similarPlayer.map((item) => {
+                      return (
+                        <Table.Row key={item.id}>
+                          <Table.Cell>{item.name}</Table.Cell>
+                          <Table.Cell>{item.id}</Table.Cell>
+                          <Table.Cell>{item.height}</Table.Cell>
+                          <Table.Cell>{item.weight}</Table.Cell>
+                          <Table.Cell>{item.similarity}</Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
+                </Table.Body>
+              </Table>
+            </div>
+          )}
+        </Grid>
+
+        <Grid xs={12} md={6} justify="center">
+          {!isEmpty(playerData.executionProc) && (
+            <div className="graph-comparision">
+              <Text b>Graph Comparision</Text>
+
+              <Table
+                css={{
+                  height: 'auto',
+                  minWidth: '500px',
+                }}
+              >
+                <Table.Header>
+                  <Table.Column>
+                    <Text b>Algorithm</Text>
+                  </Table.Column>
+
+                  {playerData?.executionProc.map((item) => {
+                    return (
+                      <Table.Column>
+                        <Text b>{item.executionName}</Text>
+                      </Table.Column>
+                    );
+                  })}
+                </Table.Header>
+
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>{algorithm}</Table.Cell>
+                    {playerData?.executionProc.map((item) => {
+                      return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
+                    })}
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </div>
+          )}
+        </Grid>
+      </Grid.Container>
 
       {!isEmpty(playerData) && (
         <div className="image-box">
@@ -217,42 +260,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
             alt="graph"
             className="graph-image"
           />
-        </div>
-      )}
-
-      {!isEmpty(playerData.executionProc) && (
-        <div className="graph-comparision">
-          <Text b>Graph Comparision</Text>
-
-          <Table
-            css={{
-              height: 'auto',
-              minWidth: '500px',
-            }}
-          >
-            <Table.Header>
-              <Table.Column>
-                <Text b>Algorithm</Text>
-              </Table.Column>
-
-              {playerData?.executionProc.map((item) => {
-                return (
-                  <Table.Column>
-                    <Text b>{item.executionName}</Text>
-                  </Table.Column>
-                );
-              })}
-            </Table.Header>
-
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>{algorithm}</Table.Cell>
-                {playerData?.executionProc.map((item) => {
-                  return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
-                })}
-              </Table.Row>
-            </Table.Body>
-          </Table>
         </div>
       )}
 
