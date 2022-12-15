@@ -357,14 +357,14 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
           {!isEmpty(playerData) && (
             <Card isHoverable className="image-card">
               <Text
-                h1
+                h2
                 size={60}
                 css={{
                   textGradient: '45deg, $blue600 -20%, $pink600 50%',
                 }}
                 weight="bold"
               >
-                Struture Community Graph - {algorithm}
+                {algorithm}
               </Text>
               <img
                 src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
