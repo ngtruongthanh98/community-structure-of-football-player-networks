@@ -3,7 +3,7 @@ import './styles.scss';
 import DebounceSelect from '../../../components/DebounceSelect';
 import { getPlayer } from '../../../services/player';
 import { getPlayerInCommunity } from '../../../services/graph';
-import { Grid, Radio, Table, Text, Button, Modal, Loading } from '@nextui-org/react';
+import { Grid, Radio, Table, Text, Button, Modal, Loading, Card } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import { connect } from 'react-redux';
 import { setPlayerIdAction, setDataObjectAction } from '../../../store/actions';
@@ -19,7 +19,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
 
-  const [algorithm, setAlgorithm] = useState('KMeans');
+  const [algorithm, setAlgorithm] = useState('Louvain');
 
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
@@ -28,7 +28,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
   const summarizeData = useRef({
     playerId: undefined,
-    KMeans: {},
+    // KMeans: {},
     Louvain: {},
     Hierarchical: {},
   });
@@ -90,7 +90,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     calledAlgorithms.current = [];
     summarizeData.current = {
       playerId: undefined,
-      KMeans: {},
+      // KMeans: {},
       Louvain: {},
       Hierarchical: {},
     };
@@ -110,55 +110,56 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     <div className="similar-players-page">
       <div className="title">Find similar players</div>
 
-      <Grid.Container gap={2} justify="center">
-        <Grid xs={12} md={6} justify="center">
-          <div className="input-container">
-            <Text className="text-label">Enter player name</Text>
-            <DebounceSelect
-              mode="multiple"
-              value={value}
-              placeholder="Enter a player name"
-              fetchOptions={fetchUserList}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
-              style={{
-                width: '300px',
-              }}
-              className="select-input"
-              onSelect={(option) => {
-                handleClearPlayerData();
+      <Card isHoverable className="input-similar-player-card">
+        <Grid.Container gap={2} justify="center" className="input-box-container">
+          <Grid xs={12} md={6} justify="center">
+            <div className="input-container">
+              <Text className="text-label">Enter player name</Text>
+              <DebounceSelect
+                mode="multiple"
+                value={value}
+                placeholder="Enter a player name"
+                fetchOptions={fetchUserList}
+                onChange={(newValue) => {
+                  setValue(newValue);
+                }}
+                style={{
+                  width: '300px',
+                }}
+                className="select-input"
+                onSelect={(option) => {
+                  handleClearPlayerData();
 
-                setValue(option);
-                setPlayerName(option.label);
+                  setValue(option);
+                  setPlayerName(option.label);
 
-                setPlayerId(option.value);
-                playerId.current = option.value;
+                  setPlayerId(option.value);
+                  playerId.current = option.value;
 
-                doSetPlayerId(option.value);
-              }}
-            />
-          </div>
-        </Grid>
+                  doSetPlayerId(option.value);
+                }}
+              />
+            </div>
+          </Grid>
 
-        <Grid xs={12} md={6} justify="center">
-          <Radio.Group
-            label="Choose an algorithm"
-            defaultValue="KMeans"
-            value={algorithm}
-            onChange={setAlgorithm}
-            orientation="horizontal"
-          >
-            <Radio value="KMeans">K-Means</Radio>
-            <Radio value="Louvain">Louvain</Radio>
-            <Radio value="Hierarchical">Hierarchical</Radio>
-          </Radio.Group>
-        </Grid>
-      </Grid.Container>
+          <Grid xs={12} md={6} justify="center">
+            <Radio.Group
+              label="Choose an algorithm"
+              defaultValue="Louvain"
+              value={algorithm}
+              onChange={setAlgorithm}
+              orientation="horizontal"
+            >
+              <Radio value="Louvain">Louvain</Radio>
+              <Radio value="Hierarchical">Hierarchical</Radio>
+            </Radio.Group>
+          </Grid>
+        </Grid.Container>
 
-      <Button shadow color="primary" auto onPress={onGetPlayerData} className="submit-btn">
-        Find similar players
-      </Button>
+        <Button shadow color="primary" auto onPress={onGetPlayerData} className="submit-btn">
+          Find similar players
+        </Button>
+      </Card>
 
       {isLoading & isLoadFirstTime.current ? (
         <Loading className="loading-similar" />
@@ -183,7 +184,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
             </div>
           )}
 
-          <Grid.Container gap={2} justify="center">
+          <Grid.Container gap={2} justify="center" className="table-container">
             <Grid xs={12} md={6} justify="center">
               {!isEmpty(playerData) && (
                 <div className="similar-players-box">
@@ -314,7 +315,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                         })}
                       </Table.Row>
 
-                      {!isEmpty(summarizeData.current.KMeans.executionProc) && (
+                      {/* {!isEmpty(summarizeData.current.KMeans.executionProc) && (
                         <Table.Row>
                           <Table.Cell>
                             <Text color="warning">KMeans</Text>
@@ -323,7 +324,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                             return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
                           })}
                         </Table.Row>
-                      )}
+                      )} */}
 
                       {!isEmpty(summarizeData.current.Louvain.executionProc) && (
                         <Table.Row>
@@ -354,16 +355,23 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
           </Grid.Container>
 
           {!isEmpty(playerData) && (
-            <div className="image-box">
-              <Text>
-                Struture Community Graph - <Text b>{algorithm}</Text>
+            <Card isHoverable className="image-card">
+              <Text
+                h2
+                size={60}
+                css={{
+                  textGradient: '45deg, $blue600 -20%, $pink600 50%',
+                }}
+                weight="bold"
+              >
+                {algorithm}
               </Text>
               <img
                 src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
                 alt="graph"
                 className="graph-image"
               />
-            </div>
+            </Card>
           )}
         </>
       )}
