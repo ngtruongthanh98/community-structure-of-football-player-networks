@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './styles.scss';
 import RadarChart from '../../components/Charts/RadarChart';
 import DebounceSelect from '../../components/DebounceSelect';
@@ -16,6 +16,7 @@ const Home = () => {
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
+  const isLoadFirstTime = useRef(true);
 
   const handleRemovePlayer = () => {
     setValue([]);
@@ -46,6 +47,7 @@ const Home = () => {
 
     getPlayerDetail(playerId).then((res) => {
       setPlayerData(res.data);
+      isLoadFirstTime.current = false;
     });
   }, [playerId]);
 
@@ -175,7 +177,7 @@ const Home = () => {
         )}
       </div>
 
-      {isEmpty(playerData) && (
+      {isEmpty(playerData) && !playerName && isLoadFirstTime.current && (
         <div className="notification-box">
           <Card isHoverable className="notification-card">
             <div className="notification-card__title">Welcome to Football Player Stats</div>
