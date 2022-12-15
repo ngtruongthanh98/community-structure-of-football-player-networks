@@ -95,83 +95,89 @@ const Home = () => {
             </div>
 
             <div className="detail-information">
-              <Card
-                isHoverable
-                variant="bordered"
-                className="player-stats-card"
-                css={{ mw: '500px' }}
-              >
-                <Card.Header>
-                  <Text b>Player Statistics</Text>
-                </Card.Header>
-                <Card.Divider />
+              <Grid.Container gap={2} justify="center">
+                <Grid xs={12} md={6} justify="center">
+                  <Card
+                    isHoverable
+                    variant="bordered"
+                    className="player-stats-card"
+                    css={{ mw: '500px' }}
+                  >
+                    <Card.Header>
+                      <Text b>Player Statistics</Text>
+                    </Card.Header>
+                    <Card.Divider />
 
-                {isEmpty(playerData) ? (
-                  <Card.Body>
-                    <Grid.Container gap={2}>
-                      {attributeTitle.map((item, index) => (
-                        <Grid xs={12} key={index}>
-                          <Grid xs={6}>
-                            <Text b>{item}:</Text>
-                          </Grid>
-                          <Grid xs={6}>
-                            <Skeleton
-                              height={20}
-                              width={100}
-                              className="player-statistic-skeleton"
-                            />
-                          </Grid>
-                        </Grid>
-                      ))}
-                    </Grid.Container>
-                  </Card.Body>
-                ) : (
-                  <Card.Body>
-                    <Grid.Container gap={2}>
-                      {attributeTitle.map((item, index) => (
-                        <Grid xs={12} key={index}>
-                          <Grid xs={6}>
-                            <Text b>{item}:</Text>
-                          </Grid>
-                          <Grid xs={6}>
-                            {item === 'Positions' ? (
-                              playerData.positions && (
-                                <Text>
-                                  {playerData.positions && playerData.positions.join(', ')}
-                                </Text>
-                              )
-                            ) : (
-                              <Text>
-                                {item === 'Name'
-                                  ? playerData.name
-                                  : item === 'ID'
-                                  ? playerData.id
-                                  : item === 'Birth'
-                                  ? playerData.birth
-                                  : item === 'Height'
-                                  ? playerData.height + ' (cm)'
-                                  : item === 'Weight'
-                                  ? playerData.weight + ' (kg)'
-                                  : ''}
-                              </Text>
-                            )}
-                          </Grid>
-                        </Grid>
-                      ))}
-                    </Grid.Container>
-                  </Card.Body>
-                )}
-              </Card>
+                    {isEmpty(playerData) ? (
+                      <Card.Body>
+                        <Grid.Container gap={2}>
+                          {attributeTitle.map((item, index) => (
+                            <Grid xs={12} key={index}>
+                              <Grid xs={6}>
+                                <Text b>{item}:</Text>
+                              </Grid>
+                              <Grid xs={6}>
+                                <Skeleton
+                                  height={20}
+                                  width={100}
+                                  className="player-statistic-skeleton"
+                                />
+                              </Grid>
+                            </Grid>
+                          ))}
+                        </Grid.Container>
+                      </Card.Body>
+                    ) : (
+                      <Card.Body>
+                        <Grid.Container gap={2}>
+                          {attributeTitle.map((item, index) => (
+                            <Grid xs={12} key={index}>
+                              <Grid xs={6}>
+                                <Text b>{item}:</Text>
+                              </Grid>
+                              <Grid xs={6}>
+                                {item === 'Positions' ? (
+                                  playerData.positions && (
+                                    <Text>
+                                      {playerData.positions && playerData.positions.join(', ')}
+                                    </Text>
+                                  )
+                                ) : (
+                                  <Text>
+                                    {item === 'Name'
+                                      ? playerData.name
+                                      : item === 'ID'
+                                      ? playerData.id
+                                      : item === 'Birth'
+                                      ? playerData.birth
+                                      : item === 'Height'
+                                      ? playerData.height + ' (cm)'
+                                      : item === 'Weight'
+                                      ? playerData.weight + ' (kg)'
+                                      : ''}
+                                  </Text>
+                                )}
+                              </Grid>
+                            </Grid>
+                          ))}
+                        </Grid.Container>
+                      </Card.Body>
+                    )}
+                  </Card>
+                </Grid>
 
-              {isEmpty(playerData) ? (
-                <Skeleton height={500} width={500} />
-              ) : (
-                <RadarChart
-                  playerName={playerName}
-                  statsLabelArray={getLabelArray(playerData.attributes)}
-                  statsDataArray={getStatsArray(playerData.attributes)}
-                />
-              )}
+                <Grid xs={12} md={6} justify="center">
+                  {isEmpty(playerData) ? (
+                    <Skeleton height={500} width={500} />
+                  ) : (
+                    <RadarChart
+                      playerName={playerName}
+                      statsLabelArray={getLabelArray(playerData.attributes)}
+                      statsDataArray={getStatsArray(playerData.attributes)}
+                    />
+                  )}
+                </Grid>
+              </Grid.Container>
             </div>
           </div>
         )}
