@@ -16,10 +16,10 @@ const NavigationBarNext = () => {
       name: 'Communities',
       route: '/communities',
     },
-    {
-      name: 'Management',
-      route: '/management',
-    },
+    // {
+    //   name: 'Management',
+    //   route: '/management',
+    // },
     {
       name: 'About us',
       route: '/about',
@@ -46,7 +46,7 @@ const NavigationBarNext = () => {
       >
         <AcmeLogo />
         <Text b color="inherit" hideIn="xs">
-          Football stats
+          Football Stats
         </Text>
       </Navbar.Brand>
       <Navbar.Content
@@ -64,9 +64,9 @@ const NavigationBarNext = () => {
         <Navbar.Link isActive={isActive('/communities')} href="/communities">
           Communities
         </Navbar.Link>
-        <Navbar.Link isActive={isActive('/management')} href="/management">
+        {/* <Navbar.Link isActive={isActive('/management')} href="/management">
           Management
-        </Navbar.Link>
+        </Navbar.Link> */}
         <Navbar.Link isActive={isActive('/about')} href="/about">
           About us
         </Navbar.Link>

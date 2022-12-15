@@ -149,7 +149,6 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
             onChange={setAlgorithm}
             orientation="horizontal"
           >
-            <Radio value="KMeans">K-Means</Radio>
             <Radio value="Louvain">Louvain</Radio>
             <Radio value="Hierarchical">Hierarchical</Radio>
           </Radio.Group>
