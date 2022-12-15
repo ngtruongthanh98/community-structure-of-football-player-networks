@@ -370,6 +370,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                 src={playerData.graphURL || 'http://localhost:3000/no-image-available.png'}
                 alt="graph"
                 className="graph-image"
+                width="500px"
               />
             </Card>
           )}
