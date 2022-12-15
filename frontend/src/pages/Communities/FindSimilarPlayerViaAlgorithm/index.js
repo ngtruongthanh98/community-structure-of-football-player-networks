@@ -19,7 +19,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
   const [playerId, setPlayerId] = useState('');
   const [playerData, setPlayerData] = useState({});
 
-  const [algorithm, setAlgorithm] = useState('KMeans');
+  const [algorithm, setAlgorithm] = useState('Louvain');
 
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
@@ -28,7 +28,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
 
   const summarizeData = useRef({
     playerId: undefined,
-    KMeans: {},
+    // KMeans: {},
     Louvain: {},
     Hierarchical: {},
   });
@@ -90,7 +90,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     calledAlgorithms.current = [];
     summarizeData.current = {
       playerId: undefined,
-      KMeans: {},
+      // KMeans: {},
       Louvain: {},
       Hierarchical: {},
     };
@@ -144,7 +144,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
         <Grid xs={12} md={6} justify="center">
           <Radio.Group
             label="Choose an algorithm"
-            defaultValue="KMeans"
+            defaultValue="Louvain"
             value={algorithm}
             onChange={setAlgorithm}
             orientation="horizontal"
@@ -313,7 +313,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                         })}
                       </Table.Row>
 
-                      {!isEmpty(summarizeData.current.KMeans.executionProc) && (
+                      {/* {!isEmpty(summarizeData.current.KMeans.executionProc) && (
                         <Table.Row>
                           <Table.Cell>
                             <Text color="warning">KMeans</Text>
@@ -322,7 +322,7 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                             return <Table.Cell>{item.executionTime} (μs)</Table.Cell>;
                           })}
                         </Table.Row>
-                      )}
+                      )} */}
 
                       {!isEmpty(summarizeData.current.Louvain.executionProc) && (
                         <Table.Row>
