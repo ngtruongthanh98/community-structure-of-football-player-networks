@@ -46,7 +46,7 @@ const NavigationBarNext = () => {
       >
         <AcmeLogo />
         <Text b color="inherit" hideIn="xs">
-          Football player stats
+          Football stats
         </Text>
       </Navbar.Brand>
       <Navbar.Content

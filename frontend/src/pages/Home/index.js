@@ -52,26 +52,28 @@ const Home = () => {
   return (
     <div className="homepage">
       <div className="search-box">
-        <div className="title">Search by player name</div>
+        <Card isHoverable className="search-card">
+          <div className="title">Search by player name</div>
 
-        <DebounceSelect
-          mode="multiple"
-          value={value}
-          placeholder="Find player name"
-          fetchOptions={fetchUserList}
-          onChange={(newValue) => {
-            setValue(newValue);
-          }}
-          style={{
-            width: '300px',
-          }}
-          onSelect={(option) => {
-            setValue(option);
-            setPlayerName(option.label);
-            setPlayerId(option.value);
-          }}
-          className="select-input"
-        />
+          <DebounceSelect
+            mode="multiple"
+            value={value}
+            placeholder="Find player name"
+            fetchOptions={fetchUserList}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            style={{
+              width: '300px',
+            }}
+            onSelect={(option) => {
+              setValue(option);
+              setPlayerName(option.label);
+              setPlayerId(option.value);
+            }}
+            className="select-input"
+          />
+        </Card>
       </div>
 
       <div className="chart-box">
@@ -172,6 +174,24 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      {isEmpty(playerData) && (
+        <div className="notification-box">
+          <Card isHoverable className="notification-card">
+            <div className="notification-card__title">Welcome to Football Player Stats</div>
+            <div className="notification-card__content">
+              This is a web application that allows you to search for football players and display
+              their statistics and information.
+            </div>
+            <div className="notification-card__content">
+              To get started, simply type in the name of the player you are looking for in the
+              search bar above.
+            </div>
+
+            <img src="http://localhost:3000/football-player.png" alt="" className="player-image" />
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
