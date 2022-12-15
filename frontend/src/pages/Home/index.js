@@ -95,7 +95,7 @@ const Home = () => {
             </div>
 
             <div className="detail-information">
-              <Grid.Container gap={2} justify="center">
+              <Grid.Container gap={2} justify="center" className="detail-info-container">
                 <Grid xs={12} md={6} justify="center">
                   <Card
                     isHoverable
