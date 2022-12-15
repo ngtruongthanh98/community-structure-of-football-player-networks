@@ -31,6 +31,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         dataset_3 = pd.read_csv('../dataset3.csv')
         i = 0
         res = exchange_pb2.AttributeResponse()
+        main_pos = [main_pos[0]]
         for pos in main_pos:
             corr_matrix = graph.get_corr_matrix_for_pos(dataset_3, main_pos[i], threshold_for_pos_familarity, using_mental_attr)
             high_corr_attr = graph.get_relevant_attr(corr_matrix, corr_threshold)
@@ -92,11 +93,12 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
                     if score == 0:
                         continue
                     
-                    if score < graph.threshold:
-                        VGraph.add_edge(int(item1), int(item2), weight=score)
+                    # if score < graph.threshold:
+                    VGraph.add_edge(int(item1), int(item2), weight=score)
 
+            print()
             cmap = plt.get_cmap("jet")
-            pos = nx.spring_layout(VGraph, k=0.12)
+            pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
             indexed = [graph.Community_Louvain.get(node) for node in VGraph]
             plt.axis("off")
             nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=30, alpha=1)
