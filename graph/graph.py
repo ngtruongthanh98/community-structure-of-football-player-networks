@@ -25,6 +25,8 @@ foot_atr = ['LeftFoot', 'RightFoot']
 
 
 
+MapId2Index = {}
+MapIndex2Pos = {}
 
 G_Louvain = nx.Graph()
 Community_Louvain = {}
@@ -190,6 +192,7 @@ class FootballPlayerGraph():
 
 
 def InitData():
+    global MapId2Index
     # dataset is the original data
     dataset = pd.read_csv('../dataset.csv')
     drop_list = dataset[dataset.PositionsDesc.isnull()].index
@@ -210,7 +213,20 @@ def InitData():
 
     dataset_3 = dataset_2[dataset_2.PositionsDesc != 'C'].reset_index(drop=True)
     dataset_3.to_csv('../dataset3.csv')
+
     
+    mapDataset = pd.read_csv('../00_Attribute_xy_score.csv')
+    for index, row in dataset_3.iterrows():
+        MapId2Index[row[0]] = index
+    
+    mapHeaderList = mapDataset.columns.to_list()
+    for index, val in enumerate(mapHeaderList):
+        print(index, val)
+
+    print(mapDataset.iloc[0,0:5])
+    a = [x for x in mapDataset.iloc[0, 5:86]]
+    b = [x for x in mapDataset.iloc[0, 86:167]]
+    print(len(a), len(b))
 
 
 
