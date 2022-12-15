@@ -256,7 +256,7 @@ def read_data_to_graph(graph:nx.Graph):
             if line[0] == "#":
                 continue
             N_source, N_dest, weight = map(int, line.split())
-            graph.add_edge(N_source, N_dest, weight=weight)
+            graph.add_edge(N_source, N_dest, weight=weight, vis=(1/weight))
 
 
 
