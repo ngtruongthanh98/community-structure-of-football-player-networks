@@ -101,6 +101,14 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
     setVisible(false);
   };
 
+  const onHandleSeeGraph = () => {
+    // scroll to bottom, smothly
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+    });
+  };
+
   useEffect(() => {
     console.log('props.initalState: ', props.initalState);
     console.log('summarizeData.current: ', summarizeData.current);
@@ -349,6 +357,16 @@ const FindSimilarPlayerViaAlgorithm = (props) => {
                       )}
                     </Table.Body>
                   </Table>
+
+                  <Button
+                    className="scroll-to-graph-btn"
+                    shadow
+                    color="success"
+                    auto
+                    onPress={onHandleSeeGraph}
+                  >
+                    See graph visualize
+                  </Button>
                 </div>
               )}
             </Grid>
