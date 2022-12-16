@@ -35,8 +35,7 @@ G_Hierarchical = nx.Graph()
 G_KMeans = nx.Graph()
 Score_Table = np.empty((1, 1000), int)
 threshold = 800
-
-
+threshold_mo = 3
 
 
 
@@ -219,16 +218,17 @@ def InitData():
     for index, row in dataset_3.iterrows():
         MapId2Index[row[0]] = index
     
-    mapHeaderList = mapDataset.columns.to_list()
-    for index, val in enumerate(mapHeaderList):
-        print(index, val)
+    xArray = mapDataset.iloc[0:1000, 5:86].to_numpy()
+    yArray = mapDataset.iloc[0:1000, 86:167].to_numpy()
 
-    print(mapDataset.iloc[0,0:5])
-    a = [x for x in mapDataset.iloc[0, 5:86]]
-    b = [x for x in mapDataset.iloc[0, 86:167]]
-    print(len(a), len(b))
+    xArray = np.sum(xArray, axis=1)
+    yArray = np.sum(yArray, axis=1)
 
+    pointArray = [(x, y) for x,y in zip(xArray, yArray)]
+    for index, point in enumerate(pointArray):
+        MapIndex2Pos[index] = point
 
+    # print(MapIndex2Pos)
 
 # if __name__ == "__main__":
 #     football_graph = FootballPlayerGraph("parse")
@@ -263,6 +263,35 @@ def generate_player_data(file_name):
     print(Score_Table.shape)
     print("Done generate player data")
 
+def generate_player_data2(file_name):
+    global Score_Table
+    global threshold_mo
+    dataset = pd.read_csv(file_name)
+    f_sparse = open('../player_edge_sparse.txt', 'w')
+    f_dense = open('../player_edge_dense.txt', 'w')
+    
+    # for (index_source, player_data) in dataset.iterrows():
+    #     print(player_data[2:7])
+    #     break
+    weight_flatten = [player_data[7] for _, player_data in dataset.iterrows()]
+    Score_Table = [weight_flatten[1000 * k:1000 * k + 1000] for k in range(1000)]
+    Score_Table =np.array(Score_Table)
+    
+    for (index_source, player_data) in enumerate(Score_Table):
+        for (index_dest, edge) in enumerate(player_data):
+            if edge == 0:
+                continue
+            if edge < threshold_mo:
+                f_sparse.write("{} {} {}\n".format(index_source, index_dest, edge))
+            f_dense.write("{} {} {}\n".format(index_source, index_dest, edge))
+
+    f_sparse.close()
+    f_dense.close()
+    
+    # print(Score_Table)
+    print(Score_Table.shape)
+    print("Done generate player data")
+
 
 def read_data_to_graph(graph:nx.Graph):
     file_name = '../player_edge_sparse.txt'
@@ -271,7 +300,10 @@ def read_data_to_graph(graph:nx.Graph):
         for line in f:
             if line[0] == "#":
                 continue
-            N_source, N_dest, weight = map(int, line.split())
+            N_source, N_dest, weight = line.split()
+            N_source = int(N_source)
+            N_dest = int(N_dest)
+            weight = float(weight)
             graph.add_edge(N_source, N_dest, weight=weight, vis=(1/weight))
 
 
@@ -315,5 +347,6 @@ def build_louvain_graph():
 
 
 def BuildGraph():
-    generate_player_data('../dataset3.csv')
+    # generate_player_data('../dataset3.csv')
+    generate_player_data2('../02_1000_player_score.csv')
     build_louvain_graph()
