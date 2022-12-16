@@ -15,6 +15,9 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 
 const RadarOptions = {
   scale: {
+    beginAtZero: true,
+    min: 0,
+    max: 20,
     ticks: {
       min: 0,
       max: 20,

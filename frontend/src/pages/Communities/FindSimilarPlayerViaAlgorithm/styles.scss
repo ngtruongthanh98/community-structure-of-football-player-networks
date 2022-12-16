@@ -12,8 +12,16 @@
     margin-bottom: 16px;
   }
 
-  .nextui-grid-container {
-    width: 80vw;
+  .input-similar-player-card {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    width: 60vw;
+    min-width: 500px;
+  }
+
+  .input-box-container {
+    width: 60vw;
   }
 
   .input-container {
@@ -40,17 +48,38 @@
     }
   }
 
+  .table-container {
+    width: 80vw;
+  }
+
+  .loading-similar {
+    margin-top: 48px;
+  }
+
   .similar-players-box {
     margin-top: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .nextui-table-column-header {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .nextui-table-cell {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
   }
 
-  .image-box {
-    width: 100%;
+  .image-card {
     margin-top: 64px;
+    margin-bottom: 32px;
+    padding: 24px;
+
+    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,6 +100,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
+    .nextui-table-column-header {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .nextui-table-cell {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .graph-comparision-table {
+      margin-top: 24px;
+    }
+
+    .scroll-to-graph-btn {
+      margin-top: 48px;
+    }
   }
 }
