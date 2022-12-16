@@ -12,6 +12,8 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 
+Build_Time = 0
+
 class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
     def __init__(self):
         pass
@@ -46,6 +48,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         return res
 
     def GetSimilarPlayerList(self, request, context):
+        global Build_Time
         res = exchange_pb2.GraphByPlayerAndAlgoResponse()
         id = request.id
         algo = request.algorithm
@@ -54,6 +57,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             group = graph.Community_Louvain[int(id)]
             comm = graph.Partition_Louvain[group]
 
+            res.procs.add(name='Build Graph', time=Build_Time)
             res.procs.add(name='Find Community', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
 
@@ -96,7 +100,6 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
                     # if score < graph.threshold:
                     VGraph.add_edge(int(item1), int(item2), weight=score)
 
-            print()
             cmap = plt.get_cmap("jet")
             pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
             indexed = [graph.Community_Louvain.get(node) for node in VGraph]
@@ -124,5 +127,7 @@ def serve():
 if __name__ == '__main__':
     logging.basicConfig()
     graph.InitData()
+    start = datetime.datetime.now()
     graph.BuildGraph()
+    Build_Time=(datetime.datetime.now()-start).microseconds
     serve()
