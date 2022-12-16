@@ -124,5 +124,5 @@ def serve():
 if __name__ == '__main__':
     logging.basicConfig()
     graph.InitData()
-    graph.BuildGraph()
+    # graph.BuildGraph()
     serve()
