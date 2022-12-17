@@ -2,9 +2,14 @@ import numpy as np
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram
 import seaborn as sns
 import networkx as nx
 from louvain import detect_communities, modularity
+from paris import paris
+from utils import *
+from sklearn import cluster
+import datetime
 
 
 personal_info = ['UID', 'Name', 'NationID', 'Born']
@@ -26,19 +31,26 @@ foot_atr = ['LeftFoot', 'RightFoot']
 
 
 MapId2Index = {}
+MapIndex2Name = {}
 MapIndex2Pos = {}
 
 G_Louvain = nx.Graph()
+G_Paris = nx.Graph()
+
 Community_Louvain = {}
+Community_Paris = {}
+
+Partition_Louvain_Length = 5
 Partition_Louvain = []
-G_Hierarchical = nx.Graph()
-G_KMeans = nx.Graph()
+Partition_Paris = []
+
+
 Score_Table = np.empty((1, 1000), int)
 threshold = 800
 threshold_mo = 3
 
-
-
+Build_Time_Louvain = 0
+Build_Time_Paris = 0
 
 
 
@@ -192,6 +204,7 @@ class FootballPlayerGraph():
 
 def InitData():
     global MapId2Index
+    global MapIndex2Name
     # dataset is the original data
     dataset = pd.read_csv('../dataset.csv')
     drop_list = dataset[dataset.PositionsDesc.isnull()].index
@@ -214,19 +227,28 @@ def InitData():
     dataset_3.to_csv('../dataset3.csv')
 
     
-    mapDataset = pd.read_csv('../00_Attribute_xy_score.csv')
     for index, row in dataset_3.iterrows():
         MapId2Index[row[0]] = index
+        MapIndex2Name[index] = row[1]
     
-    xArray = mapDataset.iloc[0:1000, 5:86].to_numpy()
-    yArray = mapDataset.iloc[0:1000, 86:167].to_numpy()
 
-    xArray = np.sum(xArray, axis=1)
-    yArray = np.sum(yArray, axis=1)
+    mapDataset = pd.read_csv('../00_Attribute_xy_score.csv')
+    mapDataset2 = pd.read_csv('../03_point_xy_visualization.csv')
 
-    pointArray = [(x, y) for x,y in zip(xArray, yArray)]
-    for index, point in enumerate(pointArray):
-        MapIndex2Pos[index] = point
+    # xArray = mapDataset.iloc[0:1000, 5:86].to_numpy()
+    # yArray = mapDataset.iloc[0:1000, 86:167].to_numpy()
+
+    # xArray = np.sum(xArray, axis=1)
+    # yArray = np.sum(yArray, axis=1)
+
+    # pointArray = [[x, y] for x,y in zip(xArray, yArray)]
+    # for index, point in enumerate(pointArray):
+    #     MapIndex2Pos[index] = point
+
+    for index, row in mapDataset2.iterrows():
+        MapIndex2Pos[index] = [row[4], row[5]]
+
+    
 
     # print(MapIndex2Pos)
 
@@ -313,17 +335,21 @@ def build_louvain_graph():
     global G_Louvain
     global Community_Louvain
     global Partition_Louvain
+    global Partition_Louvain_Length
     read_data_to_graph(G_Louvain)
     Partition_Louvain = detect_communities(G_Louvain, randomized=True)
     
-    print(Partition_Louvain)
+    # print(Partition_Louvain)
     print(len(Partition_Louvain))
+    Partition_Louvain_Length = len(Partition_Louvain)
     print("Modularity for best partition:", modularity(G_Louvain, Partition_Louvain))
 
     for community, nodes in enumerate(Partition_Louvain):
         for node in nodes:
             # print(community, node)
             Community_Louvain[node] = community
+
+    # print(Community_Louvain)
     
     # cmap = plt.get_cmap("jet")
     # A = nx.Graph()
@@ -346,7 +372,34 @@ def build_louvain_graph():
     # plt.show()    
 
 
+def build_paris_graph():
+    global G_Paris
+    global Community_Paris
+    global Partition_Louvain_Length
+    read_data_to_graph(G_Paris)
+    res = cluster.AgglomerativeClustering(n_clusters=Partition_Louvain_Length).fit(np.array(list(MapIndex2Pos.values())))
+    for index, group in enumerate(res.labels_):
+        Community_Paris[index] = group
+    
+    for i in range(Partition_Louvain_Length):
+        Partition_Paris.append([k for k, v in Community_Paris.items() if v == i])
+
+    print(Partition_Paris)
+    # print(Community_Paris)
+    # plot_dendrogram2(res, truncate_mode='level', p=10)
+    # pos = nx.spring_layout(G_Paris)
+    # plot_best_clusterings(G_Paris, a, 2, pos)
+
+
+
 def BuildGraph():
+    global Build_Time_Louvain
+    global Build_Time_Paris
     # generate_player_data('../dataset3.csv')
     generate_player_data2('../02_1000_player_score.csv')
+    start = datetime.datetime.now()
     build_louvain_graph()
+    Build_Time_Louvain=(datetime.datetime.now()-start).microseconds
+    start = datetime.datetime.now()
+    build_paris_graph()
+    Build_Time_Paris=(datetime.datetime.now()-start).microseconds

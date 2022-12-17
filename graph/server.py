@@ -1,4 +1,5 @@
 from concurrent import futures
+from sklearn import cluster
 import graph
 
 import pandas as pd
@@ -12,7 +13,7 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 
-Build_Time = 0
+
 
 class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
     def __init__(self):
@@ -48,7 +49,6 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         return res
 
     def GetSimilarPlayerList(self, request, context):
-        global Build_Time
         res = exchange_pb2.GraphByPlayerAndAlgoResponse()
         id = request.id
         algo = request.algorithm
@@ -57,7 +57,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             group = graph.Community_Louvain[int(id)]
             comm = graph.Partition_Louvain[group]
 
-            res.procs.add(name='Build Graph', time=Build_Time)
+            res.procs.add(name='Build Graph', time=graph.Build_Time_Louvain)
             res.procs.add(name='Find Community', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
 
@@ -82,10 +82,10 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             start = datetime.datetime.now()
 
             visualize_graph = list()
-            visualize_graph.append(best_score_index_[0:11])
+            visualize_graph.append(best_score_index_[0:31])
             for index, sub_comm in enumerate(graph.Partition_Louvain):
                 if index != group:
-                    sub_random = random.sample(sub_comm, 10)
+                    sub_random = random.sample(sub_comm, 30)
                     visualize_graph.append(sub_random)
 
             print(visualize_graph)
@@ -97,21 +97,100 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
                     if score == 0:
                         continue
                     
-                    # if score < graph.threshold:
-                    VGraph.add_edge(int(item1), int(item2), weight=score)
+                    if score < 4:
+                        VGraph.add_edge(int(item1), int(item2), weight=score)
 
             cmap = plt.get_cmap("jet")
-            pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
+            pos = {node:graph.MapIndex2Pos[node] for node in VGraph}
+            print(pos)
+            # pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
+            # print(pos)
             indexed = [graph.Community_Louvain.get(node) for node in VGraph]
+            plt.cla()
+            plt.clf()
             plt.axis("off")
-            nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=30, alpha=1)
-            nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
+            plt.scatter([graph.MapIndex2Pos[int(id)][0]], [graph.MapIndex2Pos[int(id)][1]], c="black", cmap=cmap, s=[100], alpha=1, marker='>', zorder=10)
+            # plt.scatter([2], [2], c="black", cmap=cmap, s=[150], marker='x')
+            # indexed[0] = 10
+            nx.draw_networkx_labels(VGraph,pos,labels={int(id):graph.MapIndex2Name[int(id)]},font_size=10,font_color='r', verticalalignment='bottom')
+            nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=50, alpha=0.5)
+            print(graph.MapIndex2Pos[int(id)][0])
+            
+            # nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
             name = '../backend/static/graph_Louvain_' + str(id) + '.png'
-            plt.savefig(name)
+
+            plt.savefig(name, pad_inches=0)
 
             res.url = 'http://localhost:9999/static/graph_Louvain_' + str(id) + '.png'
             res.procs.add(name='Visualize', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
+        else:
+            group = graph.Community_Paris[int(id)]
+            comm = graph.Partition_Paris[group]
+
+            res.procs.add(name='Build Graph', time=graph.Build_Time_Paris)
+            res.procs.add(name='Find Community', time=(datetime.datetime.now()-start).microseconds)
+            start = datetime.datetime.now()
+
+            score_comm = {}
+            for node in comm:
+                score_comm[node] = graph.Score_Table[int(id), int(node)]
+                
+            best_score_comm = dict(sorted(score_comm.items(), key=lambda item: item[1]))
+            best_score_index_ = list(best_score_comm.keys())
+
+            best_score_index = best_score_index_[1:11]
+            print(best_score_index)
+            max_score = np.max(list(best_score_comm.values()))
+            for player in best_score_index:
+                res.similars.add(index=str(player), similar=((float)(max_score - best_score_comm[player]))/max_score)
+            
+            res.procs.add(name='Get Best Similar', time=(datetime.datetime.now()-start).microseconds)
+            start = datetime.datetime.now()
+
+            visualize_graph = list()
+            visualize_graph.append(best_score_index_[0:31])
+            for index, sub_comm in enumerate(graph.Partition_Paris):
+                if index != group:
+                    sub_random = random.sample(sub_comm, 30)
+                    visualize_graph.append(sub_random)
+
+            visualize_graph_flatten = [item for sublist in visualize_graph for item in sublist]
+            VGraph = nx.Graph()
+            for item1 in visualize_graph_flatten:
+                for item2 in visualize_graph_flatten:
+                    score = graph.Score_Table[int(item1), int(item2)]
+                    if score == 0:
+                        continue
+                    
+                    if score < 4:
+                        VGraph.add_edge(int(item1), int(item2), weight=score)
+
+            cmap = plt.get_cmap("jet")
+            pos = {node:graph.MapIndex2Pos[node] for node in VGraph}
+            print(pos)
+            # pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
+            # print(pos)
+            indexed = [graph.Community_Paris.get(node) for node in VGraph]
+            plt.cla()
+            plt.clf()
+            plt.axis("off")
+            plt.scatter([graph.MapIndex2Pos[int(id)][0]], [graph.MapIndex2Pos[int(id)][1]], c="black", cmap=cmap, s=[100], alpha=1, marker='>', zorder=10)
+            # plt.scatter([2], [2], c="black", cmap=cmap, s=[150], marker='x')
+            # indexed[0] = 10
+            nx.draw_networkx_labels(VGraph,pos,labels={int(id):graph.MapIndex2Name[int(id)]},font_size=10,font_color='r', verticalalignment='bottom')
+            nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=50, alpha=0.5)
+            print(graph.MapIndex2Pos[int(id)][0])
+            
+            # nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
+            name = '../backend/static/graph_Paris_' + str(id) + '.png'
+
+            plt.savefig(name, pad_inches=0)
+
+            res.url = 'http://localhost:9999/static/graph_Paris_' + str(id) + '.png'
+            res.procs.add(name='Visualize', time=(datetime.datetime.now()-start).microseconds)
+            start = datetime.datetime.now()
+
         return res
 
 
@@ -127,7 +206,5 @@ def serve():
 if __name__ == '__main__':
     logging.basicConfig()
     graph.InitData()
-    start = datetime.datetime.now()
     graph.BuildGraph()
-    Build_Time=(datetime.datetime.now()-start).microseconds
     serve()
