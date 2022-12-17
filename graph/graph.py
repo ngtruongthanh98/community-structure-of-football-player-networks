@@ -8,6 +8,7 @@ import networkx as nx
 from louvain import detect_communities, modularity
 from paris import paris
 from utils import *
+from sklearn import cluster
 
 
 personal_info = ['UID', 'Name', 'NationID', 'Born']
@@ -38,6 +39,7 @@ G_Paris = nx.Graph()
 Community_Louvain = {}
 Community_Paris = {}
 
+Partition_Louvain_Length = 5
 Partition_Louvain = []
 Partition_Paris = []
 
@@ -332,17 +334,21 @@ def build_louvain_graph():
     global G_Louvain
     global Community_Louvain
     global Partition_Louvain
+    global Partition_Louvain_Length
     read_data_to_graph(G_Louvain)
     Partition_Louvain = detect_communities(G_Louvain, randomized=True)
     
-    print(Partition_Louvain)
+    # print(Partition_Louvain)
     print(len(Partition_Louvain))
+    Partition_Louvain_Length = len(Partition_Louvain)
     print("Modularity for best partition:", modularity(G_Louvain, Partition_Louvain))
 
     for community, nodes in enumerate(Partition_Louvain):
         for node in nodes:
             # print(community, node)
             Community_Louvain[node] = community
+
+    # print(Community_Louvain)
     
     # cmap = plt.get_cmap("jet")
     # A = nx.Graph()
@@ -368,11 +374,18 @@ def build_louvain_graph():
 def build_paris_graph():
     global G_Paris
     global Community_Paris
+    global Partition_Louvain_Length
     read_data_to_graph(G_Paris)
-    a = paris(G_Paris)
-    print(len(a))
-    print(a)
-    plot_dendrogram(a, logscale=False)
+    res = cluster.AgglomerativeClustering(n_clusters=Partition_Louvain_Length).fit(np.array(list(MapIndex2Pos.values())))
+    for index, group in enumerate(res.labels_):
+        Community_Paris[index] = group
+    
+    for i in range(Partition_Louvain_Length):
+        Partition_Paris.append([k for k, v in Community_Paris.items() if v == i])
+
+    print(Partition_Paris)
+    # print(Community_Paris)
+    # plot_dendrogram2(res, truncate_mode='level', p=10)
     # pos = nx.spring_layout(G_Paris)
     # plot_best_clusterings(G_Paris, a, 2, pos)
 
@@ -382,4 +395,4 @@ def BuildGraph():
     # generate_player_data('../dataset3.csv')
     generate_player_data2('../02_1000_player_score.csv')
     build_louvain_graph()
-    # build_paris_graph()
+    build_paris_graph()

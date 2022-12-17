@@ -8,3 +8,4 @@ pip3 install matplotlib
 pip3 install seaborn
 pip3 install networkx
 pip3 install scipy
+pip3 install scikit-learn
