@@ -9,6 +9,7 @@ from louvain import detect_communities, modularity
 from paris import paris
 from utils import *
 from sklearn import cluster
+import datetime
 
 
 personal_info = ['UID', 'Name', 'NationID', 'Born']
@@ -48,8 +49,8 @@ Score_Table = np.empty((1, 1000), int)
 threshold = 800
 threshold_mo = 3
 
-
-
+Build_Time_Louvain = 0
+Build_Time_Paris = 0
 
 
 
@@ -392,7 +393,13 @@ def build_paris_graph():
 
 
 def BuildGraph():
+    global Build_Time_Louvain
+    global Build_Time_Paris
     # generate_player_data('../dataset3.csv')
     generate_player_data2('../02_1000_player_score.csv')
+    start = datetime.datetime.now()
     build_louvain_graph()
+    Build_Time_Louvain=(datetime.datetime.now()-start).microseconds
+    start = datetime.datetime.now()
     build_paris_graph()
+    Build_Time_Paris=(datetime.datetime.now()-start).microseconds

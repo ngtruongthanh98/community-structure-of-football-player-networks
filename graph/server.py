@@ -14,7 +14,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-Build_Time = 0
 
 class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
     def __init__(self):
@@ -50,7 +49,6 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
         return res
 
     def GetSimilarPlayerList(self, request, context):
-        global Build_Time
         res = exchange_pb2.GraphByPlayerAndAlgoResponse()
         id = request.id
         algo = request.algorithm
@@ -59,7 +57,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             group = graph.Community_Louvain[int(id)]
             comm = graph.Partition_Louvain[group]
 
-            res.procs.add(name='Build Graph', time=Build_Time)
+            res.procs.add(name='Build Graph', time=graph.Build_Time_Louvain)
             res.procs.add(name='Find Community', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
 
@@ -130,7 +128,7 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             group = graph.Community_Paris[int(id)]
             comm = graph.Partition_Paris[group]
 
-            res.procs.add(name='Build Graph', time=Build_Time)
+            res.procs.add(name='Build Graph', time=graph.Build_Time_Paris)
             res.procs.add(name='Find Community', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
 
@@ -208,7 +206,5 @@ def serve():
 if __name__ == '__main__':
     logging.basicConfig()
     graph.InitData()
-    start = datetime.datetime.now()
     graph.BuildGraph()
-    Build_Time=(datetime.datetime.now()-start).microseconds
     serve()
