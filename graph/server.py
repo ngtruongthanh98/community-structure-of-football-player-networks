@@ -82,10 +82,10 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
             start = datetime.datetime.now()
 
             visualize_graph = list()
-            visualize_graph.append(best_score_index_[0:11])
+            visualize_graph.append(best_score_index_[0:31])
             for index, sub_comm in enumerate(graph.Partition_Louvain):
                 if index != group:
-                    sub_random = random.sample(sub_comm, 10)
+                    sub_random = random.sample(sub_comm, 30)
                     visualize_graph.append(sub_random)
 
             print(visualize_graph)
@@ -97,21 +97,36 @@ class PlayerInfoServicer(exchange_pb2_grpc.PlayerInfoServicer):
                     if score == 0:
                         continue
                     
-                    # if score < graph.threshold:
-                    VGraph.add_edge(int(item1), int(item2), weight=score)
+                    if score < 4:
+                        VGraph.add_edge(int(item1), int(item2), weight=score)
 
             cmap = plt.get_cmap("jet")
-            pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
+            pos = {node:graph.MapIndex2Pos[node] for node in VGraph}
+            print(pos)
+            # pos = nx.spring_layout(VGraph, pos={best_score_index_[0]: (0, 0)}, fixed=[best_score_index_[0]], weight='vis', k=0.05)
+            # print(pos)
             indexed = [graph.Community_Louvain.get(node) for node in VGraph]
             plt.axis("off")
-            nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=30, alpha=1)
-            nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
+            plt.scatter([graph.MapIndex2Pos[int(id)][0]], [graph.MapIndex2Pos[int(id)][1]], c="black", cmap=cmap, s=[100], alpha=1, marker='>', zorder=10)
+            # plt.scatter([2], [2], c="black", cmap=cmap, s=[150], marker='x')
+            # indexed[0] = 10
+            size = [200 for node in VGraph]
+            size[0] = 500
+            print(size)
+            nx.draw_networkx_labels(VGraph,pos,labels={int(id):graph.MapIndex2Name[int(id)]},font_size=10,font_color='r', verticalalignment='bottom')
+            nx.draw_networkx_nodes(VGraph, pos=pos, cmap=cmap, node_color=indexed, node_size=50, alpha=0.5)
+            print(graph.MapIndex2Pos[int(id)][0])
+            
+            # nx.draw_networkx_edges(VGraph, pos=pos, alpha=0.2)
             name = '../backend/static/graph_Louvain_' + str(id) + '.png'
-            plt.savefig(name)
+
+            plt.savefig(name, pad_inches=0)
 
             res.url = 'http://localhost:9999/static/graph_Louvain_' + str(id) + '.png'
             res.procs.add(name='Visualize', time=(datetime.datetime.now()-start).microseconds)
             start = datetime.datetime.now()
+        # elif:
+
         return res
 
 

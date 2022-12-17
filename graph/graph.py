@@ -2,9 +2,12 @@ import numpy as np
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram
 import seaborn as sns
 import networkx as nx
 from louvain import detect_communities, modularity
+from paris import paris
+from utils import *
 
 
 personal_info = ['UID', 'Name', 'NationID', 'Born']
@@ -26,13 +29,19 @@ foot_atr = ['LeftFoot', 'RightFoot']
 
 
 MapId2Index = {}
+MapIndex2Name = {}
 MapIndex2Pos = {}
 
 G_Louvain = nx.Graph()
+G_Paris = nx.Graph()
+
 Community_Louvain = {}
+Community_Paris = {}
+
 Partition_Louvain = []
-G_Hierarchical = nx.Graph()
-G_KMeans = nx.Graph()
+Partition_Paris = []
+
+
 Score_Table = np.empty((1, 1000), int)
 threshold = 800
 threshold_mo = 3
@@ -192,6 +201,7 @@ class FootballPlayerGraph():
 
 def InitData():
     global MapId2Index
+    global MapIndex2Name
     # dataset is the original data
     dataset = pd.read_csv('../dataset.csv')
     drop_list = dataset[dataset.PositionsDesc.isnull()].index
@@ -214,19 +224,28 @@ def InitData():
     dataset_3.to_csv('../dataset3.csv')
 
     
-    mapDataset = pd.read_csv('../00_Attribute_xy_score.csv')
     for index, row in dataset_3.iterrows():
         MapId2Index[row[0]] = index
+        MapIndex2Name[index] = row[1]
     
-    xArray = mapDataset.iloc[0:1000, 5:86].to_numpy()
-    yArray = mapDataset.iloc[0:1000, 86:167].to_numpy()
 
-    xArray = np.sum(xArray, axis=1)
-    yArray = np.sum(yArray, axis=1)
+    mapDataset = pd.read_csv('../00_Attribute_xy_score.csv')
+    mapDataset2 = pd.read_csv('../03_point_xy_visualization.csv')
 
-    pointArray = [(x, y) for x,y in zip(xArray, yArray)]
-    for index, point in enumerate(pointArray):
-        MapIndex2Pos[index] = point
+    # xArray = mapDataset.iloc[0:1000, 5:86].to_numpy()
+    # yArray = mapDataset.iloc[0:1000, 86:167].to_numpy()
+
+    # xArray = np.sum(xArray, axis=1)
+    # yArray = np.sum(yArray, axis=1)
+
+    # pointArray = [[x, y] for x,y in zip(xArray, yArray)]
+    # for index, point in enumerate(pointArray):
+    #     MapIndex2Pos[index] = point
+
+    for index, row in mapDataset2.iterrows():
+        MapIndex2Pos[index] = [row[4], row[5]]
+
+    
 
     # print(MapIndex2Pos)
 
@@ -346,7 +365,21 @@ def build_louvain_graph():
     # plt.show()    
 
 
+def build_paris_graph():
+    global G_Paris
+    global Community_Paris
+    read_data_to_graph(G_Paris)
+    a = paris(G_Paris)
+    print(len(a))
+    print(a)
+    plot_dendrogram(a, logscale=False)
+    # pos = nx.spring_layout(G_Paris)
+    # plot_best_clusterings(G_Paris, a, 2, pos)
+
+
+
 def BuildGraph():
     # generate_player_data('../dataset3.csv')
     generate_player_data2('../02_1000_player_score.csv')
     build_louvain_graph()
+    # build_paris_graph()
