@@ -2,6 +2,9 @@
 
 Find similar players from a given player's name
 
+## Download and extract dataset files, put them in the main repository folder
+https://drive.google.com/drive/folders/1T9-6E_NjslB2zHbWxT_MRdL1M4auTIAA?usp=sharing
+
 ## Run
 
 Running the first time by executing these commands
