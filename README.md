@@ -2,7 +2,7 @@
 
 Find similar players from a given player's name
 
-## Download and extract dataset files, put them in the main repository folder
+## Download and extract dataset files, put them in the root repository folder (required)
 https://drive.google.com/drive/folders/1T9-6E_NjslB2zHbWxT_MRdL1M4auTIAA?usp=sharing
 
 ## Run
