@@ -2,6 +2,9 @@
 
 Find similar players from a given player's name
 
+## Firstly, make sure that you have installed Docker! (required)
+If you have not installed yet, read and follow this docs: https://docs.docker.com/engine/install/
+
 ## Download and extract dataset files, put them in the root repository folder (required)
 https://drive.google.com/drive/folders/1T9-6E_NjslB2zHbWxT_MRdL1M4auTIAA?usp=sharing
 
